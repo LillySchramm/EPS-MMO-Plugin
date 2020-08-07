@@ -1,6 +1,8 @@
 package de.epsdev.plugins.MMO.MAIN;
 
 import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.events.e_BlockDestroy;
+import de.epsdev.plugins.MMO.events.e_BlockPlace;
 import de.epsdev.plugins.MMO.events.e_PlayerJoin;
 import de.epsdev.plugins.MMO.events.e_PlayerLeave;
 import org.bukkit.plugin.PluginManager;
@@ -33,5 +35,7 @@ public final class main extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new e_PlayerJoin(), this);
         pm.registerEvents(new e_PlayerLeave(), this);
+        pm.registerEvents(new e_BlockDestroy(), this);
+        pm.registerEvents(new e_BlockPlace(), this);
     }
 }
