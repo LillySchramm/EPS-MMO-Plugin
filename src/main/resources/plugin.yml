@@ -1,0 +1,5 @@
+name: EPSRL
+version: ${project.version}
+main: de.epsdev.plugins.MMO.MAIN.main
+authors: [EliasSchramm]
+description: A plugin
