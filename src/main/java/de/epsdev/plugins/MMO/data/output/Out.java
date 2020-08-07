@@ -5,6 +5,10 @@ public class Out {
         System.out.println("[EPS-MMO] " + msg);
     }
 
+    public static void printToConsole(String[] msg){
+        System.out.println("[EPS-MMO] " + msg);
+    }
+
     public static void printToPlayer(){
 
     }
