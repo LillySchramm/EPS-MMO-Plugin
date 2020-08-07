@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+
 public class DataManager {
 
     public static Map<String,User> onlineUsers = new HashMap<String, User>();
@@ -37,6 +38,7 @@ public class DataManager {
     }
 
     public static User getUser(Player player){
+        User user = new User(player);
         File f = new File("plugins/eps/players");
         if(f.list() != null){
             ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
@@ -55,13 +57,16 @@ public class DataManager {
                     }
                     myReader.close();
                     String[] dataArray = data.split(";;");
-                    Out.printToConsole(dataArray);
-                    return new User(dataArray[0],dataArray[1],Float.parseFloat(dataArray[2]),Integer.getInteger(dataArray[3]));
+
+                    float user_xp = Float.parseFloat(dataArray[2]);
+                    int user_level = Integer.parseInt(dataArray[3]);
+
+                    user = new User(dataArray[0],dataArray[1],user_xp, user_level);
 
                 }
             }
         }
-        return new User(player);
+        return user;
     }
 
     public static void createUser(Player player){
@@ -78,10 +83,5 @@ public class DataManager {
         } catch (IOException ex) {
             System.err.println("File already exists");
         }
-
-
-
     }
-
-
 }

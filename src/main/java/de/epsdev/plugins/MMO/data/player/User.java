@@ -18,6 +18,7 @@ public class User {
     public User(Player player){
         displayName = player.getDisplayName();
         UUID = player.getUniqueId().toString();
+        level = 1;
     }
 
     public User(String displayName, String UUID, float xp, int level){
@@ -30,7 +31,9 @@ public class User {
     public void save(){
         try {
             Path path = Paths.get("plugins/eps/players/"+ UUID +".txt");
-            Files.createFile(path);
+            if(!Files.exists(path)){
+                Files.createFile(path);
+            }
             FileWriter writer = new FileWriter("plugins/eps/players/"+ UUID +".txt");
             writer.write( displayName + ";;");
             writer.write(UUID + ";;");
