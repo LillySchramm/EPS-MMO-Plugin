@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.MAIN;
 
 import de.epsdev.plugins.MMO.commands.c_Money;
+import de.epsdev.plugins.MMO.commands.c_Mutechat;
 import de.epsdev.plugins.MMO.commands.c_Rank;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.events.*;
@@ -49,6 +50,7 @@ public final class main extends JavaPlugin {
     private void registerCommands(){
         getCommand("money").setExecutor(new c_Money());
         getCommand("rank").setExecutor(new c_Rank());
+        getCommand("mutechat").setExecutor(new c_Mutechat());
     }
 
 

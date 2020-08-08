@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.events;
 
 import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import org.bukkit.ChatColor;
@@ -17,10 +18,15 @@ public class e_PlayerChat implements Listener {
         Player player = e.getPlayer();
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
         e.setCancelled(true);
-        Out.printToBroadcast("[" + user.rank.prefix + ChatColor.WHITE + "] " +
-                user.displayName +
-                " ["+ ChatColor.GOLD +user.level + ChatColor.WHITE +"] "
-                + e.getMessage());
+        if(!DataManager.chatMuted || user.rank.canSpeakWhenChatMuted){
+            Out.printToBroadcast("[" + user.rank.prefix + ChatColor.WHITE + "] " +
+                    user.displayName +
+                    " ["+ ChatColor.GOLD +user.level + ChatColor.WHITE +"] "
+                    + e.getMessage());
+        }else {
+            Err.chat_mutedError(player);
+        }
+
     }
 
 }

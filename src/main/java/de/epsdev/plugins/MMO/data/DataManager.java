@@ -22,6 +22,8 @@ public class DataManager {
 
     public static Map<String,User> onlineUsers = new HashMap<String, User>();
 
+    public static boolean chatMuted = false;
+
     public static String[] defaults = new String[]{"","","0","1","0","player"};
 
     public static void loadData(String dir){

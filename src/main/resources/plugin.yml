@@ -11,3 +11,6 @@ commands:
   rank:
     description: Doing Rank stuff
     aliases: [r,ranks]
+  mutechat:
+    description: De/Muting the chat.
+
