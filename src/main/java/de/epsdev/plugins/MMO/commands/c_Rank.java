@@ -29,9 +29,9 @@ public class c_Rank implements CommandExecutor {
                 default:
                     if (sender instanceof Player){
                         Player player = (Player) sender;
-                        Out.printToPlayer(player, "Available subcomands: set remove");
+                        Out.printToPlayer(player, "Available subcomands: set ");
                     }else{
-                        Out.printToConsole("Available subcomands: set remove");
+                        Out.printToConsole("Available subcomands: set ");
                     }
                     break;
                 case "set":
@@ -79,6 +79,7 @@ public class c_Rank implements CommandExecutor {
                         }
                     }
                     break;
+
             }
         }
         return true;
