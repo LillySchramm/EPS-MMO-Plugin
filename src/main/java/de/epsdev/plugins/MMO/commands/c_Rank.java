@@ -6,6 +6,7 @@ import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.ranks.Rank;
 import de.epsdev.plugins.MMO.ranks.Ranks;
+import de.epsdev.plugins.MMO.scoreboards.DefaultScroreboard;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -38,7 +39,7 @@ public class c_Rank implements CommandExecutor {
                     if(sender instanceof Player){
                         Player player = (Player) sender;
                         User user = DataManager.getUser(player);
-                        if(user.rank.canChangeRanks){
+                        if(user.rank.canChangeRanks || player.isOp()){
                             if(args.length == 3){
                                 User u = DataManager.getUserByName(args[1]);
                                 if(u != null){
@@ -47,6 +48,7 @@ public class c_Rank implements CommandExecutor {
                                         u.rank = rank;
                                         u.save();
                                         Out.printToPlayer(player ,"Changed Rank of player " + args[1] + " to " + rank.prefix);
+                                        DefaultScroreboard.refresh(u);
                                     }else {
                                         Out.printToPlayer(player,"Rank not found");
                                     }

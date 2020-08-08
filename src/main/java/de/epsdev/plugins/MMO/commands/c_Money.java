@@ -4,12 +4,11 @@ import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
+import de.epsdev.plugins.MMO.scoreboards.DefaultScroreboard;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Map;
 
 public class c_Money implements CommandExecutor {
     @Override
@@ -35,6 +34,7 @@ public class c_Money implements CommandExecutor {
                                 if (u != null){
                                     u.money.amount += Integer.parseInt(args[2]);
                                     u.save();
+                                    DefaultScroreboard.refresh(u);
                                 }else {
                                     Out.printToPlayer(player, "Player not found.");
                                 }

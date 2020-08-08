@@ -4,6 +4,7 @@ import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.ranks.Rank;
 import de.epsdev.plugins.MMO.ranks.Ranks;
+import de.epsdev.plugins.MMO.scoreboards.DefaultScroreboard;
 import org.bukkit.entity.Player;
 
 import java.io.FileWriter;
@@ -36,6 +37,9 @@ public class User {
         this.level = level;
         this.money = new Money(money);
         this.rank = rank;
+
+        DefaultScroreboard.refresh(this);
+
     }
 
     public void save(){
