@@ -3,10 +3,9 @@ package de.epsdev.plugins.MMO.MAIN;
 import de.epsdev.plugins.MMO.commands.c_Money;
 import de.epsdev.plugins.MMO.commands.c_Rank;
 import de.epsdev.plugins.MMO.data.DataManager;
-import de.epsdev.plugins.MMO.events.e_BlockDestroy;
-import de.epsdev.plugins.MMO.events.e_BlockPlace;
-import de.epsdev.plugins.MMO.events.e_PlayerJoin;
-import de.epsdev.plugins.MMO.events.e_PlayerLeave;
+import de.epsdev.plugins.MMO.events.*;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,7 +21,10 @@ public final class main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        for(Player p : Bukkit.getOnlinePlayers()){
+            DataManager.onlineUsers.get(p.getUniqueId().toString()).save();
+            p.kickPlayer("Reload");
+        }
     }
 
     private void initDataStructures(){
@@ -41,6 +43,7 @@ public final class main extends JavaPlugin {
         pm.registerEvents(new e_PlayerLeave(), this);
         pm.registerEvents(new e_BlockDestroy(), this);
         pm.registerEvents(new e_BlockPlace(), this);
+        pm.registerEvents(new e_PlayerChat(), this);
     }
 
     private void registerCommands(){

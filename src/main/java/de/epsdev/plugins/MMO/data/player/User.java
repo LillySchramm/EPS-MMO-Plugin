@@ -3,6 +3,7 @@ package de.epsdev.plugins.MMO.data.player;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.ranks.Rank;
+import de.epsdev.plugins.MMO.ranks.Ranks;
 import org.bukkit.entity.Player;
 
 import java.io.FileWriter;
@@ -25,6 +26,7 @@ public class User {
         UUID = player.getUniqueId().toString();
         level = 1;
         money = new Money(0);
+        this.rank = Ranks.Player;
     }
 
     public User(String displayName, String UUID, float xp, int level, int money, Rank rank){

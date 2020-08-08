@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.data.output;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class Out {
@@ -26,7 +27,7 @@ public class Out {
         player.sendMessage("[EPS-MMO] " + msg);
     }
 
-    public static void printToBroadcast(){
-
+    public static void printToBroadcast(String msg){
+        Bukkit.broadcastMessage(msg);
     }
 }

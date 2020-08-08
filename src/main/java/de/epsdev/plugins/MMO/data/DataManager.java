@@ -81,7 +81,7 @@ public class DataManager {
             String key = entry.getKey();
             User value = entry.getValue();
 
-            if(value.displayName == name){
+            if(value.displayName.equalsIgnoreCase(name)){
                 user = value;
                 break;
             }

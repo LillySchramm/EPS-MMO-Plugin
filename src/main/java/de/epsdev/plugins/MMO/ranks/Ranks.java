@@ -13,7 +13,7 @@ public class Ranks {
             false,//CanHandleMoney
             false //CanChangeRanks
     });
-    public static Rank Player = new Rank("player", "",new  boolean[]{
+    public static Rank Player = new Rank("player", "Player",new  boolean[]{
             false, //CanBuild
             false, //CanHandleMoney
             false  //CanChangeRanks

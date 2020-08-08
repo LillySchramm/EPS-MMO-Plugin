@@ -14,6 +14,6 @@ public class Rank {
         canChangeRanks = args[2];
         this.name = name;
         this.prefix = prefix;
-
     }
+
 }
