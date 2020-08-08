@@ -1,6 +1,8 @@
 package de.epsdev.plugins.MMO.data.player;
 
+import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.ranks.Rank;
 import org.bukkit.entity.Player;
 
 import java.io.FileWriter;
@@ -14,18 +16,24 @@ public class User {
     public String UUID;
     public float xp;
     public int level;
+    public Rank rank;
+
+    public Money money;
 
     public User(Player player){
         displayName = player.getDisplayName();
         UUID = player.getUniqueId().toString();
         level = 1;
+        money = new Money(0);
     }
 
-    public User(String displayName, String UUID, float xp, int level){
+    public User(String displayName, String UUID, float xp, int level, int money, Rank rank){
         this.displayName = displayName;
         this.UUID = UUID;
         this.xp = xp;
         this.level = level;
+        this.money = new Money(money);
+        this.rank = rank;
     }
 
     public void save(){
@@ -39,6 +47,8 @@ public class User {
             writer.write(UUID + ";;");
             writer.write(xp + ";;");
             writer.write(level + ";;");
+            writer.write(money.amount + ";;");
+            writer.write(rank.name + ";;");
             writer.close();
         }catch (IOException e){
              e.printStackTrace();
@@ -51,6 +61,8 @@ public class User {
         Out.printToConsole("UUID: " + UUID);
         Out.printToConsole("XP: " + xp);
         Out.printToConsole("Level: " + level);
+        Out.printToConsole("Money: " + money.amount);
+        Out.printToConsole("Rank: " + rank.name);
     }
 
 

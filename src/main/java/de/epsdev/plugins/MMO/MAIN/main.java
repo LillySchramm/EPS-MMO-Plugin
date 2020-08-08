@@ -1,5 +1,7 @@
 package de.epsdev.plugins.MMO.MAIN;
 
+import de.epsdev.plugins.MMO.commands.c_Money;
+import de.epsdev.plugins.MMO.commands.c_Rank;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.events.e_BlockDestroy;
 import de.epsdev.plugins.MMO.events.e_BlockPlace;
@@ -13,7 +15,9 @@ public final class main extends JavaPlugin {
     @Override
     public void onEnable() {
         initDataStructures();
+        DataManager.patchAllUsers();
         registerEvents();
+        registerCommands();
     }
 
     @Override
@@ -38,4 +42,11 @@ public final class main extends JavaPlugin {
         pm.registerEvents(new e_BlockDestroy(), this);
         pm.registerEvents(new e_BlockPlace(), this);
     }
+
+    private void registerCommands(){
+        getCommand("money").setExecutor(new c_Money());
+        getCommand("rank").setExecutor(new c_Rank());
+    }
+
+
 }

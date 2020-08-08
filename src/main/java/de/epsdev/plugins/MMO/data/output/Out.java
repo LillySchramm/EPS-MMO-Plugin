@@ -1,5 +1,7 @@
 package de.epsdev.plugins.MMO.data.output;
 
+import org.bukkit.entity.Player;
+
 public class Out {
     public static void printToConsole(String msg){
         System.out.println("[EPS-MMO] " + msg);
@@ -20,8 +22,8 @@ public class Out {
         }
     }
 
-    public static void printToPlayer(){
-
+    public static void printToPlayer(Player player, String msg){
+        player.sendMessage("[EPS-MMO] " + msg);
     }
 
     public static void printToBroadcast(){

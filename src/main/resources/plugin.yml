@@ -3,3 +3,11 @@ version: ${project.version}
 main: de.epsdev.plugins.MMO.MAIN.main
 authors: [EliasSchramm]
 description: A plugin
+commands:
+  money:
+    description: Doing money stuff
+    aliases: [m, gold]
+
+  rank:
+    description: Doing Rank stuff
+    aliases: [r,ranks]
