@@ -1,8 +1,7 @@
 package de.epsdev.plugins.MMO.MAIN;
 
-import de.epsdev.plugins.MMO.commands.c_Money;
-import de.epsdev.plugins.MMO.commands.c_Mutechat;
-import de.epsdev.plugins.MMO.commands.c_Rank;
+import de.epsdev.plugins.MMO.GUI.CheatMenu_GUI;
+import de.epsdev.plugins.MMO.commands.*;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.events.*;
 import org.bukkit.Bukkit;
@@ -18,6 +17,7 @@ public final class main extends JavaPlugin {
         DataManager.patchAllUsers();
         registerEvents();
         registerCommands();
+        initGUIs();
     }
 
     @Override
@@ -45,12 +45,24 @@ public final class main extends JavaPlugin {
         pm.registerEvents(new e_BlockDestroy(), this);
         pm.registerEvents(new e_BlockPlace(), this);
         pm.registerEvents(new e_PlayerChat(), this);
+        pm.registerEvents(new e_ClickEvent(), this);
     }
 
     private void registerCommands(){
         getCommand("money").setExecutor(new c_Money());
         getCommand("rank").setExecutor(new c_Rank());
         getCommand("mutechat").setExecutor(new c_Mutechat());
+        getCommand("cheatmenu").setExecutor(new c_cheatmenu());
+        getCommand("rlc").setExecutor(new c_rlc());
+
+        getCommand("gmc").setExecutor(new c_gmc());
+        getCommand("gms").setExecutor(new c_gms());
+        getCommand("gmspec").setExecutor(new c_gmspec());
+
+    }
+
+    private void initGUIs(){
+        CheatMenu_GUI.init();
     }
 
 

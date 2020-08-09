@@ -8,21 +8,39 @@ public class Ranks {
             true, //CanHandleMoney
             true, //CanChangeRanks
             true, //CanMuteChat
-            true  //CanSpeakWhenChatMuted
+            true, //CanSpeakWhenChatMuted
+            true, //CanOpenCheatMenu
+            true, //CanReloadServer
+            true //CanChangeGamemode
+    },
+        new  int[]{
+            0     //MaxHousesOwn
     });
     public static Rank Builder = new Rank("builder", ChatColor.BLUE + "Builder", new boolean[]{
             true, //CanBuild
             false,//CanHandleMoney
             false,//CanChangeRanks
             false,//CanMuteChat
-            true  //CanSpeakWhenChatMuted
+            true, //CanSpeakWhenChatMuted
+            false, //CanOpenCheatMenu
+            false,  //CanReloadServer
+            true //CanChangeGamemode
+    },
+        new  int[]{
+                0     //MaxHousesOwn
     });
     public static Rank Player = new Rank("player", "Player",new  boolean[]{
             false, //CanBuild
             false, //CanHandleMoney
             false, //CanChangeRanks
             false, //CanMuteChat
-            false  //CanSpeakWhenChatMuted
+            false, //CanSpeakWhenChatMuted
+            false,  //CanOpenCheatMenu
+            false,  //CanReloadServer
+            false //CanChangeGamemode
+    },
+        new  int[]{
+                1     //MaxHousesOwn
     });
 
     public static Rank Mod = new Rank("mod", ChatColor.DARK_BLUE +"Mod",new  boolean[]{
@@ -30,11 +48,31 @@ public class Ranks {
             false, //CanHandleMoney
             false, //CanChangeRanks
             true,  //CanMuteChat
-            true   //CanSpeakWhenChatMuted
+            true,  //CanSpeakWhenChatMuted
+            false,  //CanOpenCheatMenu
+            false,  //CanReloadServer
+            true //CanChangeGamemode
+    },
+        new  int[]{
+                0     //MaxHousesOwn
+    });
+
+    public static Rank VIP = new Rank("vip", ChatColor.GOLD + "VIP",new  boolean[]{
+            false, //CanBuild
+            false, //CanHandleMoney
+            false, //CanChangeRanks
+            false, //CanMuteChat
+            false, //CanSpeakWhenChatMuted
+            false,  //CanOpenCheatMenu
+            false,  //CanReloadServer
+            false //CanChangeGamemode
+    },
+            new  int[]{
+                    5     //MaxHousesOwn
     });
 
     public static Rank getRank(String name){
-        switch (name){
+        switch (name.toLowerCase()){
             default:
                 return null;
             case "player":
@@ -43,6 +81,11 @@ public class Ranks {
                 return Admin;
             case "builder":
                 return Builder;
+            case "mod":
+                return Mod;
+            case "vip":
+                return VIP;
+
         }
     }
 

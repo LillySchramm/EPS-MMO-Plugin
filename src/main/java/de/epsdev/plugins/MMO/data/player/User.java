@@ -56,6 +56,7 @@ public class User {
             writer.write(money.amount + ";;");
             writer.write(rank.name + ";;");
             writer.close();
+
         }catch (IOException e){
              e.printStackTrace();
         }

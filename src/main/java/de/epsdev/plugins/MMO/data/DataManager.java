@@ -1,9 +1,14 @@
 package de.epsdev.plugins.MMO.data;
 
+import de.epsdev.plugins.MMO.GUI.Base_Gui;
+import de.epsdev.plugins.MMO.GUI.OnClick;
+import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.ranks.Ranks;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import javax.jws.soap.SOAPBinding;
 import java.io.File;
@@ -20,11 +25,24 @@ import java.util.*;
 
 public class DataManager {
 
+    public static final Material GUI_FILLER = Material.THIN_GLASS;
+
     public static Map<String,User> onlineUsers = new HashMap<String, User>();
 
     public static boolean chatMuted = false;
 
     public static String[] defaults = new String[]{"","","0","1","0","player"};
+
+    public static Map<Integer, OnClick> funs = new HashMap<>();
+
+
+    public static void performClickFunction(Player player, int i, ItemStack item){
+        if (funs.containsKey(i)){
+            funs.get(i).click(player, item);
+        }else {
+            Err.funNotRegisteredError();
+        }
+    }
 
     public static void loadData(String dir){
         File f = new File("plugins/" + dir);
@@ -151,5 +169,11 @@ public class DataManager {
         } catch (IOException ex) {
             System.err.println("File already exists");
         }
+    }
+
+    public static void saveUser(User user){
+        user.save();
+        onlineUsers.remove(user.UUID);
+        onlineUsers.put(user.UUID, user);
     }
 }

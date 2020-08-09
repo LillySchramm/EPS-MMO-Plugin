@@ -14,3 +14,17 @@ commands:
   mutechat:
     description: De/Muting the chat.
 
+  cheatmenu:
+    description: Cheats
+
+  rlc:
+    description: Reload the server.
+
+  gmc:
+    description: Change gamemode to creative
+
+  gms:
+    description: Change gamemode to survival
+
+  gmspec:
+    description: Change gamemode to spectator
