@@ -15,6 +15,7 @@ public final class main extends JavaPlugin {
     @Override
     public void onEnable() {
         initDataStructures();
+        initRegions();
         DataManager.patchAllUsers();
         registerEvents();
         registerCommands();
@@ -27,6 +28,10 @@ public final class main extends JavaPlugin {
             DataManager.onlineUsers.get(p.getUniqueId().toString()).save();
             p.kickPlayer("Reload");
         }
+    }
+
+    private void initRegions(){
+        DataManager.loadAllRegions();
     }
 
     private void initDataStructures(){
@@ -61,6 +66,7 @@ public final class main extends JavaPlugin {
         getCommand("gmspec").setExecutor(new c_gmspec());
 
         getCommand("regions").setExecutor(new c_regions());
+        getCommand("createregion").setExecutor(new c_createregion());
 
     }
 

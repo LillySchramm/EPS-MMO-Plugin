@@ -182,4 +182,82 @@ public class DataManager {
         onlineUsers.remove(user.UUID);
         onlineUsers.put(user.UUID, user);
     }
+    //-----------------------------------------------------------------
+    //Region Stuff
+    //-----------------------------------------------------------------
+
+    public static void createRegion(String name){
+        Path path = null;
+        if(regions.isEmpty()){
+            path = Paths.get("plugins/eps/regions/" + 1 + ".txt");
+        }else {
+            path = Paths.get("plugins/eps/regions/" + regions.get(regions.size() - 1).id + 1 + ".txt");
+        }
+        try {
+            Files.createFile(path);
+            FileWriter writer = new FileWriter(path.toString());
+            writer.write( name+ ";;");
+            for(int i = 1; i < defaults_user.length; i++){
+                writer.write(defaults_user[i]+";;");
+            }
+            writer.close();
+        } catch (IOException ex) {
+            System.err.println("File already exists");
+        }
+    }
+
+    public static void loadAllRegions() {
+        File f = new File("plugins/eps/regions");
+        if (f.list() != null) {
+            ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
+            for (String s : names) {
+
+                //PATCH
+
+                if (s.contains(".txt")) {
+                    File file = new File("plugins/eps/regions/" + s);
+                    Scanner myReader = null;
+                    try {
+                        myReader = new Scanner(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    String data = "";
+                    while (myReader.hasNextLine()) {
+                        data += myReader.nextLine();
+                    }
+                    myReader.close();
+                    String[] dataArray = data.split(";;");
+
+                    if (dataArray.length < defaults_regions.length) {
+                        for (int i = dataArray.length; i < defaults_regions.length; i++) {
+                            data += defaults_regions[i] + ";;";
+                            Out.printToConsole("Patched Region");
+                        }
+                    }
+
+                    FileWriter writer = null;
+                    try {
+                        writer = new FileWriter("plugins/eps/players/" + s);
+                        writer.write(data);
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    //LOAD
+
+                    dataArray = data.split(";;");
+
+                    Region region = new Region(dataArray[0], Integer.parseInt(dataArray[1]));
+                    region.id = Integer.parseInt(s.split(".txt")[0]);
+
+                    regions.add(region);
+
+
+                }
+            }
+        }
+    }
+
 }

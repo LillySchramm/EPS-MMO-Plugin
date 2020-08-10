@@ -31,3 +31,6 @@ commands:
 
   regions:
     description: Handle regions
+
+  createRegion:
+    description: Create Regions
