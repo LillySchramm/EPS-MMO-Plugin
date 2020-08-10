@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.MAIN;
 
 import de.epsdev.plugins.MMO.GUI.CheatMenu_GUI;
+import de.epsdev.plugins.MMO.GUI.Regions_GUI;
 import de.epsdev.plugins.MMO.commands.*;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.events.*;
@@ -59,10 +60,13 @@ public final class main extends JavaPlugin {
         getCommand("gms").setExecutor(new c_gms());
         getCommand("gmspec").setExecutor(new c_gmspec());
 
+        getCommand("regions").setExecutor(new c_regions());
+
     }
 
     private void initGUIs(){
         CheatMenu_GUI.init();
+        Regions_GUI.init();
     }
 
 

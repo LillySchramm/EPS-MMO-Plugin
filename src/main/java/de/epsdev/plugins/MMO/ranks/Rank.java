@@ -9,6 +9,8 @@ public class Rank {
     public boolean canUseCheatMenu = false;
     public boolean canReloadServer = false;
     public boolean canChangeGamemode = false;
+    public boolean canManageRegions = false;
+    public boolean canManageHouses = false;
 
     public String name;
     public String prefix;
@@ -24,6 +26,8 @@ public class Rank {
         canUseCheatMenu = args[5];
         canReloadServer = args[6];
         canChangeGamemode = args[7];
+        canManageRegions = args[8];
+        canManageHouses = args[9];
 
         this.maxHousesForRent = int_args[0];
 

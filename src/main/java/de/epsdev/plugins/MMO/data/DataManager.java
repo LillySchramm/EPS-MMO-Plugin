@@ -5,6 +5,7 @@ import de.epsdev.plugins.MMO.GUI.OnClick;
 import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
+import de.epsdev.plugins.MMO.data.regions.Region;
 import de.epsdev.plugins.MMO.ranks.Ranks;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,9 +30,14 @@ public class DataManager {
 
     public static Map<String,User> onlineUsers = new HashMap<String, User>();
 
+    public static List<Region> regions = new ArrayList<>();
+
     public static boolean chatMuted = false;
 
-    public static String[] defaults = new String[]{"","","0","1","0","player"};
+    public static String[] defaults_user = new String[]{"","","0","1","0","player"};
+    public static String[] defaults_regions = new String[]{"","1"};
+    public static String[] defaults_cities = new String[]{};
+    public static String[] defaults_houses = new String[]{};
 
     public static Map<Integer, OnClick> funs = new HashMap<>();
 
@@ -131,9 +137,9 @@ public class DataManager {
                     myReader.close();
                     String[] dataArray = data.split(";;");
 
-                    if(dataArray.length < defaults.length){
-                        for(int i = dataArray.length; i < defaults.length; i++){
-                            data += defaults[i] + ";;";
+                    if(dataArray.length < defaults_user.length){
+                        for(int i = dataArray.length; i < defaults_user.length; i++){
+                            data += defaults_user[i] + ";;";
                             Out.printToConsole("Patched");
                         }
                     }
@@ -162,8 +168,8 @@ public class DataManager {
             FileWriter writer = new FileWriter("plugins/eps/players/"+ player.getUniqueId() +".txt");
             writer.write( player.getDisplayName()+ ";;");
             writer.write(player.getUniqueId()+";;");
-            for(int i = 2; i < defaults.length; i++){
-                writer.write(defaults[i]+";;");
+            for(int i = 2; i < defaults_user.length; i++){
+                writer.write(defaults_user[i]+";;");
             }
             writer.close();
         } catch (IOException ex) {

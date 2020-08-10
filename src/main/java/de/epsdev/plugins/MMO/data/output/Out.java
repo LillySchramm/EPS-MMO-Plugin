@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.data.output;
 
+import de.epsdev.plugins.MMO.tools.Vec3i;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -29,5 +30,9 @@ public class Out {
 
     public static void printToBroadcast(String msg){
         Bukkit.broadcastMessage(msg);
+    }
+
+    public static void printToShield(String msg, Vec3i pos){
+
     }
 }

@@ -28,6 +28,9 @@ public class User {
         level = 1;
         money = new Money(0);
         this.rank = Ranks.Player;
+
+
+        DefaultScroreboard.refresh(this);
     }
 
     public User(String displayName, String UUID, float xp, int level, int money, Rank rank){

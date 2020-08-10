@@ -11,7 +11,9 @@ public class Ranks {
             true, //CanSpeakWhenChatMuted
             true, //CanOpenCheatMenu
             true, //CanReloadServer
-            true //CanChangeGamemode
+            true, //CanChangeGamemode
+            true, //CanManageRegions
+            true  //CanManageHouses
     },
         new  int[]{
             0     //MaxHousesOwn
@@ -24,7 +26,9 @@ public class Ranks {
             true, //CanSpeakWhenChatMuted
             false, //CanOpenCheatMenu
             false,  //CanReloadServer
-            true //CanChangeGamemode
+            true, //CanChangeGamemode
+            true, //CanManageRegions
+            true  //CanManageHouses
     },
         new  int[]{
                 0     //MaxHousesOwn
@@ -37,7 +41,9 @@ public class Ranks {
             false, //CanSpeakWhenChatMuted
             false,  //CanOpenCheatMenu
             false,  //CanReloadServer
-            false //CanChangeGamemode
+            false, //CanChangeGamemode
+            false, //CanManageRegions
+            false  //CanManageHouses
     },
         new  int[]{
                 1     //MaxHousesOwn
@@ -51,7 +57,9 @@ public class Ranks {
             true,  //CanSpeakWhenChatMuted
             false,  //CanOpenCheatMenu
             false,  //CanReloadServer
-            true //CanChangeGamemode
+            true, //CanChangeGamemode
+            true, //CanManageRegions
+            false  //CanManageHouses
     },
         new  int[]{
                 0     //MaxHousesOwn
@@ -65,7 +73,9 @@ public class Ranks {
             false, //CanSpeakWhenChatMuted
             false,  //CanOpenCheatMenu
             false,  //CanReloadServer
-            false //CanChangeGamemode
+            false, //CanChangeGamemode
+            false, //CanManageRegions
+            false  //CanManageHouses
     },
             new  int[]{
                     5     //MaxHousesOwn

@@ -28,3 +28,6 @@ commands:
 
   gmspec:
     description: Change gamemode to spectator
+
+  regions:
+    description: Handle regions
