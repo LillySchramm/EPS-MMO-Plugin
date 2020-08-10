@@ -15,4 +15,12 @@ public class Err {
     public static void funNotRegisteredError(){
         Out.printToBroadcast(ChatColor.RED + "We are sorry but we can't find the function. Please contact Staff if this happens multiple times.");
     }
+
+    public static void notEnoughArgumentsError(Player player){
+        Out.printToPlayer(player, ChatColor.RED + "This commands needs more arguments.");
+    }
+
+    public static void regionAlreadyExistsError(Player player){
+        Out.printToPlayer(player, ChatColor.RED + "A region with this name already exists.");
+    }
 }

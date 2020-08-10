@@ -31,6 +31,9 @@ public class Out {
     public static void printToBroadcast(String msg){
         Bukkit.broadcastMessage(msg);
     }
+    public static void printToBroadcast(int msg){
+        Bukkit.broadcastMessage(String.valueOf(msg));
+    }
 
     public static void printToShield(String msg, Vec3i pos){
 

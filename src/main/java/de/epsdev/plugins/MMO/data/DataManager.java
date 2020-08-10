@@ -2,6 +2,7 @@ package de.epsdev.plugins.MMO.data;
 
 import de.epsdev.plugins.MMO.GUI.Base_Gui;
 import de.epsdev.plugins.MMO.GUI.OnClick;
+import de.epsdev.plugins.MMO.GUI.Regions_GUI;
 import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
@@ -186,24 +187,48 @@ public class DataManager {
     //Region Stuff
     //-----------------------------------------------------------------
 
-    public static void createRegion(String name){
+    public static boolean createRegion(String name, Player executer){
         Path path = null;
-        if(regions.isEmpty()){
-            path = Paths.get("plugins/eps/regions/" + 1 + ".txt");
-        }else {
-            path = Paths.get("plugins/eps/regions/" + regions.get(regions.size() - 1).id + 1 + ".txt");
-        }
-        try {
-            Files.createFile(path);
-            FileWriter writer = new FileWriter(path.toString());
-            writer.write( name+ ";;");
-            for(int i = 1; i < defaults_user.length; i++){
-                writer.write(defaults_user[i]+";;");
+        if(!isRegionAlreadyExisting(name)){
+            if(regions.isEmpty()){
+                path = Paths.get("plugins/eps/regions/" + 1 + ".txt");
+            }else {
+                path = Paths.get("plugins/eps/regions/" + ( regions.get(regions.size() - 1).id + 1) + ".txt");
             }
-            writer.close();
-        } catch (IOException ex) {
-            System.err.println("File already exists");
+            try {
+                Files.createFile(path);
+                FileWriter writer = new FileWriter(path.toString());
+                writer.write( name+ ";;");
+                for(int i = 1; i < defaults_regions.length; i++){
+                    writer.write(defaults_regions[i]+";;");
+                }
+                writer.close();
+            } catch (IOException ex) {
+                System.err.println("File already exists");
+            }
+
+            regions = new ArrayList<>();
+            loadAllRegions();
+            Regions_GUI.init();
+            return true;
+        }else {
+
+            Err.regionAlreadyExistsError(executer);
+            return false;
         }
+
+
+    }
+
+    public static boolean isRegionAlreadyExisting(String name){
+
+        for(Region region : regions){
+            if(region.name.toLowerCase().equalsIgnoreCase(name.toLowerCase())){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static void loadAllRegions() {
@@ -238,7 +263,7 @@ public class DataManager {
 
                     FileWriter writer = null;
                     try {
-                        writer = new FileWriter("plugins/eps/players/" + s);
+                        writer = new FileWriter("plugins/eps/regions/" + s);
                         writer.write(data);
                         writer.close();
                     } catch (IOException e) {
@@ -251,12 +276,12 @@ public class DataManager {
 
                     Region region = new Region(dataArray[0], Integer.parseInt(dataArray[1]));
                     region.id = Integer.parseInt(s.split(".txt")[0]);
-
                     regions.add(region);
-
-
                 }
             }
+
+            regions.sort(Comparator.comparing(Region::getId));
+
         }
     }
 

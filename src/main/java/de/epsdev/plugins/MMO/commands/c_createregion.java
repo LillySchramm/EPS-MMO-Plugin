@@ -13,6 +13,8 @@ public class c_createregion implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
+
+
         Player player = null;
 
         if(sender instanceof Player){
@@ -26,13 +28,18 @@ public class c_createregion implements CommandExecutor {
 
         }
 
-        if(!(args.length >= 1)){
-            DataManager.createRegion(args[0]);
-            if(player != null){
+        if((args.length >= 1)){
+            boolean success = DataManager.createRegion(args[0], player);
+            if(player != null && success){
                 Out.printToPlayer(player, "Created the region: " + args[0]);
-            }else {
+            }else if (success){
                 Out.printToConsole("Created the region:" + args[0]);
             }
+        }else {
+            if(player != null){
+                Err.notEnoughArgumentsError(player);
+            }
+
         }
 
 
