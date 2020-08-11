@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.tools;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.bukkit.ChatColor;
 
@@ -36,7 +37,7 @@ public class HiddenItemData {
             return null;
         }
 
-        return input.substring(0, start + SEQUENCE_HEADER.length()) + stringToColors(hiddenString) + input.substring(end, input.length());
+        return input.substring(0, start + SEQUENCE_HEADER.length()) + stringToColors(hiddenString) + input.substring(end);
     }
 
     /**
@@ -63,7 +64,7 @@ public class HiddenItemData {
     private static String stringToColors(String normal) {
         if (normal == null) return null;
 
-        byte[] bytes = normal.getBytes(Charset.forName("UTF-8"));
+        byte[] bytes = normal.getBytes(StandardCharsets.UTF_8);
         char[] chars = new char[bytes.length * 4];
 
         for (int i = 0; i < bytes.length; i++) {
@@ -93,7 +94,7 @@ public class HiddenItemData {
             bytes[i / 2] = hexToByte(chars[i], chars[i + 1]);
         }
 
-        return new String(bytes, Charset.forName("UTF-8"));
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
     private static int hexToUnsignedInt(char c) {
