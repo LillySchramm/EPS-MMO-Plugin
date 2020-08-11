@@ -10,6 +10,7 @@ import de.epsdev.plugins.MMO.data.regions.Region;
 import de.epsdev.plugins.MMO.ranks.Ranks;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import javax.jws.soap.SOAPBinding;
@@ -43,9 +44,9 @@ public class DataManager {
     public static Map<Integer, OnClick> funs = new HashMap<>();
 
 
-    public static void performClickFunction(Player player, int i, ItemStack item){
+    public static void performClickFunction(Player player, int i, ItemStack item, Inventory inventory){
         if (funs.containsKey(i)){
-            funs.get(i).click(player, item);
+            funs.get(i).click(player, item, inventory);
         }else {
             Err.funNotRegisteredError();
         }
@@ -231,6 +232,16 @@ public class DataManager {
         return false;
     }
 
+    public static Region getRegionByName(String name){
+        for(Region region : regions){
+            if(region.name.toLowerCase().equalsIgnoreCase(name.toLowerCase())){
+                return region;
+            }
+        }
+
+        return null;
+    }
+
     public static void loadAllRegions() {
         File f = new File("plugins/eps/regions");
         if (f.list() != null) {
@@ -281,6 +292,7 @@ public class DataManager {
             }
 
             regions.sort(Comparator.comparing(Region::getId));
+
 
         }
     }

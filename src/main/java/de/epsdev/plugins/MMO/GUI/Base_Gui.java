@@ -36,7 +36,7 @@ public class Base_Gui {
 
         items.add(itemStack);
         if(onClick == null){
-            DataManager.funs.put(DataManager.funs.size(), (player, itemStack1) -> {});
+            DataManager.funs.put(DataManager.funs.size(), (player, itemStack1, inventory) -> {});
         }else {
             DataManager.funs.put(DataManager.funs.size(), onClick);
         }

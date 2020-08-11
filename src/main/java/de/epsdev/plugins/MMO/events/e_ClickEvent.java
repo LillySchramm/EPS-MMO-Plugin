@@ -32,7 +32,7 @@ public class e_ClickEvent implements Listener {
                     json = json.replace("ID:", "");
                     json = json.replace(" ", "");
 
-                    DataManager.performClickFunction((Player) e.getWhoClicked(), Integer.parseInt(json), item);
+                    DataManager.performClickFunction((Player) e.getWhoClicked(), Integer.parseInt(json), item, e.getClickedInventory());
 
                 }
 

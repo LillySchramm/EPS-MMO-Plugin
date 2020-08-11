@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.data.player;
 
+import de.epsdev.plugins.MMO.events.OnChat;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.ranks.Rank;
@@ -12,6 +13,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     public String displayName;
@@ -21,6 +24,10 @@ public class User {
     public Rank rank;
 
     public Money money;
+
+    public List<String> temp_strings = new ArrayList<>();
+
+    public OnChat onChat = null;
 
     public User(Player player){
         displayName = player.getDisplayName();

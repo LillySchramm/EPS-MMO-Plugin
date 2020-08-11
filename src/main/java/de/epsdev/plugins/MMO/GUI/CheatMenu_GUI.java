@@ -53,61 +53,39 @@ public class CheatMenu_GUI {
 
     }
 
-    public static OnClick handleRank = new OnClick() {
-        @Override
-        public void click(Player player, ItemStack item) {
-            User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
-            String itemName = item.getItemMeta().getDisplayName();
+    public static OnClick handleRank = (player, item, inventory) -> {
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+        String itemName = item.getItemMeta().getDisplayName();
 
-            Rank rank = Ranks.getRank(itemName.toLowerCase());
+        Rank rank = Ranks.getRank(itemName.toLowerCase());
 
-            if(rank != null){
-                user.rank = rank;
-                user.save();
-                DefaultScroreboard.refresh(user);
-            }
-
-        }
-    };
-
-    public static OnClick handleMoney = new OnClick() {
-
-        @Override
-        public void click(Player player, ItemStack item) {
-            User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
-            String itemname = item.getItemMeta().getDisplayName();
-
-            if(itemname.equalsIgnoreCase( ChatColor.RED +"remove all")){
-                user.money.amount -= user.money.amount;
-            }else {
-                user.money.amount += Integer.parseInt(itemname);
-            }
+        if(rank != null){
+            user.rank = rank;
             user.save();
             DefaultScroreboard.refresh(user);
-
         }
+
     };
 
-    public static OnClick backToMainMenu = new OnClick() {
-        @Override
-        public void click(Player player, ItemStack item) {
-            main_gui.show(player);
+    public static OnClick handleMoney = (player, item, inventory) -> {
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+        String itemname = item.getItemMeta().getDisplayName();
+
+        if(itemname.equalsIgnoreCase( ChatColor.RED +"remove all")){
+            user.money.amount -= user.money.amount;
+        }else {
+            user.money.amount += Integer.parseInt(itemname);
         }
+        user.save();
+        DefaultScroreboard.refresh(user);
+
     };
 
-    public static OnClick main_money_click = new OnClick() {
-        @Override
-        public void click(Player player, ItemStack item) {
-            money_gui.show(player);
-        }
-    };
+    public static OnClick backToMainMenu = (player, item, inventory) -> main_gui.show(player);
 
-    public static OnClick main_rank_click = new OnClick() {
-        @Override
-        public void click(Player player, ItemStack item) {
-            rank_gui.show(player);
-        }
-    };
+    public static OnClick main_money_click = (player, item, inventory) -> money_gui.show(player);
+
+    public static OnClick main_rank_click = (player, item, inventory) -> rank_gui.show(player);
 
 
 }
