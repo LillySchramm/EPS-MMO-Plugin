@@ -297,4 +297,9 @@ public class DataManager {
         }
     }
 
+    public static void deleteRegion(Region region){
+        File f = new File("plugins/eps/regions/" + region.id + ".txt");
+        f.delete();
+    }
+
 }

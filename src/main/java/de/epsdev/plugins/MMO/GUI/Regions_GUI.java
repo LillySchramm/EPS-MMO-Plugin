@@ -9,16 +9,14 @@ import de.epsdev.plugins.MMO.events.OnChat;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Regions_GUI {
     public static List<Base_Gui> sites = new ArrayList<>();
+
 
 
     public static void init(){
@@ -53,14 +51,14 @@ public class Regions_GUI {
         sites.add(gui);
     }
 
-    private static OnChat renameRegionDialog = e -> {
+    private static final OnChat renameRegionDialog = e -> {
         String message = e.getMessage();
         Player player = e.getPlayer();
-        if (message != "null"){
+        if (!message.equalsIgnoreCase("null")){
             if(!DataManager.isRegionAlreadyExisting(message)){
-                  Region region = DataManager.getRegionByName(DataManager.onlineUsers.get(player.getUniqueId().toString()).temp_strings.get(0));
-                  region.name = message;
-                  region.save();
+                Region region = DataManager.getRegionByName(DataManager.onlineUsers.get(player.getUniqueId().toString()).temp_strings.get(0));
+                region.name = message;
+                region.save();
 
                 DataManager.regions = new ArrayList<>();
                 DataManager.loadAllRegions();
@@ -78,18 +76,60 @@ public class Regions_GUI {
         user.onChat = null;
     };
 
-    private static OnClick backtomainmenu = (player, item, inventory) -> {
+    private static final OnChat levelRegionDialog = e -> {
+        String message = e.getMessage();
+        int level = Integer.parseInt(message);
+        Player player = e.getPlayer();
+        if (level != 0){
+            if(!DataManager.isRegionAlreadyExisting(message)){
+                Region region = DataManager.getRegionByName(DataManager.onlineUsers.get(player.getUniqueId().toString()).temp_strings.get(0));
+                region.level = level;
+                region.save();
+
+                DataManager.regions = new ArrayList<>();
+                DataManager.loadAllRegions();
+                Regions_GUI.init();
+                Out.printToPlayer(player,ChatColor.DARK_GREEN + "Set '" +
+                        DataManager.onlineUsers.get(player.getUniqueId().toString()).temp_strings.get(0) +
+                        ".level' to '" + level + "'!");
+            }else {
+                Err.regionAlreadyExistsError(player);
+            }
+        }else {
+            Out.printToPlayer(player, ChatColor.DARK_GREEN + "Set level process stopped.");
+        }
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+        user.onChat = null;
+    };
+
+    private static final OnClick deleteRegion = ((player, item, inventory) -> {
+        String regionname = item.getItemMeta().getDisplayName().split("DELETE REGION: ")[1];
+        player.closeInventory();
+        DataManager.deleteRegion(DataManager.getRegionByName(regionname));
+        DataManager.regions = new ArrayList<>();
+        DataManager.loadAllRegions();
+        Regions_GUI.init();
+    });
+
+    private static final OnClick backtomainmenu = (player, item, inventory) -> {
         sites.get(0).show(player);
     };
 
-    private static OnClick renameRegion = ((player, item, inventory) -> {
+    private static final OnClick renameRegion = ((player, item, inventory) -> {
         player.closeInventory();
         Out.printToPlayer(player, ChatColor.DARK_GREEN + "Please type the new name. If you don't want to rename this region type 'null'.");
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
         user.onChat = renameRegionDialog;
     });
 
-    private static OnClick showRegionDetails = ((player, item, inventory) -> {
+    private static final OnClick setLevelRegion = ((player, item, inventory) -> {
+        player.closeInventory();
+        Out.printToPlayer(player, ChatColor.DARK_GREEN + "Please type the new level. If you don't want to set a new level for this region type '0'.");
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+        user.onChat = levelRegionDialog;
+    });
+
+    private static final OnClick showRegionDetails = ((player, item, inventory) -> {
         String itemName = item.getItemMeta().getDisplayName();
         Region region = DataManager.getRegionByName(itemName);
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
@@ -103,20 +143,19 @@ public class Regions_GUI {
         gui.rows = 1;
 
         gui.addItem(Material.NAME_TAG, 1, "Name: " + region.name, new ArrayList<>(), renameRegion, 0,0);
-        gui.addItem(Material.REDSTONE_COMPARATOR, 1, "Regionlevel: " + region.level, new ArrayList<>(), null, 1,0);
-        gui.addItem(Material.IRON_DOOR, 1, "Cities", new ArrayList<>(), null, 3,0);
-
+        gui.addItem(Material.REDSTONE_COMPARATOR, 1, "Regionlevel: " + region.level, new ArrayList<>(), setLevelRegion, 1,0);
+        gui.addItem(Material.IRON_DOOR, 1, "Cities", new ArrayList<>(), null, 2,0);
         gui.addItem(Material.SPECTRAL_ARROW, 1, "Back to main menu",new ArrayList<>(), backtomainmenu, 8,0);
+        gui.addItem(Material.BARRIER, 1, "DELETE REGION: " + region.name , new ArrayList<>(), deleteRegion, 7,0);
 
         gui.show(player);
-
 
     });
 
 
 
 
-    private static OnClick changeSite = (player, item, inventory) -> {
+    private static final OnClick changeSite = (player, item, inventory) -> {
       String itemname = item.getItemMeta().getDisplayName();
       int actSite = Integer.parseInt(inventory.getTitle().split(": ")[1]) - 1;
 
