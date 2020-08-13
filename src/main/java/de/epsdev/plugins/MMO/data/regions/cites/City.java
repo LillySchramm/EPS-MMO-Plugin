@@ -10,8 +10,9 @@ public class City {
 
     public List<House> houses;
 
-    public City(String name){
+    public City(int id,String name){
         this.name = name;
+        this.id = id;
     }
 
 }

@@ -7,6 +7,7 @@ import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.Region;
+import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.ranks.Ranks;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -38,7 +39,7 @@ public class DataManager {
 
     public static String[] defaults_user = new String[]{"","","0","1","0","player"};
     public static String[] defaults_regions = new String[]{"","1"};
-    public static String[] defaults_cities = new String[]{};
+    public static String[] defaults_cities = new String[]{"","0"};
     public static String[] defaults_houses = new String[]{};
 
     public static Map<Integer, OnClick> funs = new HashMap<>();
@@ -188,6 +189,14 @@ public class DataManager {
     //Region Stuff
     //-----------------------------------------------------------------
 
+    public static void reloadRegions(){
+        regions = new ArrayList<>();
+        loadAllRegions();
+        Regions_GUI.init();
+        loadAllCities();
+
+    }
+
     public static boolean createRegion(String name, Player executer){
         Path path = null;
         if(!isRegionAlreadyExisting(name)){
@@ -300,6 +309,72 @@ public class DataManager {
     public static void deleteRegion(Region region){
         File f = new File("plugins/eps/regions/" + region.id + ".txt");
         f.delete();
+    }
+
+    //-----------------------------------------------------------------
+    //City Stuff
+    //-----------------------------------------------------------------
+
+    public static void loadAllCities(){
+        File f = new File("plugins/eps/regions");
+        if (f.list() != null) {
+            ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
+            for (String s : names) {
+
+                //PATCH
+
+                if (s.contains(".txt")) {
+                    File file = new File("plugins/eps/regions/cities/" + s);
+                    Scanner myReader = null;
+                    try {
+                        myReader = new Scanner(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    String data = "";
+                    while (myReader.hasNextLine()) {
+                        data += myReader.nextLine();
+                    }
+                    myReader.close();
+                    String[] dataArray = data.split(";;");
+
+                    if (dataArray.length < defaults_cities.length) {
+                        for (int i = dataArray.length; i < defaults_cities.length; i++) {
+                            data += defaults_cities[i] + ";;";
+                            Out.printToConsole("Patched City");
+                        }
+                    }
+
+                    FileWriter writer = null;
+                    try {
+                        writer = new FileWriter("plugins/eps/regions/cities/" + s);
+                        writer.write(data);
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    //LOAD
+
+                    dataArray = data.split(";;");
+
+                    City city = new City(Integer.parseInt(s.split(".txt")[0]), dataArray[0]);
+
+                    int regionID = Integer.parseInt(dataArray[1]);
+
+                    for(Region region : regions){
+                        if (region.id == regionID){
+                            region.cities.add(city);
+                        }
+                    }
+
+                }
+            }
+
+            regions.sort(Comparator.comparing(Region::getId));
+
+
+        }
     }
 
 }
