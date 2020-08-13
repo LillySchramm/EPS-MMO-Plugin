@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.data.regions;
 
+import de.epsdev.plugins.MMO.GUI.City_GUI;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 
@@ -17,12 +18,14 @@ public class Region {
     public int id;
     public int index;
 
+    public City_GUI city_gui;
 
     public List<City> cities = new ArrayList<>();
 
     public Region(String name, int level){
         this.name = name;
         this.level = level;
+
     }
 
 

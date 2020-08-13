@@ -39,6 +39,8 @@ public class Regions_GUI {
             if(y >= 5 && x >= 6){
                 createNewSite();
             }
+
+
         }
 
     }
@@ -129,6 +131,11 @@ public class Regions_GUI {
         user.onChat = levelRegionDialog;
     });
 
+    private static final OnClick showCities = (player, item, inventory) -> {
+        Out.printToPlayer(player,inventory.getTitle());
+        DataManager.getRegionByName(inventory.getTitle().split(" ")[1]).city_gui.show(player);
+    };
+
     private static final OnClick showRegionDetails = ((player, item, inventory) -> {
         String itemName = item.getItemMeta().getDisplayName();
         Region region = DataManager.getRegionByName(itemName);
@@ -144,7 +151,7 @@ public class Regions_GUI {
 
         gui.addItem(Material.NAME_TAG, 1, "Name: " + region.name, new ArrayList<>(), renameRegion, 0,0);
         gui.addItem(Material.REDSTONE_COMPARATOR, 1, "Regionlevel: " + region.level, new ArrayList<>(), setLevelRegion, 1,0);
-        gui.addItem(Material.IRON_DOOR, 1, "Cities", new ArrayList<>(), null, 2,0);
+        gui.addItem(Material.IRON_DOOR, 1, "Cities", new ArrayList<>(), showCities, 2,0);
         gui.addItem(Material.SPECTRAL_ARROW, 1, "Back to main menu",new ArrayList<>(), backtomainmenu, 8,0);
         gui.addItem(Material.BARRIER, 1, "DELETE REGION: " + region.name , new ArrayList<>(), deleteRegion, 7,0);
 

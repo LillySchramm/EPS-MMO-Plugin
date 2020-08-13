@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.data;
 
 import de.epsdev.plugins.MMO.GUI.Base_Gui;
+import de.epsdev.plugins.MMO.GUI.City_GUI;
 import de.epsdev.plugins.MMO.GUI.OnClick;
 import de.epsdev.plugins.MMO.GUI.Regions_GUI;
 import de.epsdev.plugins.MMO.data.output.Err;
@@ -316,7 +317,7 @@ public class DataManager {
     //-----------------------------------------------------------------
 
     public static void loadAllCities(){
-        File f = new File("plugins/eps/regions");
+        File f = new File("plugins/eps/regions/cities/");
         if (f.list() != null) {
             ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
             for (String s : names) {
@@ -365,15 +366,18 @@ public class DataManager {
                     for(Region region : regions){
                         if (region.id == regionID){
                             region.cities.add(city);
+                            region.cities.sort(Comparator.comparing(City::getId));
                         }
                     }
+
 
                 }
             }
 
-            regions.sort(Comparator.comparing(Region::getId));
 
-
+        }
+        for (Region region : regions){
+            region.city_gui = new City_GUI(region);
         }
     }
 
