@@ -68,6 +68,7 @@ public final class main extends JavaPlugin {
 
         getCommand("regions").setExecutor(new c_regions());
         getCommand("createregion").setExecutor(new c_createregion());
+        getCommand("createcity").setExecutor(new c_createcity());
 
     }
 

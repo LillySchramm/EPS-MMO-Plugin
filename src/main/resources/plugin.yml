@@ -34,3 +34,6 @@ commands:
 
   createregion:
     description: Create Regions
+
+  createcity:
+    description: Create cities

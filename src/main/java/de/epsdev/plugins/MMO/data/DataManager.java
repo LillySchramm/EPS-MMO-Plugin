@@ -40,8 +40,10 @@ public class DataManager {
 
     public static String[] defaults_user = new String[]{"","","0","1","0","player"};
     public static String[] defaults_regions = new String[]{"","1"};
-    public static String[] defaults_cities = new String[]{"","0"};
+    public static String[] defaults_cities = new String[]{"",""};
     public static String[] defaults_houses = new String[]{};
+
+    public static int max_id_cities = 0;
 
     public static Map<Integer, OnClick> funs = new HashMap<>();
 
@@ -179,6 +181,7 @@ public class DataManager {
         } catch (IOException ex) {
             System.err.println("File already exists");
         }
+
     }
 
     public static void saveUser(User user){
@@ -218,9 +221,7 @@ public class DataManager {
                 System.err.println("File already exists");
             }
 
-            regions = new ArrayList<>();
-            loadAllRegions();
-            Regions_GUI.init();
+            reloadRegions();
             return true;
         }else {
 
@@ -316,6 +317,55 @@ public class DataManager {
     //City Stuff
     //-----------------------------------------------------------------
 
+    public static void createCity(String name, Region region){
+        Path path = Paths.get("plugins/eps/regions/cities/" + (max_id_cities + 1) + ".txt");
+        Out.printToBroadcast(path.toString());
+        try {
+
+
+            Files.createFile(path);
+
+            FileWriter writer = new FileWriter(path.toString());
+            writer.write( name+ ";;");
+            writer.write(region.id+";;");
+            for(int i = 2; i < defaults_cities.length; i++){
+                writer.write(defaults_cities[i]+";;");
+            }
+            writer.close();
+        } catch (IOException ex) {
+            System.err.println("File already exists");
+            ex.printStackTrace();
+        }
+
+        regions = new ArrayList<>();
+
+        reloadRegions();
+
+    }
+
+    public static City getCityByName(String name){
+
+        City city = null;
+
+        for(Region region : regions){
+            for(City c : region.cities){
+                if(c.name.equalsIgnoreCase(name)) return c;
+            }
+        }
+
+        return city;
+
+    }
+
+    public static Boolean isCityExisting(String name){
+        if (getCityByName(name) != null){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
     public static void loadAllCities(){
         File f = new File("plugins/eps/regions/cities/");
         if (f.list() != null) {
@@ -362,6 +412,10 @@ public class DataManager {
                     City city = new City(Integer.parseInt(s.split(".txt")[0]), dataArray[0]);
 
                     int regionID = Integer.parseInt(dataArray[1]);
+
+                    if(Integer.parseInt(s.split(".txt")[0]) > max_id_cities){
+                        max_id_cities = Integer.parseInt(s.split(".txt")[0]);
+                    }
 
                     for(Region region : regions){
                         if (region.id == regionID){

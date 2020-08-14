@@ -23,4 +23,23 @@ public class Err {
     public static void regionAlreadyExistsError(Player player){
         Out.printToPlayer(player, ChatColor.RED + "A region with this name already exists.");
     }
+
+    public static void cityAlreadyExistsError(Player player){
+        Out.printToPlayer(player, ChatColor.RED + "A city with this name already exists.");
+    }
+
+    public static void regionNotFoundError(Player player){
+        Out.printToPlayer(player, ChatColor.RED + "A region with this name couldn't be found.");
+    }
+
+    public static void correctUsage(Player player, String[] args){
+
+        String s = "";
+
+        for (String string : args){
+            s += "<" + string + "> ";
+        }
+
+        Out.printToPlayer(player, ChatColor.RED + "The following arguments are required: " + s);
+    }
 }
