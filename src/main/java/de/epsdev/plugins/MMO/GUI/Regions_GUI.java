@@ -68,6 +68,7 @@ public class Regions_GUI {
                   Out.printToPlayer(player,ChatColor.DARK_GREEN + "Renamed '" +
                         DataManager.onlineUsers.get(player.getUniqueId().toString()).temp_strings.get(0) +
                         "' to '" + message + "'!");
+                  DataManager.reloadRegions();
             }else {
                 Err.regionAlreadyExistsError(player);
             }

@@ -25,7 +25,6 @@ public class Region {
     public Region(String name, int level){
         this.name = name;
         this.level = level;
-
     }
 
 

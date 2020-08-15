@@ -319,7 +319,7 @@ public class DataManager {
 
     public static void createCity(String name, Region region){
         Path path = Paths.get("plugins/eps/regions/cities/" + (max_id_cities + 1) + ".txt");
-        Out.printToBroadcast(path.toString());
+
         try {
 
 
@@ -419,6 +419,7 @@ public class DataManager {
 
                     for(Region region : regions){
                         if (region.id == regionID){
+                            city.initGui(region);
                             region.cities.add(city);
                             region.cities.sort(Comparator.comparing(City::getId));
                         }

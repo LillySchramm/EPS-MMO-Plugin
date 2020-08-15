@@ -12,9 +12,6 @@ import org.bukkit.entity.Player;
 public class c_createregion implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-
-
         Player player = null;
 
         if(sender instanceof Player){
@@ -41,8 +38,6 @@ public class c_createregion implements CommandExecutor {
             }
 
         }
-
-
 
         return true;
     }
