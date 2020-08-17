@@ -9,9 +9,12 @@ public class House {
     public int id;
     public String currentOwner_UUID;
 
+    public String name;
+
     public List<Vec3i> blocksInside;
     public List<Vec3i> doors;
     public Vec3i shield;
+    public Vec3i spawnPossition;
 
     public House(){
 

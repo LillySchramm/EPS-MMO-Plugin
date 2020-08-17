@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class City {
@@ -24,6 +25,8 @@ public class City {
     public City(int id, String name){
         this.name = name;
         this.id = id;
+
+        this.houses = new ArrayList<>();
 
     }
 

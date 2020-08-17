@@ -16,7 +16,7 @@ public final class main extends JavaPlugin {
     public void onEnable() {
         initDataStructures();
         initRegions();
-        DataManager.patchAllUsers();
+        DataManager.patch();
         registerEvents();
         registerCommands();
         initGUIs();

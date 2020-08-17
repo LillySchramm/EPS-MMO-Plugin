@@ -41,12 +41,58 @@ public class DataManager {
     public static String[] defaults_user = new String[]{"","","0","1","0","player"};
     public static String[] defaults_regions = new String[]{"","1"};
     public static String[] defaults_cities = new String[]{"",""};
-    public static String[] defaults_houses = new String[]{};
+    public static String[] defaults_houses = new String[]{"","1","","0>>0>>0","0>>0>>0", "0>>0>>0"}; //HouseName;HouseCost;CurrentOwnerUUID;BlocksInside;Doors;Spawnpoint;
 
     public static int max_id_cities = 0;
 
     public static Map<Integer, OnClick> funs = new HashMap<>();
 
+    public static void patch(){
+        patchFile("plugins/eps/players/", defaults_user);
+        patchFile("plugins/eps/regions/", defaults_regions);
+        patchFile("plugins/eps/regions/cities/", defaults_cities);
+    }
+
+    public static void patchFile(String path, String[] defaults){
+        File f = new File(path);
+        if(f.list() != null) {
+            ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
+            for (String s : names) {
+                if(s.contains(".txt")){
+                    File file = new File(path + s);
+                    Scanner myReader = null;
+                    try {
+                        myReader = new Scanner(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    String data = "";
+                    while (myReader.hasNextLine()) {
+                        data += myReader.nextLine();
+                    }
+                    myReader.close();
+                    String[] dataArray = data.split(";;");
+
+                    if(dataArray.length < defaults.length){
+                        for(int i = dataArray.length; i < defaults.length; i++){
+                            data += defaults[i] + ";;";
+                            Out.printToConsole("Patched file");
+                        }
+                    }
+
+                    FileWriter writer = null;
+                    try {
+                        writer = new FileWriter(path + s);
+                        writer.write(data);
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }
+    }
 
     public static void performClickFunction(Player player, int i, ItemStack item, Inventory inventory){
         if (funs.containsKey(i)){
@@ -122,50 +168,7 @@ public class DataManager {
 
         return user;
     }
-
-    public static void patchAllUsers(){
-        File f = new File("plugins/eps/players");
-        if(f.list() != null) {
-            ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
-            for (String s : names) {
-                if(s.contains(".txt")){
-                    File file = new File("plugins/eps/players/" + s);
-                    Scanner myReader = null;
-                    try {
-                        myReader = new Scanner(file);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    String data = "";
-                    while (myReader.hasNextLine()) {
-                        data += myReader.nextLine();
-                    }
-                    myReader.close();
-                    String[] dataArray = data.split(";;");
-
-                    if(dataArray.length < defaults_user.length){
-                        for(int i = dataArray.length; i < defaults_user.length; i++){
-                            data += defaults_user[i] + ";;";
-                            Out.printToConsole("Patched");
-                        }
-                    }
-
-                    FileWriter writer = null;
-                    try {
-                        writer = new FileWriter("plugins/eps/players/" + s);
-                        writer.write(data);
-                        writer.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        }
-
-
-    }
-
+    
     public static void createUser(Player player){
         Path path = Paths.get("plugins/eps/players/"+ player.getUniqueId() +".txt");
 
@@ -276,22 +279,6 @@ public class DataManager {
                     myReader.close();
                     String[] dataArray = data.split(";;");
 
-                    if (dataArray.length < defaults_regions.length) {
-                        for (int i = dataArray.length; i < defaults_regions.length; i++) {
-                            data += defaults_regions[i] + ";;";
-                            Out.printToConsole("Patched Region");
-                        }
-                    }
-
-                    FileWriter writer = null;
-                    try {
-                        writer = new FileWriter("plugins/eps/regions/" + s);
-                        writer.write(data);
-                        writer.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
                     //LOAD
 
                     dataArray = data.split(";;");
@@ -387,27 +374,8 @@ public class DataManager {
                         data += myReader.nextLine();
                     }
                     myReader.close();
+
                     String[] dataArray = data.split(";;");
-
-                    if (dataArray.length < defaults_cities.length) {
-                        for (int i = dataArray.length; i < defaults_cities.length; i++) {
-                            data += defaults_cities[i] + ";;";
-                            Out.printToConsole("Patched City");
-                        }
-                    }
-
-                    FileWriter writer = null;
-                    try {
-                        writer = new FileWriter("plugins/eps/regions/cities/" + s);
-                        writer.write(data);
-                        writer.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    //LOAD
-
-                    dataArray = data.split(";;");
 
                     City city = new City(Integer.parseInt(s.split(".txt")[0]), dataArray[0]);
 
