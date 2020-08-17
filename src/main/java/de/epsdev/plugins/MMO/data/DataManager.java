@@ -41,7 +41,7 @@ public class DataManager {
     public static String[] defaults_user = new String[]{"","","0","1","0","player"};
     public static String[] defaults_regions = new String[]{"","1"};
     public static String[] defaults_cities = new String[]{"",""};
-    public static String[] defaults_houses = new String[]{"","1","","0>>0>>0","0>>0>>0", "0>>0>>0"}; //HouseName;HouseCost;CurrentOwnerUUID;BlocksInside;Doors;Spawnpoint;
+    public static String[] defaults_houses = new String[]{"","1","","0>>0>>0","0>>0>>0", "0>>0>>0", "0>>0>>0"}; //HouseName;HouseCost;CurrentOwnerUUID;BlocksInside;Doors;Spawnpoint;Shield;
 
     public static int max_id_cities = 0;
 
@@ -168,7 +168,7 @@ public class DataManager {
 
         return user;
     }
-    
+
     public static void createUser(Player player){
         Path path = Paths.get("plugins/eps/players/"+ player.getUniqueId() +".txt");
 
