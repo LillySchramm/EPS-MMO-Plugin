@@ -37,3 +37,6 @@ commands:
 
   createcity:
     description: Create cities
+
+  createhouse:
+    description: Start the house creation process.
