@@ -32,6 +32,10 @@ public class Err {
         Out.printToPlayer(player, ChatColor.RED + "A region with this name couldn't be found.");
     }
 
+    public static void cityNotFoundError(Player player){
+        Out.printToPlayer(player, ChatColor.RED + "A city with this name couldn't be found.");
+    }
+
     public static void correctUsage(Player player, String[] args){
 
         String s = "";

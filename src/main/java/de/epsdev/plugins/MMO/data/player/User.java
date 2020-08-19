@@ -1,8 +1,10 @@
 package de.epsdev.plugins.MMO.data.player;
 
+import de.epsdev.plugins.MMO.events.OnBreak;
 import de.epsdev.plugins.MMO.events.OnChat;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.events.OnPlace;
 import de.epsdev.plugins.MMO.ranks.Rank;
 import de.epsdev.plugins.MMO.ranks.Ranks;
 import de.epsdev.plugins.MMO.scoreboards.DefaultScroreboard;
@@ -28,6 +30,8 @@ public class User {
     public List<String> temp_strings = new ArrayList<>();
 
     public OnChat onChat = null;
+    public OnBreak onBreak = null;
+    public OnPlace onPlace = null;
 
     public User(Player player){
         displayName = player.getDisplayName();

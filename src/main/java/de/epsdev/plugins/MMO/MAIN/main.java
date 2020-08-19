@@ -70,6 +70,8 @@ public final class main extends JavaPlugin {
         getCommand("createregion").setExecutor(new c_createregion());
         getCommand("createcity").setExecutor(new c_createcity());
 
+        getCommand("createhouse").setExecutor(new c_createhouse());
+
     }
 
     private void initGUIs(){

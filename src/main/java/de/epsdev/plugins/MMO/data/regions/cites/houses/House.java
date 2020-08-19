@@ -21,6 +21,10 @@ public class House {
     public Vec3i spawnPossition;
 
 
+    public House(){
+
+    }
+
     public House(int costs, int id, String currentOwner_UUID, String name, List<Vec3i> blocksInside, List<Vec3i> doors, Vec3i shield, Vec3i spawnPossition) {
         this.costs = costs;
         this.id = id;
