@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.data.player;
 
+import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.events.OnBreak;
 import de.epsdev.plugins.MMO.events.OnChat;
 import de.epsdev.plugins.MMO.data.money.Money;
@@ -32,6 +33,8 @@ public class User {
     public OnChat onChat = null;
     public OnBreak onBreak = null;
     public OnPlace onPlace = null;
+
+    public House temp_house = null;
 
     public User(Player player){
         displayName = player.getDisplayName();
