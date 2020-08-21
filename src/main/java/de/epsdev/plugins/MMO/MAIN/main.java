@@ -61,6 +61,7 @@ public final class main extends JavaPlugin {
         getCommand("mutechat").setExecutor(new c_Mutechat());
         getCommand("cheatmenu").setExecutor(new c_cheatmenu());
         getCommand("rlc").setExecutor(new c_rlc());
+        getCommand("next").setExecutor(new c_next());
 
         getCommand("gmc").setExecutor(new c_gmc());
         getCommand("gms").setExecutor(new c_gms());
