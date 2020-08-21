@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.data.player;
 
+import de.epsdev.plugins.MMO.commands.Next;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.events.OnBreak;
 import de.epsdev.plugins.MMO.events.OnChat;
@@ -33,6 +34,7 @@ public class User {
     public OnChat onChat = null;
     public OnBreak onBreak = null;
     public OnPlace onPlace = null;
+    public Next next = null;
 
     public House temp_house = null;
 
