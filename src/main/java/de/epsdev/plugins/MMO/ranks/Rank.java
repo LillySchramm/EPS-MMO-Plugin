@@ -12,6 +12,7 @@ public class Rank {
     public boolean canManageRegions = false;
     public boolean canManageHouses = false;
 
+
     public String name;
     public String prefix;
 

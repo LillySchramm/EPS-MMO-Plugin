@@ -7,6 +7,7 @@ import de.epsdev.plugins.MMO.events.OnChat;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.events.OnPlace;
+import de.epsdev.plugins.MMO.events.OnRightObj;
 import de.epsdev.plugins.MMO.ranks.Rank;
 import de.epsdev.plugins.MMO.ranks.Ranks;
 import de.epsdev.plugins.MMO.scoreboards.DefaultScroreboard;
@@ -35,6 +36,7 @@ public class User {
     public OnBreak onBreak = null;
     public OnPlace onPlace = null;
     public Next next = null;
+    public OnRightObj onRightObj = null;
 
     public House temp_house = null;
 

@@ -2,6 +2,8 @@ package de.epsdev.plugins.MMO.data.regions.cites.houses;
 
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.tools.Vec3i;
+import de.epsdev.plugins.MMO.tools.signs.ISign;
+
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,7 +21,7 @@ public class House {
 
     public List<Vec3i> blocksInside;
     public List<Vec3i> doors;
-    public Vec3i shield;
+    public ISign shield;
     public Vec3i spawnPossition;
 
 
@@ -34,7 +36,7 @@ public class House {
         this.name = name;
         this.blocksInside = blocksInside;
         this.doors = doors;
-        this.shield = shield;
+        this.shield = new ISign(shield);
         this.spawnPossition = spawnPossition;
     }
 
@@ -69,7 +71,7 @@ public class House {
 
             writer.write(this.spawnPossition.x + ">>" + this.spawnPossition.y + ">>" + this.spawnPossition.z + ";;");
 
-            writer.write(this.shield.x + ">>" + this.shield.y + ">>" + this.shield.z + ";;");
+            writer.write(this.shield.pos.x + ">>" + this.shield.pos.y + ">>" + this.shield.pos.z + ";;");
 
             writer.close();
 
@@ -85,13 +87,11 @@ public class House {
                 if (vec3i.x == pos.x && vec3i.y == pos.y && vec3i.z == pos.z) {
                     found = true;
                     blocksInside.remove(vec3i);
-                    Out.printToConsole("Deleted block");
                     break;
                 }
             }
         }
         if (!found && !deleted){
-            Out.printToConsole("Added block");
             blocksInside.add(pos);
         }
     }

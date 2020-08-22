@@ -1,7 +1,5 @@
 package de.epsdev.plugins.MMO.tools;
 
-
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;

@@ -53,6 +53,7 @@ public final class main extends JavaPlugin {
         pm.registerEvents(new e_BlockPlace(), this);
         pm.registerEvents(new e_PlayerChat(), this);
         pm.registerEvents(new e_ClickEvent(), this);
+        pm.registerEvents(new e_PlayerInteract(), this);
     }
 
     private void registerCommands(){
