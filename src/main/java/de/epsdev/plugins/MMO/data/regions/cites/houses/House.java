@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.data.regions.cites.houses;
 
+import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
@@ -81,6 +82,8 @@ public class House {
             writer.write(this.shield.pos.x + ">>" + this.shield.pos.y + ">>" + this.shield.pos.z + ";;");
 
             writer.close();
+
+            DataManager.reloadRegions();
 
         }catch (IOException e){
             e.printStackTrace();

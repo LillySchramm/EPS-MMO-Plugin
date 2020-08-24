@@ -10,11 +10,13 @@ import de.epsdev.plugins.MMO.events.OnBreak;
 import de.epsdev.plugins.MMO.events.OnChat;
 import de.epsdev.plugins.MMO.events.OnPlace;
 import de.epsdev.plugins.MMO.events.OnRightObj;
+import de.epsdev.plugins.MMO.tools.Math;
 import de.epsdev.plugins.MMO.tools.Vec3i;
 import de.epsdev.plugins.MMO.tools.WorldTools;
 import de.epsdev.plugins.MMO.tools.signs.ISign;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -42,14 +44,29 @@ public class c_createhouse implements CommandExecutor {
         user.temp_house.processBlock(new Vec3i(block.getX(),block.getY(),block.getZ()), true);
     };
 
+    private OnChat deff_price = e -> {
+        Player player = e.getPlayer();
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+        if(Math.isNumeric(e.getMessage())){
+            user.onChat = null;
+            user.temp_house.costs.amount = Integer.parseInt(e.getMessage());
+            user.temp_house.updateSign();
+        }else {
+            Err.notANumberError(player);
+        }
+    };
+
     private OnChat deff_name = e -> {
         Player player = e.getPlayer();
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
 
-        Out.printToBroadcast(e.getMessage());
-
         user.temp_house.name = e.getMessage();
         user.temp_house.updateSign();
+
+        user.onChat = deff_price;
+
+        Out.printToPlayer(player, ChatColor.DARK_GREEN + "Now, please type the price of this house.");
     };
 
     private OnRightObj deff_sign = e -> {

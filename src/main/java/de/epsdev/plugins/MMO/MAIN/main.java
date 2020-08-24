@@ -92,19 +92,12 @@ public final class main extends JavaPlugin {
 
     public static void doSync(SyncTask task){
 
-        Runnable runnable = () -> {
-          task.run();
-        };
-
         BukkitScheduler scheduler = Bukkit.getScheduler();
 
-        scheduler.callSyncMethod(plugin, new Callable<Object>() {
-            @Override
-            public Object call() throws Exception {
-                task.run();
+        scheduler.callSyncMethod(plugin, () -> {
+            task.run();
 
-                return null;
-            }
+            return null;
         });
     }
 
