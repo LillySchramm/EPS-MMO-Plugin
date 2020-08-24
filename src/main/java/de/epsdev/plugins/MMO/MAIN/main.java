@@ -4,16 +4,25 @@ import de.epsdev.plugins.MMO.GUI.CheatMenu_GUI;
 import de.epsdev.plugins.MMO.GUI.Regions_GUI;
 import de.epsdev.plugins.MMO.commands.*;
 import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.events.*;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
+
+import java.util.concurrent.Callable;
 
 public final class main extends JavaPlugin {
 
+    public static Plugin plugin;
+
     @Override
     public void onEnable() {
+        plugin = this;
         initDataStructures();
         initRegions();
         DataManager.patch();
@@ -80,6 +89,25 @@ public final class main extends JavaPlugin {
         CheatMenu_GUI.init();
         Regions_GUI.init();
     }
+
+    public static void doSync(SyncTask task){
+
+        Runnable runnable = () -> {
+          task.run();
+        };
+
+        BukkitScheduler scheduler = Bukkit.getScheduler();
+
+        scheduler.callSyncMethod(plugin, new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                task.run();
+
+                return null;
+            }
+        });
+    }
+
 
 
 }

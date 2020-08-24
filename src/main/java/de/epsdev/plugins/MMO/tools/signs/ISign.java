@@ -1,18 +1,24 @@
 package de.epsdev.plugins.MMO.tools.signs;
 
+import de.epsdev.plugins.MMO.MAIN.SyncTask;
+import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.tools.Vec3i;
+
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class ISign {
+public class ISign extends BukkitRunnable {
 
     public Vec3i pos;
     public Location location;
 
-    public String[] lines = new String[]{"","","",""};
+    public SyncTask syncTask;
+
+    public String[] lines = new String[]{" "," "," "," "};
 
     public ISign(Vec3i pos){
         this.pos = pos;
@@ -25,6 +31,16 @@ public class ISign {
         for(int i = 0; i<4; i++){
             s.setLine(i,lines[i]);
         }
-        s.update();
+
+        main.doSync(() ->{
+            s.update();
+        });
+
+
+    }
+
+    @Override
+    public void run() {
+        refresh();
     }
 }

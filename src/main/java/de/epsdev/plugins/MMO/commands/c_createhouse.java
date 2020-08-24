@@ -7,6 +7,7 @@ import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.events.OnBreak;
+import de.epsdev.plugins.MMO.events.OnChat;
 import de.epsdev.plugins.MMO.events.OnPlace;
 import de.epsdev.plugins.MMO.events.OnRightObj;
 import de.epsdev.plugins.MMO.tools.Vec3i;
@@ -21,6 +22,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,6 +42,16 @@ public class c_createhouse implements CommandExecutor {
         user.temp_house.processBlock(new Vec3i(block.getX(),block.getY(),block.getZ()), true);
     };
 
+    private OnChat deff_name = e -> {
+        Player player = e.getPlayer();
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+        Out.printToBroadcast(e.getMessage());
+
+        user.temp_house.name = e.getMessage();
+        user.temp_house.updateSign();
+    };
+
     private OnRightObj deff_sign = e -> {
         Player player = e.getPlayer();
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
@@ -49,9 +61,13 @@ public class c_createhouse implements CommandExecutor {
 
         if(block.getState() instanceof Sign){
             user.temp_house.shield = new ISign(new Vec3i(block.getX(),block.getY(),block.getZ()));
-            user.temp_house.shield.lines[1] = "lol";
-            user.temp_house.shield.refresh();
+
+            user.temp_house.updateSign();
+
             user.onRightObj = null;
+            user.onChat = deff_name;
+
+            Out.printToPlayer(player,ChatColor.DARK_GREEN + "Please type the name of this house.");
         }
 
     };
@@ -88,7 +104,7 @@ public class c_createhouse implements CommandExecutor {
                         inventory.addItem(items);
                         player.getInventory().setContents(items);
 
-                        DataManager.onlineUsers.get(player.getUniqueId().toString()).temp_house = new House();
+                        DataManager.onlineUsers.get(player.getUniqueId().toString()).temp_house = new House(city);
                         DataManager.onlineUsers.get(player.getUniqueId().toString()).onPlace = deff_blocks;
                         DataManager.onlineUsers.get(player.getUniqueId().toString()).onBreak = dest_blocks;
                         DataManager.onlineUsers.get(player.getUniqueId().toString()).next = stepOneFinish;
