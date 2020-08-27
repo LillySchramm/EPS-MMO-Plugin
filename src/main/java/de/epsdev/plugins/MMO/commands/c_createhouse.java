@@ -24,9 +24,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
 
 public class c_createhouse implements CommandExecutor {
 
@@ -44,6 +45,53 @@ public class c_createhouse implements CommandExecutor {
         user.temp_house.processBlock(new Vec3i(block.getX(),block.getY(),block.getZ()), true);
     };
 
+    private OnBreak deff_dest_doors = e -> {
+        Player player = e.getPlayer();
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+        Block block = e.getBlock();
+
+        if(block.getType().toString().contains("DOOR")){
+            user.temp_house.processDoor(new Vec3i(block.getX(),block.getY(),block.getZ()), true);
+        }
+    };
+
+    private OnPlace deff_place_doors = e -> {
+        Player player = e.getPlayer();
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+        Block block = e.getBlock();
+
+        if(block.getType().toString().contains("DOOR")){
+            user.temp_house.processDoor(new Vec3i(block.getX(),block.getY(),block.getZ()), false);
+        }
+    };
+
+
+    private Next deff_spawnpoint = user -> {
+        Player player = Bukkit.getPlayer(user.displayName);
+
+        int x = player.getLocation().getBlockX();
+        int y = player.getLocation().getBlockY();
+        int z = player.getLocation().getBlockZ();
+
+        user.temp_house.spawnPossition = new Vec3i(x,y,z);
+
+        Out.printToPlayer(player, ChatColor.DARK_GREEN + "Spawnpoint for this house set at: (x) " + x + " (y)" + y + " (z)" + z);
+
+        user.temp_house.save();
+        Out.printToPlayer(Bukkit.getPlayer(user.displayName), ChatColor.DARK_GREEN + "House created successfully!");
+
+        user.next = null;
+
+    };
+
+    private Next toSpawnpoint = user -> {
+        Out.printToPlayer(Bukkit.getPlayer(user.displayName), ChatColor.DARK_GREEN + "Now please stand on the position the player will spawn when teleporting to his house." +
+                " Type /next to confirm.");
+        user.next = deff_spawnpoint;
+    };
+
     private OnChat deff_price = e -> {
         Player player = e.getPlayer();
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
@@ -52,6 +100,24 @@ public class c_createhouse implements CommandExecutor {
             user.onChat = null;
             user.temp_house.costs.amount = Integer.parseInt(e.getMessage());
             user.temp_house.updateSign();
+
+            Out.printToPlayer(player, ChatColor.DARK_GREEN + "Now, please place the doors.");
+            Out.printToPlayer(player, ChatColor.DARK_GREEN + "When you are have finished confirm with /next .");
+
+            player.getInventory().setContents(new ItemStack[]{
+                    new ItemStack(Material.WOOD_DOOR),
+                    new ItemStack(Material.ACACIA_DOOR_ITEM),
+                    new ItemStack(Material.BIRCH_DOOR_ITEM),
+                    new ItemStack(Material.DARK_OAK_DOOR_ITEM),
+                    new ItemStack(Material.JUNGLE_DOOR_ITEM),
+                    new ItemStack(Material.SPRUCE_DOOR_ITEM),
+                    new ItemStack(Material.IRON_DOOR)
+            });
+
+            user.onPlace = deff_place_doors;
+            user.onBreak = deff_dest_doors;
+            user.next = toSpawnpoint;
+
         }else {
             Err.notANumberError(player);
         }
@@ -68,6 +134,8 @@ public class c_createhouse implements CommandExecutor {
 
         Out.printToPlayer(player, ChatColor.DARK_GREEN + "Now, please type the price of this house.");
     };
+
+
 
     private OnRightObj deff_sign = e -> {
         Player player = e.getPlayer();

@@ -34,6 +34,7 @@ public class House {
     public House(City city){
         this.city = city;
         this.blocksInside = new ArrayList<>();
+        this.doors = new ArrayList<>();
         this.costs = new Money(0);
     }
 
@@ -90,21 +91,24 @@ public class House {
         }
     }
 
-    public void processBlock(Vec3i pos, boolean deleted){
+    private void processArray(Vec3i pos, boolean deleted, List<Vec3i> list){
         boolean found = false;
-        for (Vec3i vec3i : blocksInside) {
+        for (Vec3i vec3i : list) {
             if(vec3i != null) {
                 if (vec3i.x == pos.x && vec3i.y == pos.y && vec3i.z == pos.z) {
                     found = true;
-                    blocksInside.remove(vec3i);
+                    list.remove(vec3i);
                     break;
                 }
             }
         }
         if (!found && !deleted){
-            blocksInside.add(pos);
+            list.add(pos);
         }
     }
+
+    public void processBlock(Vec3i pos, boolean deleted){ processArray(pos,deleted,this.blocksInside); }
+    public void processDoor(Vec3i pos, boolean deleted){ processArray(pos,deleted,this.doors); }
 
     public void updateSign(){
         shield.lines[0] = city.name;
