@@ -59,13 +59,13 @@ public class House {
             //HouseName;HouseCost;CurrentOwnerUUID;BlocksInside;Doors;Spawnpoint;Shield;
 
             writer.write(this.name + ";;");
-            writer.write(this.costs + ";;");
+            writer.write(this.costs.amount + ";;");
             writer.write(this.currentOwner_UUID + ";;");
 
             String temp = "";
 
             for(Vec3i vec : this.blocksInside){
-                temp += vec.x + ">>" + vec.y + ">>" + vec.z;
+                temp += vec.x + ">>" + vec.y + ">>" + vec.z + ">>";
             }
 
             writer.write(temp + ";;");
@@ -73,7 +73,7 @@ public class House {
             temp = "";
 
             for(Vec3i vec : this.doors){
-                temp += vec.x + ">>" + vec.y + ">>" + vec.z;
+                temp += vec.x + ">>" + vec.y + ">>" + vec.z + ">>";
             }
 
             writer.write(temp + ";;");
