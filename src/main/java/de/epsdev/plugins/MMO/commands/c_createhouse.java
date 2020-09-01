@@ -16,7 +16,6 @@ import de.epsdev.plugins.MMO.tools.WorldTools;
 import de.epsdev.plugins.MMO.tools.signs.ISign;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -24,7 +23,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -75,11 +73,11 @@ public class c_createhouse implements CommandExecutor {
         int y = player.getLocation().getBlockY();
         int z = player.getLocation().getBlockZ();
 
-        user.temp_house.spawnPossition = new Vec3i(x,y,z);
+        user.temp_house.spawnPosition = new Vec3i(x,y,z);
 
-        Out.printToPlayer(player, ChatColor.DARK_GREEN + "Spawnpoint for this house set at: (x) " + x + " (y)" + y + " (z)" + z);
+        Out.printToPlayer(player, ChatColor.DARK_GREEN + "Spawnpoint for this house set at: (x) " + x + " (y) " + y + " (z) " + z);
 
-        user.temp_house.save();
+        user.temp_house.save(true);
         Out.printToPlayer(Bukkit.getPlayer(user.displayName), ChatColor.DARK_GREEN + "House created successfully!");
 
         user.next = null;

@@ -4,12 +4,15 @@ import de.epsdev.plugins.MMO.GUI.Base_Gui;
 import de.epsdev.plugins.MMO.GUI.City_GUI;
 import de.epsdev.plugins.MMO.GUI.OnClick;
 import de.epsdev.plugins.MMO.GUI.Regions_GUI;
+import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.Region;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
+import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.ranks.Ranks;
+import de.epsdev.plugins.MMO.tools.Vec3i;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -41,9 +44,10 @@ public class DataManager {
     public static String[] defaults_user = new String[]{"","","0","1","0","player"};
     public static String[] defaults_regions = new String[]{"","1"};
     public static String[] defaults_cities = new String[]{"",""};
-    public static String[] defaults_houses = new String[]{"","1","","0>>0>>0","0>>0>>0", "0>>0>>0", "0>>0>>0"}; //HouseName;HouseCost;CurrentOwnerUUID;BlocksInside;Doors;Spawnpoint;Shield;
+    public static String[] defaults_houses = new String[]{"","1","","0>>0>>0","0>>0>>0", "0>>0>>0", "0>>0>>0", "0"}; //HouseName;HouseCost;CurrentOwnerUUID;BlocksInside;Doors;Spawnpoint;Shield;City_id;
 
     public static int max_id_cities = 0;
+    public static int max_id_houses = 1;
 
     public static Map<Integer, OnClick> funs = new HashMap<>();
 
@@ -51,6 +55,7 @@ public class DataManager {
         patchFile("plugins/eps/players/", defaults_user);
         patchFile("plugins/eps/regions/", defaults_regions);
         patchFile("plugins/eps/regions/cities/", defaults_cities);
+        patchFile("plugins/eps/regions/cities/houses/", defaults_houses);
     }
 
     public static void patchFile(String path, String[] defaults){
@@ -201,6 +206,7 @@ public class DataManager {
         loadAllRegions();
         Regions_GUI.init();
         loadAllCities();
+        loadAllHouses();
 
     }
 
@@ -404,4 +410,124 @@ public class DataManager {
         }
     }
 
+    public static City getCityByID(int id){
+        for(Region region : regions){
+            for(City city : region.cities){
+                if(city.id == id) return city;
+            }
+        }
+
+        return null;
+    }
+    //-----------------------------------------------------------------
+    //House Stuff
+    //-----------------------------------------------------------------
+
+    public static int getNextHouseID(){
+
+        int i = max_id_houses;
+        max_id_houses++;
+        return i;
+
+    }
+
+    public static void loadAllHouses(){
+        File f = new File("plugins/eps/regions/cities/houses/");
+        if (f.list() != null) {
+            ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
+            for (String s : names) {
+                if (s.contains(".txt")) {
+                    File file = new File("plugins/eps/regions/cities/houses/" + s);
+                    Scanner myReader = null;
+                    try {
+                        myReader = new Scanner(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    String data = "";
+                    while (myReader.hasNextLine()) {
+                        data += myReader.nextLine();
+                    }
+                    myReader.close();
+                    String[] dataArray = data.split(";;");
+
+                    //LOAD
+
+                    dataArray = data.split(";;");
+
+                    //HouseName;HouseCost;CurrentOwnerUUID;BlocksInside;Doors;Spawnpoint;Shield;City_id;
+
+                    int house_id = Integer.parseInt(s.split(".txt")[0]);
+                    String house_name = dataArray[0];
+                    Money house_cost = new Money(Integer.parseInt(dataArray[1]));
+                    String house_current_ownerUUID = dataArray[2];
+
+                    List house_blocksinside = new ArrayList();
+                    List house_doors = new ArrayList();
+
+                    String temp_string = "";
+
+                    int i = 0;
+                    Vec3i temp_vec3i = new Vec3i();
+
+                    temp_string = dataArray[3];
+
+
+                    for(String string : temp_string.split(">>")){
+                        i++;
+                        if(i == 1){
+                            temp_vec3i.x = Integer.parseInt(string);
+                        }else if(i == 2){
+                            temp_vec3i.y = Integer.parseInt(string);
+                        }else{
+                            temp_vec3i.z = Integer.parseInt(string);
+                            i = 0;
+                            house_blocksinside.add(temp_vec3i);
+                        }
+                    }
+
+                    i = 0;
+                    temp_string = dataArray[4];
+
+                    for(String string : temp_string.split(">>")){
+                        i++;
+                        if(i == 1){
+                            temp_vec3i.x = Integer.parseInt(string);
+                        }else if(i == 2){
+                            temp_vec3i.y = Integer.parseInt(string);
+                        }else{
+                            temp_vec3i.z = Integer.parseInt(string);
+                            i = 0;
+                            house_doors.add(temp_vec3i);
+                        }
+                    }
+
+                    Vec3i house_spawnpoint = new Vec3i(Integer.parseInt(dataArray[5].split(">>")[0]),
+                            Integer.parseInt(dataArray[5].split(">>")[1]),
+                            Integer.parseInt(dataArray[5].split(">>")[2]));
+                    Vec3i house_shield = new Vec3i(Integer.parseInt(dataArray[6].split(">>")[0]),
+                            Integer.parseInt(dataArray[6].split(">>")[1]),
+                            Integer.parseInt(dataArray[6].split(">>")[2]));
+
+                    City city = DataManager.getCityByID(Integer.parseInt(dataArray[7]));
+
+                    House house = new House(house_cost,
+                            house_id ,
+                            house_current_ownerUUID,
+                            house_name,
+                            house_blocksinside,
+                            house_doors,
+                            house_shield,
+                            house_spawnpoint,
+                            city);
+                    city.houses.add(house);
+
+                }
+            }
+
+            regions.sort(Comparator.comparing(Region::getId));
+
+
+        }
+    }
 }

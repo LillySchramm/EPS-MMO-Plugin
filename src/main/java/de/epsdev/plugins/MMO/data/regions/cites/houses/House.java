@@ -2,7 +2,6 @@ package de.epsdev.plugins.MMO.data.regions.cites.houses;
 
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.money.Money;
-import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.tools.Vec3i;
 import de.epsdev.plugins.MMO.tools.signs.ISign;
@@ -26,7 +25,7 @@ public class House {
     public List<Vec3i> blocksInside;
     public List<Vec3i> doors;
     public ISign shield;
-    public Vec3i spawnPossition;
+    public Vec3i spawnPosition;
 
     public City city;
 
@@ -38,7 +37,8 @@ public class House {
         this.costs = new Money(0);
     }
 
-    public House(Money costs, int id, String currentOwner_UUID, String name, List<Vec3i> blocksInside, List<Vec3i> doors, Vec3i shield, Vec3i spawnPossition) {
+    public House(Money costs, int id, String currentOwner_UUID, String name, List<Vec3i> blocksInside,
+                 List<Vec3i> doors, Vec3i shield, Vec3i spawnPosition, City city) {
         this.costs = costs;
         this.id = id;
         this.currentOwner_UUID = currentOwner_UUID;
@@ -46,17 +46,18 @@ public class House {
         this.blocksInside = blocksInside;
         this.doors = doors;
         this.shield = new ISign(shield);
-        this.spawnPossition = spawnPossition;
+        this.spawnPosition = spawnPosition;
+        this.city = city;
     }
 
-    public void save(){
+    public void save(boolean rl){
         try {
             Path path = Paths.get("plugins/eps/regions/cities/houses/"+ id +".txt");
             if(!Files.exists(path)){
                 Files.createFile(path);
             }
             FileWriter writer = new FileWriter("plugins/eps/regions/cities/houses/"+ id +".txt");
-            //HouseName;HouseCost;CurrentOwnerUUID;BlocksInside;Doors;Spawnpoint;Shield;
+            //HouseName;HouseCost;CurrentOwnerUUID;BlocksInside;Doors;Spawnpoint;Shield;City_id;
 
             writer.write(this.name + ";;");
             writer.write(this.costs.amount + ";;");
@@ -78,13 +79,24 @@ public class House {
 
             writer.write(temp + ";;");
 
-            writer.write(this.spawnPossition.x + ">>" + this.spawnPossition.y + ">>" + this.spawnPossition.z + ";;");
+            writer.write(this.spawnPosition.x + ">>" + this.spawnPosition.y + ">>" + this.spawnPosition.z + ";;");
 
             writer.write(this.shield.pos.x + ">>" + this.shield.pos.y + ">>" + this.shield.pos.z + ";;");
 
+
+            if(this.id == 0){
+                this.id = DataManager.getNextHouseID();
+            }
+
+            writer.write(this.city.id + ";;");
+
             writer.close();
 
-            DataManager.reloadRegions();
+            if(rl){
+                DataManager.reloadRegions();
+            }
+
+
 
         }catch (IOException e){
             e.printStackTrace();
@@ -99,6 +111,7 @@ public class House {
                     found = true;
                     list.remove(vec3i);
                     break;
+
                 }
             }
         }
@@ -111,7 +124,7 @@ public class House {
     public void processDoor(Vec3i pos, boolean deleted){ processArray(pos,deleted,this.doors); }
 
     public void updateSign(){
-        shield.lines[0] = city.name;
+        shield.lines[0] = city.name + " // ID: " + this.id;
         shield.lines[1] = name;
 
         if(currentOwner_UUID.equals("0")){
@@ -122,4 +135,6 @@ public class House {
 
         shield.run();
     }
+
+
 }

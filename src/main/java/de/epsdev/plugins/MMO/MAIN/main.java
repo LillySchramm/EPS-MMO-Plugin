@@ -42,6 +42,7 @@ public final class main extends JavaPlugin {
     private void initRegions(){
         DataManager.loadAllRegions();
         DataManager.loadAllCities();
+        DataManager.loadAllHouses();
     }
 
     private void initDataStructures(){
