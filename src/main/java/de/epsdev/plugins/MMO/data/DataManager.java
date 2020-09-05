@@ -1,9 +1,6 @@
 package de.epsdev.plugins.MMO.data;
 
-import de.epsdev.plugins.MMO.GUI.Base_Gui;
-import de.epsdev.plugins.MMO.GUI.City_GUI;
-import de.epsdev.plugins.MMO.GUI.OnClick;
-import de.epsdev.plugins.MMO.GUI.Regions_GUI;
+import de.epsdev.plugins.MMO.GUI.*;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
@@ -204,9 +201,11 @@ public class DataManager {
     public static void reloadRegions(){
         regions = new ArrayList<>();
         loadAllRegions();
-        Regions_GUI.init();
+
         loadAllCities();
         loadAllHouses();
+
+        Regions_GUI.init();
 
     }
 
@@ -520,12 +519,15 @@ public class DataManager {
                             house_shield,
                             house_spawnpoint,
                             city);
+
                     city.houses.add(house);
+                    city.gui.houses_gui = new Dev_Houses_Gui(city);
+
+                    Out.printToConsole("Loaded: " + house.name);
 
                 }
             }
 
-            regions.sort(Comparator.comparing(Region::getId));
 
 
         }

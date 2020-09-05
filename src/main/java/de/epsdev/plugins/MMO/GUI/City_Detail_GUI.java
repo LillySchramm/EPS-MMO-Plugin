@@ -73,6 +73,10 @@ public class City_Detail_GUI {
 
     }
 
+    public void load_houses(){
+        this.houses_gui = new Dev_Houses_Gui(city);
+    }
+
     public void show(Player player){
         gui.show(player);
     }

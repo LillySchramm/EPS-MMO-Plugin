@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.GUI;
 
+import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import org.bukkit.Material;
@@ -26,6 +27,8 @@ public class Dev_Houses_Gui {
 
         int x = 0;
         int y = 0;
+
+        Out.printToConsole("Count houses: " + city.houses.size());
 
         for(House house : city.houses){
 
