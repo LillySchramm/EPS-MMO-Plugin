@@ -426,7 +426,7 @@ public class DataManager {
 
         int i = max_id_houses;
         max_id_houses++;
-        return i;
+        return max_id_houses;
 
     }
 
@@ -522,6 +522,10 @@ public class DataManager {
 
                     city.houses.add(house);
                     city.gui.houses_gui = new Dev_Houses_Gui(city);
+
+                    if(house_id > max_id_houses){
+                        max_id_houses = house_id;
+                    }
 
                     Out.printToConsole("Loaded: " + house.name);
 

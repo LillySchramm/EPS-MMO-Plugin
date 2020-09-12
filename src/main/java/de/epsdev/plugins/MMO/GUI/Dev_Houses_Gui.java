@@ -32,7 +32,7 @@ public class Dev_Houses_Gui {
 
         for(House house : city.houses){
 
-            sites.get(sites.size() - 1).addItem(Material.IRON_DOOR, 1, house.name, new ArrayList<>(), null,x,y);
+            sites.get(sites.size() - 1).addItem(Material.IRON_DOOR, 1, house.name, new ArrayList<>(), showHouseGui,x,y);
 
             x++;
             if(x >= 8){
@@ -46,6 +46,12 @@ public class Dev_Houses_Gui {
 
 
     }
+
+    private final OnClick showHouseGui = (player, item, inventory) -> {
+        String houseName = item.getItemMeta().getDisplayName();
+
+        this.city.getHouseByName(houseName).detail_gui.gui.show(player);
+    };
 
     private final OnClick changeSite = (player, item, inventory) -> {
         String itemname = item.getItemMeta().getDisplayName();

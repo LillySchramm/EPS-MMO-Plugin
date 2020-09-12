@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.data.regions.cites.houses;
 
+import de.epsdev.plugins.MMO.GUI.Dev_house_detail;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
@@ -29,6 +30,8 @@ public class House {
 
     public City city;
 
+    public Dev_house_detail detail_gui;
+
 
     public House(City city){
         this.city = city;
@@ -48,10 +51,17 @@ public class House {
         this.shield = new ISign(shield);
         this.spawnPosition = spawnPosition;
         this.city = city;
+
+        this.detail_gui = new Dev_house_detail(this);
+
     }
 
     public void save(boolean rl){
         try {
+            if(this.id == 0){
+                this.id = DataManager.getNextHouseID();
+            }
+
             Path path = Paths.get("plugins/eps/regions/cities/houses/"+ id +".txt");
             if(!Files.exists(path)){
                 Files.createFile(path);

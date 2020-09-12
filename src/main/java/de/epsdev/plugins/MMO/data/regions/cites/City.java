@@ -39,6 +39,13 @@ public class City {
         this.gui = new City_Detail_GUI(this,region);
     }
 
+    public House getHouseByName(String name){
+        for(House house : this.houses){
+            if (house.name.equalsIgnoreCase(name)) return house;
+        }
+        return null;
+    }
+
     public void save(){
 
             try {
