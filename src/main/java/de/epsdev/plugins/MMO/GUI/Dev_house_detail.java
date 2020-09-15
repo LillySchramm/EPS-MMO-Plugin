@@ -1,6 +1,11 @@
 package de.epsdev.plugins.MMO.GUI;
 
+import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.output.Err;
+import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
+import de.epsdev.plugins.MMO.events.OnChat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,12 +23,39 @@ public class Dev_house_detail {
 
     public Dev_house_detail(House house){
         this.house = house;
+
         this.gui = new Base_Gui(house.name);
         init();
     }
 
+    private final OnChat changeName = e -> {
+        Player player = e.getPlayer();
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+        String msg = e.getMessage();
+
+        if(msg.equalsIgnoreCase("null") || house.city.getHouseByName(msg) != null){
+            Err.cityAlreadyExistsError(player);
+        }else {
+            house.name = msg;
+            house.save(true);
+        }
+
+        user.onChat = null;
+    };
+
+    private final OnClick changeNameClick = (player, item, inventory) -> {
+        Out.printToPlayer(player, ChatColor.DARK_GREEN + "Please type the new name for the house.");
+        Out.printToPlayer(player, ChatColor.DARK_GREEN + "Type 'null' to not change.");
+
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+        user.onChat = changeName;
+
+        player.closeInventory();
+    };
+
     public void init(){
-        gui.addItem(Material.NAME_TAG, 1, house.name, tt_clickToUpdate(), null, 0,0);
+        gui.addItem(Material.NAME_TAG, 1, house.name, tt_clickToUpdate(), changeNameClick, 0,0);
         gui.addItem(Material.EMERALD, 1, house.costs.formatString(), tt_clickToUpdate(), null, 1,0);
 
         ArrayList<String> lore = new ArrayList<>();
