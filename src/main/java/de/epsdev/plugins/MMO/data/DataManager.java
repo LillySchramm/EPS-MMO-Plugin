@@ -522,6 +522,7 @@ public class DataManager {
 
                     city.houses.add(house);
                     city.gui.houses_gui = new Dev_Houses_Gui(city);
+                    house.updateSign();
 
                     if(house_id > max_id_houses){
                         max_id_houses = house_id;

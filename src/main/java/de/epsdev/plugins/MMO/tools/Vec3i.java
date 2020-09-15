@@ -14,4 +14,8 @@ public class Vec3i {
     public Vec3i(){
 
     }
+
+    public String toString(){
+        return "X: " + x + " Y: " + y + " Z: " + z;
+    }
 }
