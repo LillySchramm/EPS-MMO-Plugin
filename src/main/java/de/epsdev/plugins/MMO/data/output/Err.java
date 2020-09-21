@@ -28,7 +28,11 @@ public class Err {
         Out.printToPlayer(player, ChatColor.RED + "A city with this name already exists.");
     }
 
-    public static void regionNotFoundError(Player player){
+    public static void houseAlreadyExistsError(Player player) {
+        Out.printToPlayer(player, ChatColor.RED + "A house with this name already exists.");
+    }
+
+        public static void regionNotFoundError(Player player){
         Out.printToPlayer(player, ChatColor.RED + "A region with this name couldn't be found.");
     }
 

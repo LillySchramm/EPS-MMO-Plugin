@@ -28,9 +28,16 @@ public class Base_Gui {
 
         meta.setDisplayName(name);
 
-        lore.add(HiddenItemData.encodeString("{ID: "+ DataManager.funs.size() +"}"));
+        ArrayList<String> newLore = new ArrayList<String>();
 
-        meta.setLore(lore);
+        newLore.add(HiddenItemData.encodeString("{ID: "+ DataManager.funs.size() +"}"));
+
+        if(!lore.isEmpty()){
+            newLore.add(1, lore.get(0));
+        }
+
+
+        meta.setLore(newLore);
 
         itemStack.setItemMeta(meta);
 
