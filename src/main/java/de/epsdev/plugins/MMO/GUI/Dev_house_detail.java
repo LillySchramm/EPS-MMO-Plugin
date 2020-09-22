@@ -6,13 +6,19 @@ import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
+import de.epsdev.plugins.MMO.events.OnBreak;
 import de.epsdev.plugins.MMO.events.OnChat;
+import de.epsdev.plugins.MMO.events.OnPlace;
 import de.epsdev.plugins.MMO.tools.Math;
+import de.epsdev.plugins.MMO.tools.Vec3i;
+import de.epsdev.plugins.MMO.tools.WorldTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -131,6 +137,50 @@ public class Dev_house_detail {
 
     };
 
+    private final OnBreak interiorBreak = e -> {
+        Location location = e.getBlock().getLocation();
+
+        house.processBlock(new Vec3i(location.getBlockX(),location.getBlockY(),location.getBlockZ()), true);
+    };
+
+    private final OnPlace interiorPlace = e -> {
+        Location location = e.getBlock().getLocation();
+
+        house.processBlock(new Vec3i(location.getBlockX(),location.getBlockY(),location.getBlockZ()), false);
+    };
+
+    private final Next interior_next = user -> {
+      user.onPlace = null;
+      user.onBreak = null;
+      user.next = null;
+
+      house.save(true);
+
+      Out.printToPlayer(Bukkit.getPlayer(user.displayName), ChatColor.DARK_GREEN + "Saved the blocks");
+
+    };
+
+    private final OnClick updateInterior = (player, item, inventory) -> {
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+        user.onPlace = interiorPlace;
+        user.onBreak = interiorBreak;
+        user.next = interior_next;
+
+        Out.printToPlayer(player , ChatColor.DARK_GREEN + "Please redefine the space.");
+        Out.printToPlayer(player ,ChatColor.DARK_GREEN + "Commit with /next");
+
+        WorldTools.fillBlocks(house.blocksInside, Material.CONCRETE);
+
+        Inventory inv = player.getInventory();
+        inv.clear();
+        ItemStack greenConcrete = new ItemStack(Material.CONCRETE, 1, (byte) 5);
+        ItemStack[] items = new ItemStack[]{greenConcrete};
+        inv.addItem(items);
+        player.getInventory().setContents(items);
+
+    };
+
     public void init(){
         gui.addItem(Material.NAME_TAG, 1, house.name, tt_clickToUpdate(), changeNameClick, 0,0);
         gui.addItem(Material.EMERALD, 1, house.costs.formatString(), tt_clickToUpdate(), changePriceClick, 1,0);
@@ -146,7 +196,7 @@ public class Dev_house_detail {
 
         gui.addItem(Material.BED, 1, ChatColor.RED + "Revoke ownership", lore, revokeOwnership, 2,0);
         gui.addItem(Material.COMPASS, 1, "Spawnpossition: " + house.spawnPosition.toString(), tt_clickToUpdate(), setSpawnpoint, 3,0);
-        gui.addItem(Material.CONCRETE_POWDER, 1, "Inner Blocks", tt_clickToUpdate(), null, 4,0);
+        gui.addItem(Material.CONCRETE_POWDER, 1, "Inner Blocks", tt_clickToUpdate(), updateInterior, 4,0);
         gui.addItem(Material.BARRIER, 1, "Delete House", tt_clickToDelete(), null, 8,0);
     }
 
