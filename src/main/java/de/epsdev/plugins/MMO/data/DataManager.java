@@ -461,8 +461,8 @@ public class DataManager {
                     Money house_cost = new Money(Integer.parseInt(dataArray[1]));
                     String house_current_ownerUUID = dataArray[2];
 
-                    List house_blocksinside = new ArrayList();
-                    List house_doors = new ArrayList();
+                    ArrayList<Vec3i> house_blocksinside = new ArrayList<Vec3i>();
+                    ArrayList<Vec3i> house_doors = new ArrayList<Vec3i>();
 
                     String temp_string = "";
 
@@ -482,8 +482,11 @@ public class DataManager {
                             temp_vec3i.z = Integer.parseInt(string);
                             i = 0;
                             house_blocksinside.add(temp_vec3i);
+                            temp_vec3i = new Vec3i();
                         }
                     }
+
+
 
                     i = 0;
                     temp_string = dataArray[4];
@@ -498,8 +501,12 @@ public class DataManager {
                             temp_vec3i.z = Integer.parseInt(string);
                             i = 0;
                             house_doors.add(temp_vec3i);
+                            temp_vec3i = new Vec3i();
+
                         }
                     }
+
+
 
                     Vec3i house_spawnpoint = new Vec3i(Integer.parseInt(dataArray[5].split(">>")[0]),
                             Integer.parseInt(dataArray[5].split(">>")[1]),
@@ -520,6 +527,7 @@ public class DataManager {
                             house_spawnpoint,
                             city);
 
+                    Out.printToConsole(house.blocksInside.size());
                     city.houses.add(house);
                     city.gui.houses_gui = new Dev_Houses_Gui(city);
                     house.updateSign();

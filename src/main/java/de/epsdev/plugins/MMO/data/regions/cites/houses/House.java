@@ -3,10 +3,13 @@ package de.epsdev.plugins.MMO.data.regions.cites.houses;
 import de.epsdev.plugins.MMO.GUI.Dev_house_detail;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.money.Money;
+import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.tools.Vec3i;
+import de.epsdev.plugins.MMO.tools.WorldTools;
 import de.epsdev.plugins.MMO.tools.signs.ISign;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 
 
 import java.io.FileWriter;
@@ -23,8 +26,8 @@ public class House {
     public String currentOwner_UUID = "0";
     public String name = "";
 
-    public List<Vec3i> blocksInside;
-    public List<Vec3i> doors;
+    public ArrayList<Vec3i> blocksInside;
+    public ArrayList<Vec3i> doors;
     public ISign shield;
     public Vec3i spawnPosition;
 
@@ -40,8 +43,8 @@ public class House {
         this.costs = new Money(0);
     }
 
-    public House(Money costs, int id, String currentOwner_UUID, String name, List<Vec3i> blocksInside,
-                 List<Vec3i> doors, Vec3i shield, Vec3i spawnPosition, City city) {
+    public House(Money costs, int id, String currentOwner_UUID, String name, ArrayList<Vec3i> blocksInside,
+                 ArrayList<Vec3i> doors, Vec3i shield, Vec3i spawnPosition, City city) {
         this.costs = costs;
         this.id = id;
         this.currentOwner_UUID = currentOwner_UUID;
@@ -54,6 +57,15 @@ public class House {
 
         this.detail_gui = new Dev_house_detail(this);
 
+
+
+    }
+
+    public void fillInside(Material material){
+
+
+
+        WorldTools.fillBlocks(this.blocksInside,material);
     }
 
     public void save(boolean rl){
@@ -144,7 +156,12 @@ public class House {
         shield.lines[3] = costs.formatString();
 
         shield.run();
+
+
+
     }
+
+
 
 
 }

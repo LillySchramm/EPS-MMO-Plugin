@@ -34,7 +34,13 @@ public class Dev_house_detail {
         this.house = house;
 
         this.gui = new Base_Gui(house.name);
+
+
+
         init();
+
+
+
     }
 
     private final OnChat changePrice = e -> {
@@ -160,25 +166,28 @@ public class Dev_house_detail {
 
     };
 
-    private final OnClick updateInterior = (player, item, inventory) -> {
-        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+    private OnClick updateInterior = new OnClick() {
+        @Override
+        public void click(Player player, ItemStack item, Inventory inventory) {
+            User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
 
-        user.onPlace = interiorPlace;
-        user.onBreak = interiorBreak;
-        user.next = interior_next;
+            user.onPlace = interiorPlace;
+            user.onBreak = interiorBreak;
+            user.next = interior_next;
 
-        Out.printToPlayer(player , ChatColor.DARK_GREEN + "Please redefine the space.");
-        Out.printToPlayer(player ,ChatColor.DARK_GREEN + "Commit with /next");
+            Out.printToPlayer(player , ChatColor.DARK_GREEN + "Please redefine the space.");
+            Out.printToPlayer(player ,ChatColor.DARK_GREEN + "Commit with /next");
 
-        WorldTools.fillBlocks(house.blocksInside, Material.CONCRETE);
+            house.fillInside(Material.EMERALD_BLOCK);
 
-        Inventory inv = player.getInventory();
-        inv.clear();
-        ItemStack greenConcrete = new ItemStack(Material.CONCRETE, 1, (byte) 5);
-        ItemStack[] items = new ItemStack[]{greenConcrete};
-        inv.addItem(items);
-        player.getInventory().setContents(items);
+            Inventory inv = player.getInventory();
+            inv.clear();
+            ItemStack greenConcrete = new ItemStack(Material.CONCRETE, 1, (byte) 5);
+            ItemStack[] items = new ItemStack[]{greenConcrete};
+            inv.addItem(items);
+            player.getInventory().setContents(items);
 
+        }
     };
 
     public void init(){
@@ -198,6 +207,9 @@ public class Dev_house_detail {
         gui.addItem(Material.COMPASS, 1, "Spawnpossition: " + house.spawnPosition.toString(), tt_clickToUpdate(), setSpawnpoint, 3,0);
         gui.addItem(Material.CONCRETE_POWDER, 1, "Inner Blocks", tt_clickToUpdate(), updateInterior, 4,0);
         gui.addItem(Material.BARRIER, 1, "Delete House", tt_clickToDelete(), null, 8,0);
+
+
+
     }
 
     private void show(Player player){
