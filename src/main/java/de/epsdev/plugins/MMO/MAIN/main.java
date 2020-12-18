@@ -6,6 +6,7 @@ import de.epsdev.plugins.MMO.commands.*;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.events.*;
+import de.epsdev.plugins.MMO.data.mysql.mysql;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -29,6 +30,10 @@ public final class main extends JavaPlugin {
         registerEvents();
         registerCommands();
         initGUIs();
+
+        mysql.connect();
+
+
     }
 
     @Override
