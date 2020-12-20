@@ -10,9 +10,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.sql.SQLException;
+
 public class c_Money implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
@@ -50,13 +53,10 @@ public class c_Money implements CommandExecutor {
                     Err.rankError(player);
                 }
             }
-
-
-
-
         }
 
         return true;
+
     }
 
 

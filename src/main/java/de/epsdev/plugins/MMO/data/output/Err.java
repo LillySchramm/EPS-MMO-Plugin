@@ -54,4 +54,5 @@ public class Err {
 
         Out.printToPlayer(player, ChatColor.RED + "The following arguments are required: " + s);
     }
+
 }

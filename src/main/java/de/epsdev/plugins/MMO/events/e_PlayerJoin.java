@@ -6,11 +6,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.sql.SQLException;
+
 public class e_PlayerJoin implements Listener {
 
     @EventHandler
     void onPlayerJoin(PlayerJoinEvent e){
-        User user = DataManager.getUser(e.getPlayer());
+        User user = null;
+        try {
+            user = DataManager.getUser(e.getPlayer());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         user.print();
         DataManager.onlineUsers.put(user.UUID,user);
     }

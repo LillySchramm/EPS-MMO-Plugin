@@ -18,7 +18,7 @@ public class c_Mutechat implements CommandExecutor {
         User user = null;
         if (sender instanceof Player){
             player = (Player) sender;
-            user = DataManager.getUser(player);
+            user = DataManager.onlineUsers.get(player.getUniqueId().toString());
 
             if(!user.rank.canMuteChat){
 

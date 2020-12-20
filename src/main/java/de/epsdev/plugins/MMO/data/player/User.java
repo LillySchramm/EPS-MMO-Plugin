@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.data.player;
 
 import de.epsdev.plugins.MMO.commands.Next;
+import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.events.OnBreak;
 import de.epsdev.plugins.MMO.events.OnChat;
@@ -13,21 +14,21 @@ import de.epsdev.plugins.MMO.ranks.Ranks;
 import de.epsdev.plugins.MMO.scoreboards.DefaultScroreboard;
 import org.bukkit.entity.Player;
 
+import javax.sql.RowSet;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
     public String displayName;
     public String UUID;
-    public float xp;
-    public int level;
     public Rank rank;
-
     public Money money;
 
     public List<String> temp_strings = new ArrayList<>();
@@ -40,55 +41,39 @@ public class User {
 
     public House temp_house = null;
 
-    public User(Player player){
+    public User(Player player) throws SQLException {
         displayName = player.getDisplayName();
         UUID = player.getUniqueId().toString();
-        level = 1;
-        money = new Money(0);
-        this.rank = Ranks.Player;
 
+        ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`players` WHERE UUID = '" + UUID + "'");
 
-        DefaultScroreboard.refresh(this);
-    }
+        if(!rs.next()){
+            money = new Money(0);
+            this.rank = Ranks.Player;
 
-    public User(String displayName, String UUID, float xp, int level, int money, Rank rank){
-        this.displayName = displayName;
-        this.UUID = UUID;
-        this.xp = xp;
-        this.level = level;
-        this.money = new Money(money);
-        this.rank = rank;
+            mysql.query("INSERT INTO `eps_users`.`players` (`ID`, `UUID`, `RANK`, `MONEY`) VALUES (NULL, '" + UUID + "', 'player', '0') ");
 
-        DefaultScroreboard.refresh(this);
-
-    }
-
-    public void save(){
-        try {
-            Path path = Paths.get("plugins/eps/players/"+ UUID +".txt");
-            if(!Files.exists(path)){
-                Files.createFile(path);
-            }
-            FileWriter writer = new FileWriter("plugins/eps/players/"+ UUID +".txt");
-            writer.write( displayName + ";;");
-            writer.write(UUID + ";;");
-            writer.write(xp + ";;");
-            writer.write(level + ";;");
-            writer.write(money.amount + ";;");
-            writer.write(rank.name + ";;");
-            writer.close();
-
-        }catch (IOException e){
-             e.printStackTrace();
+        }else {
+            rs.absolute(1);
+            money = new Money(rs.getInt("MONEY"));
+            this.rank = Ranks.getRank(rs.getString("RANK"));
         }
 
+
+        DefaultScroreboard.refresh(this);
     }
 
+
+    public void save() {
+        try {
+            mysql.query("UPDATE `eps_users`.`players` SET `RANK` = '" + this.rank.name + "', `MONEY` = '"+ this.money.amount +"' WHERE `players`.`UUID` = '" + this.UUID + "' ");
+        }catch (SQLException exception){
+            exception.printStackTrace();
+        }
+    }
     public void print(){
         Out.printToConsole("Display Name: " + displayName);
         Out.printToConsole("UUID: " + UUID);
-        Out.printToConsole("XP: " + xp);
-        Out.printToConsole("Level: " + level);
         Out.printToConsole("Money: " + money.amount);
         Out.printToConsole("Rank: " + rank.name);
     }

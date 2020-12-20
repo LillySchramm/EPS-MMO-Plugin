@@ -2,6 +2,7 @@ package de.epsdev.plugins.MMO.data;
 
 import de.epsdev.plugins.MMO.GUI.*;
 import de.epsdev.plugins.MMO.data.money.Money;
+import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
@@ -25,10 +26,13 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.*;
 
 
 public class DataManager {
+
+
 
     public static final Material GUI_FILLER = Material.THIN_GLASS;
 
@@ -121,37 +125,8 @@ public class DataManager {
 
     }
 
-    public static User getUser(Player player){
-        User user = new User(player);
-        File f = new File("plugins/eps/players");
-        if(f.list() != null){
-            ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
-            for(String s : names){
-                if(s.equalsIgnoreCase(player.getUniqueId().toString() + ".txt")){
-                    File file = new File("plugins/eps/players/" + s);
-                    Scanner myReader = null;
-                    try {
-                        myReader = new Scanner(file);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    String data = "";
-                    while (myReader.hasNextLine()) {
-                        data += myReader.nextLine();
-                    }
-                    myReader.close();
-                    String[] dataArray = data.split(";;");
-
-                    float user_xp = Float.parseFloat(dataArray[2]);
-                    int user_level = Integer.parseInt(dataArray[3]);
-                    int user_money = Integer.parseInt(dataArray[4]);
-
-                    user = new User(dataArray[0],dataArray[1],user_xp, user_level, user_money, Ranks.getRank(dataArray[5]));
-
-                }
-            }
-        }
-        return user;
+    public static User getUser(Player player) throws SQLException {
+        return new User(player);
     }
 
     public static User getUserByName(String name){
@@ -262,41 +237,10 @@ public class DataManager {
     }
 
     public static void loadAllRegions() {
-        File f = new File("plugins/eps/regions");
-        if (f.list() != null) {
-            ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
-            for (String s : names) {
-
-                //PATCH
-
-                if (s.contains(".txt")) {
-                    File file = new File("plugins/eps/regions/" + s);
-                    Scanner myReader = null;
-                    try {
-                        myReader = new Scanner(file);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    String data = "";
-                    while (myReader.hasNextLine()) {
-                        data += myReader.nextLine();
-                    }
-                    myReader.close();
-                    String[] dataArray = data.split(";;");
-
-                    //LOAD
-
-                    dataArray = data.split(";;");
-
-                    Region region = new Region(dataArray[0], Integer.parseInt(dataArray[1]));
-                    region.id = Integer.parseInt(s.split(".txt")[0]);
-                    regions.add(region);
-                }
-            }
-
-            regions.sort(Comparator.comparing(Region::getId));
-
-
+        try {
+            mysql.query("");
+        }catch(SQLException exception){
+            exception.printStackTrace();
         }
     }
 

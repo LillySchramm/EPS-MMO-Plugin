@@ -4,6 +4,7 @@ import de.epsdev.plugins.MMO.GUI.CheatMenu_GUI;
 import de.epsdev.plugins.MMO.GUI.Regions_GUI;
 import de.epsdev.plugins.MMO.commands.*;
 import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.mysql.DatabaseManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.events.*;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
@@ -15,11 +16,13 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.sql.SQLException;
 import java.util.concurrent.Callable;
 
 public final class main extends JavaPlugin {
 
     public static Plugin plugin;
+    public static DatabaseManager databaseManager = new DatabaseManager();
 
     @Override
     public void onEnable() {
@@ -31,14 +34,15 @@ public final class main extends JavaPlugin {
         registerCommands();
         initGUIs();
 
-        mysql.connect();
+        databaseManager.init();
 
 
     }
 
     @Override
     public void onDisable() {
-        for(Player p : Bukkit.getOnlinePlayers()){
+
+        for(Player p : Bukkit.getOnlinePlayers()) {
             DataManager.onlineUsers.get(p.getUniqueId().toString()).save();
             p.kickPlayer("Reload");
         }

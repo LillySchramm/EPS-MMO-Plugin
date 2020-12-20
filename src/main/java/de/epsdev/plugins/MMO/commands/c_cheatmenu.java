@@ -14,7 +14,7 @@ public class c_cheatmenu implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player){
             Player player = (Player) sender;
-            User user = DataManager.getUser(player);
+            User user = DataManager.onlineUsers.get(player.getUniqueId().toString());;
             if(user.rank.canUseCheatMenu || player.isOp()){
                 CheatMenu_GUI.main_gui.show(player);
             }else {
