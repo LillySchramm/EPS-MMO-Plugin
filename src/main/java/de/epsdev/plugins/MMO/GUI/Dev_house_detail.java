@@ -32,15 +32,9 @@ public class Dev_house_detail {
 
     public Dev_house_detail(House house){
         this.house = house;
-
         this.gui = new Base_Gui(house.name);
-
-
-
         init();
-
-
-
+        Out.printToConsole(house.id);
     }
 
     private final OnChat changePrice = e -> {
@@ -159,7 +153,7 @@ public class Dev_house_detail {
       user.onPlace = null;
       user.onBreak = null;
       user.next = null;
-
+      house.fillInside(Material.AIR);
       house.save(true);
 
       Out.printToPlayer(Bukkit.getPlayer(user.displayName), ChatColor.DARK_GREEN + "Saved the blocks");

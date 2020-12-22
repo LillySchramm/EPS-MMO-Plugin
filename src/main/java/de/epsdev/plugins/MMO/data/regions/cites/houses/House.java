@@ -78,8 +78,8 @@ public class House {
                 s_doors += vec.x + ">>" + vec.y + ">>" + vec.z + ">>";
             }
 
-            mysql.query("INSERT INTO `eps_regions`.`houses` (`ID`, `NAME`, `COSTS`, `OWNER_UUID`, `BLOCKS_INSIDE`, `DOORS`, `SPAWN_POS`, `SHIELD_POS`, `CITY_ID`) " +
-                    "VALUES (NULL," +
+            mysql.query("REPLACE INTO `eps_regions`.`houses` (`ID`, `NAME`, `COSTS`, `OWNER_UUID`, `BLOCKS_INSIDE`, `DOORS`, `SPAWN_POS`, `SHIELD_POS`, `CITY_ID`) " +
+                    "VALUES ("+this.id+"," +
                     "'" + this.name +"'" +
                     ", '"+this.costs.amount+"'," +
                     " '"+this.currentOwner_UUID+"'," +

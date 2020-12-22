@@ -398,7 +398,6 @@ public class DataManager {
                         house_spawnpoint,
                         city);
 
-                Out.printToConsole(house.blocksInside.size());
                 city.houses.add(house);
                 city.gui.houses_gui = new Dev_Houses_Gui(city);
                 house.updateSign();
