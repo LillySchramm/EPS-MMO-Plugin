@@ -3,6 +3,7 @@ package de.epsdev.plugins.MMO.data.regions.cites.houses;
 import de.epsdev.plugins.MMO.GUI.Dev_house_detail;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.money.Money;
+import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.tools.Vec3i;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,70 +59,40 @@ public class House {
 
         this.detail_gui = new Dev_house_detail(this);
 
-
-
     }
 
     public void fillInside(Material material){
-
-
-
         WorldTools.fillBlocks(this.blocksInside,material);
     }
 
     public void save(boolean rl){
         try {
-            if(this.id == 0){
-                this.id = DataManager.getNextHouseID();
-            }
-
-            Path path = Paths.get("plugins/eps/regions/cities/houses/"+ id +".txt");
-            if(!Files.exists(path)){
-                Files.createFile(path);
-            }
-            FileWriter writer = new FileWriter("plugins/eps/regions/cities/houses/"+ id +".txt");
-            //HouseName;HouseCost;CurrentOwnerUUID;BlocksInside;Doors;Spawnpoint;Shield;City_id;
-
-            writer.write(this.name + ";;");
-            writer.write(this.costs.amount + ";;");
-            writer.write(this.currentOwner_UUID + ";;");
-
-            String temp = "";
+            String b_inside = "";
 
             for(Vec3i vec : this.blocksInside){
-                temp += vec.x + ">>" + vec.y + ">>" + vec.z + ">>";
+                b_inside += vec.x + ">>" + vec.y + ">>" + vec.z + ">>";
             }
 
-            writer.write(temp + ";;");
-
-            temp = "";
-
+            String s_doors = "";
             for(Vec3i vec : this.doors){
-                temp += vec.x + ">>" + vec.y + ">>" + vec.z + ">>";
+                s_doors += vec.x + ">>" + vec.y + ">>" + vec.z + ">>";
             }
 
-            writer.write(temp + ";;");
-
-            writer.write(this.spawnPosition.x + ">>" + this.spawnPosition.y + ">>" + this.spawnPosition.z + ";;");
-
-            writer.write(this.shield.pos.x + ">>" + this.shield.pos.y + ">>" + this.shield.pos.z + ";;");
-
-
-            if(this.id == 0){
-                this.id = DataManager.getNextHouseID();
-            }
-
-            writer.write(this.city.id + ";;");
-
-            writer.close();
-
+            mysql.query("INSERT INTO `eps_regions`.`houses` (`ID`, `NAME`, `COSTS`, `OWNER_UUID`, `BLOCKS_INSIDE`, `DOORS`, `SPAWN_POS`, `SHIELD_POS`, `CITY_ID`) " +
+                    "VALUES (NULL," +
+                    "'" + this.name +"'" +
+                    ", '"+this.costs.amount+"'," +
+                    " '"+this.currentOwner_UUID+"'," +
+                    " '"+b_inside+"'," +
+                    " '"+s_doors+"'," +
+                    " '"+this.spawnPosition.x + ">>" + this.spawnPosition.y + ">>" + this.spawnPosition.z+"'," +
+                    " '"+this.shield.pos.x + ">>" + this.shield.pos.y + ">>" + this.shield.pos.z+"'," +
+                    " '"+this.city.id+"');");
             if(rl){
                 DataManager.reloadRegions();
             }
 
-
-
-        }catch (IOException e){
+        }catch (SQLException e){
             e.printStackTrace();
         }
     }

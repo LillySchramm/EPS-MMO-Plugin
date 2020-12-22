@@ -27,16 +27,15 @@ public final class main extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+
+        databaseManager.init();
+
         initDataStructures();
         initRegions();
         DataManager.patch();
         registerEvents();
         registerCommands();
         initGUIs();
-
-        databaseManager.init();
-
-
     }
 
     @Override

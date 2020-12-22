@@ -2,6 +2,7 @@ package de.epsdev.plugins.MMO.data.regions.cites;
 
 import de.epsdev.plugins.MMO.GUI.City_Detail_GUI;
 import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.regions.Region;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,29 +50,21 @@ public class City {
 
     public void save(){
 
-            try {
-                Path path = Paths.get("plugins/eps/regions/cities/"+ id +".txt");
-                if(!Files.exists(path)){
-                    Files.createFile(path);
-                }
-                FileWriter writer = new FileWriter("plugins/eps/regions/cities/"+ id +".txt");
-                writer.write(name + ";;");
-                writer.write(region.id + ";;");
-                writer.close();
-                DataManager.reloadRegions();
-
-            }catch (IOException e){
-                e.printStackTrace();
-            }
+        try {
+            mysql.query("REPLACE INTO `eps_regions`.`cities` SET `ID` = "+ this.id + "," +
+                    " `NAME` = '" + this.name + "', `REGION_ID` = " + this.region.id + ";");
+            DataManager.reloadRegions();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
 
     }
 
     public void delete(){
         try {
-            Path path = Paths.get("plugins/eps/regions/cities/"+ id +".txt");
-            Files.delete(path);
+            mysql.query("DELETE FROM `eps_regions`.`cities` WHERE `ID` = "+ this.id + ";");
             DataManager.reloadRegions();
-        }catch (IOException e){
+        }catch (SQLException e){
             e.printStackTrace();
         }
     }

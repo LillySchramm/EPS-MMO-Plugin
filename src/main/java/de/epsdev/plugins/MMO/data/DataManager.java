@@ -26,14 +26,12 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
 
 public class DataManager {
-
-
-
     public static final Material GUI_FILLER = Material.THIN_GLASS;
 
     public static Map<String,User> onlineUsers = new HashMap<String, User>();
@@ -184,31 +182,15 @@ public class DataManager {
 
     }
 
-    public static boolean createRegion(String name, Player executer){
-        Path path = null;
+    public static boolean createRegion(String name, Player executor){
         if(!isRegionAlreadyExisting(name)){
-            if(regions.isEmpty()){
-                path = Paths.get("plugins/eps/regions/" + 1 + ".txt");
-            }else {
-                path = Paths.get("plugins/eps/regions/" + ( regions.get(regions.size() - 1).id + 1) + ".txt");
-            }
-            try {
-                Files.createFile(path);
-                FileWriter writer = new FileWriter(path.toString());
-                writer.write( name+ ";;");
-                for(int i = 1; i < defaults_regions.length; i++){
-                    writer.write(defaults_regions[i]+";;");
-                }
-                writer.close();
-            } catch (IOException ex) {
-                System.err.println("File already exists");
-            }
-
+            Region region = new Region(name, 1);
+            region.save();
             reloadRegions();
             return true;
         }else {
 
-            Err.regionAlreadyExistsError(executer);
+            Err.regionAlreadyExistsError(executor);
             return false;
         }
 
@@ -216,13 +198,11 @@ public class DataManager {
     }
 
     public static boolean isRegionAlreadyExisting(String name){
-
         for(Region region : regions){
-            if(region.name.toLowerCase().equalsIgnoreCase(name.toLowerCase())){
+            if(region.name.equalsIgnoreCase(name)){
                 return true;
             }
         }
-
         return false;
     }
 
@@ -238,15 +218,19 @@ public class DataManager {
 
     public static void loadAllRegions() {
         try {
-            mysql.query("");
+            ResultSet rs = mysql.query("SELECT * FROM `eps_regions`.`regions`");
+            while(rs.next()){
+                Region region = new Region(rs.getString("NAME"), rs.getInt("LEVEL"));
+                region.id = rs.getInt("ID");
+                regions.add(region);
+            }
         }catch(SQLException exception){
             exception.printStackTrace();
         }
     }
 
     public static void deleteRegion(Region region){
-        File f = new File("plugins/eps/regions/" + region.id + ".txt");
-        f.delete();
+        region.delete();
     }
 
     //-----------------------------------------------------------------
@@ -254,23 +238,10 @@ public class DataManager {
     //-----------------------------------------------------------------
 
     public static void createCity(String name, Region region){
-        Path path = Paths.get("plugins/eps/regions/cities/" + (max_id_cities + 1) + ".txt");
-
-        try {
-
-
-            Files.createFile(path);
-
-            FileWriter writer = new FileWriter(path.toString());
-            writer.write( name+ ";;");
-            writer.write(region.id+";;");
-            for(int i = 2; i < defaults_cities.length; i++){
-                writer.write(defaults_cities[i]+";;");
-            }
-            writer.close();
-        } catch (IOException ex) {
-            System.err.println("File already exists");
-            ex.printStackTrace();
+        try{
+            mysql.query("INSERT INTO `eps_regions`.`cities` (`ID`, `NAME`, `REGION_ID`) VALUES (NULL, '"+ name + "', '" + region.id + "');");
+        }catch(SQLException e){
+            e.printStackTrace();
         }
 
         regions = new ArrayList<>();
@@ -302,54 +273,34 @@ public class DataManager {
 
     }
 
+    public static void reloadCityGUI(){
+        for (Region region : regions){
+            region.city_gui = new City_GUI(region);
+        }
+    }
+
     public static void loadAllCities(){
-        File f = new File("plugins/eps/regions/cities/");
-        if (f.list() != null) {
-            ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
-            for (String s : names) {
+        try {
+            ResultSet rs = mysql.query("SELECT * FROM `eps_regions`.`cities`");
+            int regionID = 0;
+            City city = null;
+            while(rs.next()){
+                city = new City(rs.getInt("ID"), rs.getString("NAME"));
+                regionID = rs.getInt("REGION_ID");
 
-                //PATCH
-
-                if (s.contains(".txt")) {
-                    File file = new File("plugins/eps/regions/cities/" + s);
-                    Scanner myReader = null;
-                    try {
-                        myReader = new Scanner(file);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                for(Region region : regions){
+                    if (region.id == regionID){
+                        city.initGui(region);
+                        region.cities.add(city);
+                        region.cities.sort(Comparator.comparing(City::getId));
                     }
-                    String data = "";
-                    while (myReader.hasNextLine()) {
-                        data += myReader.nextLine();
-                    }
-                    myReader.close();
-
-                    String[] dataArray = data.split(";;");
-
-                    City city = new City(Integer.parseInt(s.split(".txt")[0]), dataArray[0]);
-
-                    int regionID = Integer.parseInt(dataArray[1]);
-
-                    if(Integer.parseInt(s.split(".txt")[0]) > max_id_cities){
-                        max_id_cities = Integer.parseInt(s.split(".txt")[0]);
-                    }
-
-                    for(Region region : regions){
-                        if (region.id == regionID){
-                            city.initGui(region);
-                            region.cities.add(city);
-                            region.cities.sort(Comparator.comparing(City::getId));
-                        }
-                    }
-
-
                 }
             }
 
+            reloadCityGUI();
 
-        }
-        for (Region region : regions){
-            region.city_gui = new City_GUI(region);
+        }catch(SQLException exception){
+            exception.printStackTrace();
         }
     }
 
@@ -367,126 +318,101 @@ public class DataManager {
     //-----------------------------------------------------------------
 
     public static int getNextHouseID(){
-
-        int i = max_id_houses;
         max_id_houses++;
         return max_id_houses;
-
     }
 
     public static void loadAllHouses(){
-        File f = new File("plugins/eps/regions/cities/houses/");
-        if (f.list() != null) {
-            ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
-            for (String s : names) {
-                if (s.contains(".txt")) {
-                    File file = new File("plugins/eps/regions/cities/houses/" + s);
-                    Scanner myReader = null;
-                    try {
-                        myReader = new Scanner(file);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+        try {
+            ResultSet rs = mysql.query("SELECT * FROM `eps_regions`.`houses`");
+
+            while(rs.next()){
+
+                int house_id = rs.getInt("ID");
+                String house_name = rs.getString("NAME");
+                Money house_cost = new Money(rs.getInt("COSTS"));
+                String house_current_ownerUUID = rs.getString("OWNER_UUID");
+
+                ArrayList<Vec3i> house_blocksinside = new ArrayList<Vec3i>();
+                ArrayList<Vec3i> house_doors = new ArrayList<Vec3i>();
+
+                String temp_string = "";
+
+                int i = 0;
+                Vec3i temp_vec3i = new Vec3i();
+                temp_string = rs.getString("BLOCKS_INSIDE");
+                for(String string : temp_string.split(">>")){
+                    i++;
+                    if(i == 1){
+                        temp_vec3i.x = Integer.parseInt(string);
+                    }else if(i == 2){
+                        temp_vec3i.y = Integer.parseInt(string);
+                    }else{
+                        temp_vec3i.z = Integer.parseInt(string);
+                        i = 0;
+                        house_blocksinside.add(temp_vec3i);
+                        temp_vec3i = new Vec3i();
                     }
-                    String data = "";
-                    while (myReader.hasNextLine()) {
-                        data += myReader.nextLine();
-                    }
-                    myReader.close();
-                    String[] dataArray = data.split(";;");
-
-                    //LOAD
-
-                    dataArray = data.split(";;");
-
-                    //HouseName;HouseCost;CurrentOwnerUUID;BlocksInside;Doors;Spawnpoint;Shield;City_id;
-
-                    int house_id = Integer.parseInt(s.split(".txt")[0]);
-                    String house_name = dataArray[0];
-                    Money house_cost = new Money(Integer.parseInt(dataArray[1]));
-                    String house_current_ownerUUID = dataArray[2];
-
-                    ArrayList<Vec3i> house_blocksinside = new ArrayList<Vec3i>();
-                    ArrayList<Vec3i> house_doors = new ArrayList<Vec3i>();
-
-                    String temp_string = "";
-
-                    int i = 0;
-                    Vec3i temp_vec3i = new Vec3i();
-
-                    temp_string = dataArray[3];
-
-
-                    for(String string : temp_string.split(">>")){
-                        i++;
-                        if(i == 1){
-                            temp_vec3i.x = Integer.parseInt(string);
-                        }else if(i == 2){
-                            temp_vec3i.y = Integer.parseInt(string);
-                        }else{
-                            temp_vec3i.z = Integer.parseInt(string);
-                            i = 0;
-                            house_blocksinside.add(temp_vec3i);
-                            temp_vec3i = new Vec3i();
-                        }
-                    }
-
-
-
-                    i = 0;
-                    temp_string = dataArray[4];
-
-                    for(String string : temp_string.split(">>")){
-                        i++;
-                        if(i == 1){
-                            temp_vec3i.x = Integer.parseInt(string);
-                        }else if(i == 2){
-                            temp_vec3i.y = Integer.parseInt(string);
-                        }else{
-                            temp_vec3i.z = Integer.parseInt(string);
-                            i = 0;
-                            house_doors.add(temp_vec3i);
-                            temp_vec3i = new Vec3i();
-
-                        }
-                    }
-
-
-
-                    Vec3i house_spawnpoint = new Vec3i(Integer.parseInt(dataArray[5].split(">>")[0]),
-                            Integer.parseInt(dataArray[5].split(">>")[1]),
-                            Integer.parseInt(dataArray[5].split(">>")[2]));
-                    Vec3i house_shield = new Vec3i(Integer.parseInt(dataArray[6].split(">>")[0]),
-                            Integer.parseInt(dataArray[6].split(">>")[1]),
-                            Integer.parseInt(dataArray[6].split(">>")[2]));
-
-                    City city = DataManager.getCityByID(Integer.parseInt(dataArray[7]));
-
-                    House house = new House(house_cost,
-                            house_id ,
-                            house_current_ownerUUID,
-                            house_name,
-                            house_blocksinside,
-                            house_doors,
-                            house_shield,
-                            house_spawnpoint,
-                            city);
-
-                    Out.printToConsole(house.blocksInside.size());
-                    city.houses.add(house);
-                    city.gui.houses_gui = new Dev_Houses_Gui(city);
-                    house.updateSign();
-
-                    if(house_id > max_id_houses){
-                        max_id_houses = house_id;
-                    }
-
-                    Out.printToConsole("Loaded: " + house.name);
-
                 }
+
+                i = 0;
+                temp_string = rs.getString("DOORS");
+
+                for(String string : temp_string.split(">>")){
+                    i++;
+                    if(i == 1){
+                        temp_vec3i.x = Integer.parseInt(string);
+                    }else if(i == 2){
+                        temp_vec3i.y = Integer.parseInt(string);
+                    }else{
+                        temp_vec3i.z = Integer.parseInt(string);
+                        i = 0;
+                        house_doors.add(temp_vec3i);
+                        temp_vec3i = new Vec3i();
+
+                    }
+                }
+
+
+                temp_string = rs.getString("SPAWN_POS");
+
+                Vec3i house_spawnpoint = new Vec3i(Integer.parseInt(temp_string.split(">>")[0]),
+                        Integer.parseInt(temp_string.split(">>")[1]),
+                        Integer.parseInt(temp_string.split(">>")[2]));
+
+                temp_string = rs.getString("SHIELD_POS");
+
+                Vec3i house_shield = new Vec3i(Integer.parseInt(temp_string.split(">>")[0]),
+                        Integer.parseInt(temp_string.split(">>")[1]),
+                        Integer.parseInt(temp_string.split(">>")[2]));
+
+                City city = DataManager.getCityByID(rs.getInt("CITY_ID"));
+
+                House house = new House(house_cost,
+                        house_id ,
+                        house_current_ownerUUID,
+                        house_name,
+                        house_blocksinside,
+                        house_doors,
+                        house_shield,
+                        house_spawnpoint,
+                        city);
+
+                Out.printToConsole(house.blocksInside.size());
+                city.houses.add(house);
+                city.gui.houses_gui = new Dev_Houses_Gui(city);
+                house.updateSign();
+
+                if(house_id > max_id_houses){
+                    max_id_houses = house_id;
+                }
+
+                Out.printToConsole("Loaded: " + house.name);
             }
 
-
-
+            }catch(SQLException e) {
+            e.printStackTrace();
         }
     }
+
 }

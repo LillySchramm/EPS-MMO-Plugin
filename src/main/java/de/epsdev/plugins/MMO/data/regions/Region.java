@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.data.regions;
 
 import de.epsdev.plugins.MMO.GUI.City_GUI;
+import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,19 +40,20 @@ public class Region {
      return id;
     }
 
+    public void delete(){
+        try {
+            mysql.query("DELETE FROM `eps_regions`.`regions` WHERE `ID` = "+ this.id + ";");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
     public void save(){
-
             try {
-                Path path = Paths.get("plugins/eps/regions/"+ id +".txt");
-                if(!Files.exists(path)){
-                    Files.createFile(path);
-                }
-                FileWriter writer = new FileWriter("plugins/eps/regions/"+ id +".txt");
-                writer.write(name + ";;");
-                writer.write(level + ";;");
-                writer.close();
+                mysql.query("REPLACE INTO `eps_regions`.`regions` SET `ID` = "+ this.id + "," +
+                        " `NAME` = '" + this.name + "', `LEVEL` = " + this.level + ";");
 
-            }catch (IOException e){
+            }catch (SQLException e){
                 e.printStackTrace();
             }
 

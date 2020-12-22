@@ -16,9 +16,6 @@ import java.util.List;
 
 public class Regions_GUI {
     public static List<Base_Gui> sites = new ArrayList<>();
-
-
-
     public static void init(){
         sites = new ArrayList<>();
 
