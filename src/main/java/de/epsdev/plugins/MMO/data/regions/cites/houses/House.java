@@ -66,34 +66,29 @@ public class House {
     }
 
     public void save(boolean rl){
-        try {
-            String b_inside = "";
+        String b_inside = "";
 
-            for(Vec3i vec : this.blocksInside){
-                b_inside += vec.x + ">>" + vec.y + ">>" + vec.z + ">>";
-            }
+        for(Vec3i vec : this.blocksInside){
+            b_inside += vec.x + ">>" + vec.y + ">>" + vec.z + ">>";
+        }
 
-            String s_doors = "";
-            for(Vec3i vec : this.doors){
-                s_doors += vec.x + ">>" + vec.y + ">>" + vec.z + ">>";
-            }
+        String s_doors = "";
+        for(Vec3i vec : this.doors){
+            s_doors += vec.x + ">>" + vec.y + ">>" + vec.z + ">>";
+        }
 
-            mysql.query("REPLACE INTO `eps_regions`.`houses` (`ID`, `NAME`, `COSTS`, `OWNER_UUID`, `BLOCKS_INSIDE`, `DOORS`, `SPAWN_POS`, `SHIELD_POS`, `CITY_ID`) " +
-                    "VALUES ("+this.id+"," +
-                    "'" + this.name +"'" +
-                    ", '"+this.costs.amount+"'," +
-                    " '"+this.currentOwner_UUID+"'," +
-                    " '"+b_inside+"'," +
-                    " '"+s_doors+"'," +
-                    " '"+this.spawnPosition.x + ">>" + this.spawnPosition.y + ">>" + this.spawnPosition.z+"'," +
-                    " '"+this.shield.pos.x + ">>" + this.shield.pos.y + ">>" + this.shield.pos.z+"'," +
-                    " '"+this.city.id+"');");
-            if(rl){
-                DataManager.reloadRegions();
-            }
-
-        }catch (SQLException e){
-            e.printStackTrace();
+        mysql.query("REPLACE INTO `eps_regions`.`houses` (`ID`, `NAME`, `COSTS`, `OWNER_UUID`, `BLOCKS_INSIDE`, `DOORS`, `SPAWN_POS`, `SHIELD_POS`, `CITY_ID`) " +
+                "VALUES ("+this.id+"," +
+                "'" + this.name +"'" +
+                ", '"+this.costs.amount+"'," +
+                " '"+this.currentOwner_UUID+"'," +
+                " '"+b_inside+"'," +
+                " '"+s_doors+"'," +
+                " '"+this.spawnPosition.x + ">>" + this.spawnPosition.y + ">>" + this.spawnPosition.z+"'," +
+                " '"+this.shield.pos.x + ">>" + this.shield.pos.y + ">>" + this.shield.pos.z+"'," +
+                " '"+this.city.id+"');");
+        if(rl){
+            DataManager.reloadRegions();
         }
     }
 
@@ -133,7 +128,11 @@ public class House {
 
     }
 
-
+    public void delete(){
+            mysql.query("DELETE FROM `eps_regions`.`houses` WHERE `ID` = "+ this.id + ";");
+            DataManager.reloadRegions();
+        DataManager.reloadRegions();
+    }
 
 
 }

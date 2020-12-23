@@ -41,23 +41,12 @@ public class Region {
     }
 
     public void delete(){
-        try {
-            mysql.query("DELETE FROM `eps_regions`.`regions` WHERE `ID` = "+ this.id + ";");
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
+        mysql.query("DELETE FROM `eps_regions`.`regions` WHERE `ID` = "+ this.id + ";");
     }
 
     public void save(){
-            try {
-                mysql.query("REPLACE INTO `eps_regions`.`regions` SET `ID` = "+ this.id + "," +
-                        " `NAME` = '" + this.name + "', `LEVEL` = " + this.level + ";");
-
-            }catch (SQLException e){
-                e.printStackTrace();
-            }
-
-
+        mysql.query("REPLACE INTO `eps_regions`.`regions` SET `ID` = "+ this.id + "," +
+                " `NAME` = '" + this.name + "', `LEVEL` = " + this.level + ";");
     }
 
 }

@@ -3,6 +3,7 @@ package de.epsdev.plugins.MMO.events;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -37,6 +38,11 @@ public class e_PlayerInteract implements Listener {
                         e.setCancelled(true);
                     }
 
+                }
+
+                if(block.getType() == Material.WALL_SIGN){
+                    Out.printToPlayer(player, ChatColor.GOLD + "block.getType().toString()");
+                    e.setCancelled(true);
                 }
 
             }else {

@@ -35,8 +35,6 @@ public class ISign extends BukkitRunnable {
         main.doSync(() ->{
             s.update();
         });
-
-
     }
 
     @Override

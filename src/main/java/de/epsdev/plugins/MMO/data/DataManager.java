@@ -238,16 +238,9 @@ public class DataManager {
     //-----------------------------------------------------------------
 
     public static void createCity(String name, Region region){
-        try{
-            mysql.query("INSERT INTO `eps_regions`.`cities` (`ID`, `NAME`, `REGION_ID`) VALUES (NULL, '"+ name + "', '" + region.id + "');");
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-
+        mysql.query("INSERT INTO `eps_regions`.`cities` (`ID`, `NAME`, `REGION_ID`) VALUES (NULL, '"+ name + "', '" + region.id + "');");
         regions = new ArrayList<>();
-
         reloadRegions();
-
     }
 
     public static City getCityByName(String name){
@@ -320,6 +313,19 @@ public class DataManager {
     public static int getNextHouseID(){
         max_id_houses++;
         return max_id_houses;
+    }
+
+    public static House getHouseBySign(Vec3i pos){
+        for(Region region : regions){
+            for (City city : region.cities){
+                for(House house : city.houses){
+                    if(house.shield.pos.equals(pos)){
+                        return house;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public static void loadAllHouses(){

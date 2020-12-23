@@ -63,13 +63,8 @@ public class User {
         DefaultScroreboard.refresh(this);
     }
 
-
     public void save() {
-        try {
-            mysql.query("UPDATE `eps_users`.`players` SET `RANK` = '" + this.rank.name + "', `MONEY` = '"+ this.money.amount +"' WHERE `players`.`UUID` = '" + this.UUID + "' ");
-        }catch (SQLException exception){
-            exception.printStackTrace();
-        }
+        mysql.query("UPDATE `eps_users`.`players` SET `RANK` = '" + this.rank.name + "', `MONEY` = '"+ this.money.amount +"' WHERE `players`.`UUID` = '" + this.UUID + "' ");
     }
     public void print(){
         Out.printToConsole("Display Name: " + displayName);

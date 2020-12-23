@@ -15,6 +15,10 @@ public class Vec3i {
 
     }
 
+    public boolean equals(Vec3i pos){
+        return this.x == pos.x && this.y == pos.y && this.z == pos.z;
+    }
+
     public String toString(){
         return "X: " + x + " Y: " + y + " Z: " + z;
     }

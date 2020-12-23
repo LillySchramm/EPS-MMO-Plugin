@@ -49,23 +49,13 @@ public class City {
     }
 
     public void save(){
-
-        try {
             mysql.query("REPLACE INTO `eps_regions`.`cities` SET `ID` = "+ this.id + "," +
                     " `NAME` = '" + this.name + "', `REGION_ID` = " + this.region.id + ";");
             DataManager.reloadRegions();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-
     }
 
     public void delete(){
-        try {
             mysql.query("DELETE FROM `eps_regions`.`cities` WHERE `ID` = "+ this.id + ";");
             DataManager.reloadRegions();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
     }
 }

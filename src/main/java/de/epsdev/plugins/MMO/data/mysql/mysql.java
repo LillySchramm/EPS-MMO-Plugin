@@ -36,53 +36,67 @@ public class mysql {
         }
     }
 
-    public static ResultSet query(String sql) throws SQLException {
-        Statement stmt = null;
-        stmt = DB_CONN.createStatement();
+    public static ResultSet query(String sql){
+        try {
 
-        ResultSet rs = stmt.executeQuery(sql);
+            Statement stmt = null;
+            stmt = DB_CONN.createStatement();
 
-        stmt.close();
+            ResultSet rs = stmt.executeQuery(sql);
 
-        return rs;
+            stmt.close();
+
+            return rs;
+
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return null;
+
     }
 
-    public static void createDatabase(String db) throws SQLException {
+    public static void createDatabase(String db)  {
         query("CREATE DATABASE " + db);
         Out.printToConsole("Created database '" + db + "'");
     }
 
-    public static void createTable(String db, String table, String args) throws SQLException {
+    public static void createTable(String db, String table, String args)  {
         query("CREATE TABLE `" + db + "`.`" + table + "` ("+ args +") ENGINE = InnoDB;");
         Out.printToConsole("Created table '" + db + "'.'" + table + "'");
     }
 
-    public static void createDatabaseIfNotExists(String db) throws SQLException {
+    public static void createDatabaseIfNotExists(String db)  {
         if(!databaseExist(db)){
             createDatabase(db);
         }
     }
 
-    public static void createTableIfNotExists(String db, String table, String args) throws SQLException {
+    public static void createTableIfNotExists(String db, String table, String args)  {
         if(!tableExists(table)){
             createTable(db,table,args);
         }
     }
 
-    public static boolean tableExists(String table) throws SQLException{
+    public static boolean tableExists(String table){
         ResultSet rs = query("SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = '" + table +"'");
         return isResultSetEmpty(rs);
     }
 
-    public static boolean databaseExist(String db) throws SQLException {
+    public static boolean databaseExist(String db)  {
         ResultSet rs = query("SHOW DATABASES WHERE `Database` = '"+ db +"'");
         return isResultSetEmpty(rs);
     }
 
-    public static boolean isResultSetEmpty(ResultSet rs) throws SQLException{
-        if (rs.next()){
-            return true;
+    public static boolean isResultSetEmpty(ResultSet rs) {
+        try{
+            if (rs.next()){
+                return true;
+            }
+        }catch(SQLException throwables){
+            throwables.printStackTrace();
         }
+
         return false;
     }
 

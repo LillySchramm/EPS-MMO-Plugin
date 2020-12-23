@@ -5,13 +5,14 @@ import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
+import de.epsdev.plugins.MMO.data.regions.Region;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.events.OnBreak;
 import de.epsdev.plugins.MMO.events.OnChat;
 import de.epsdev.plugins.MMO.events.OnPlace;
 import de.epsdev.plugins.MMO.tools.Math;
 import de.epsdev.plugins.MMO.tools.Vec3i;
-import de.epsdev.plugins.MMO.tools.WorldTools;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -160,7 +161,7 @@ public class Dev_house_detail {
 
     };
 
-    private OnClick updateInterior = new OnClick() {
+    private final OnClick updateInterior = new OnClick() {
         @Override
         public void click(Player player, ItemStack item, Inventory inventory) {
             User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
@@ -184,6 +185,60 @@ public class Dev_house_detail {
         }
     };
 
+    private final OnClick deleteHouse = new OnClick(){
+
+        @Override
+        public void click(Player player, ItemStack item, Inventory inventory) {
+            house.delete();
+            Out.printToPlayer(player, "Deleted '" + house.name + "'!");
+            player.closeInventory();
+        }
+    };
+
+    private final OnBreak doorBreak = e -> {
+        Location location = e.getBlock().getLocation();
+
+        house.processDoor(new Vec3i(location.getBlockX(),location.getBlockY(),location.getBlockZ()), true);
+    };
+
+    private final OnPlace doorPlace = e -> {
+        Location location = e.getBlock().getLocation();
+
+        house.processDoor(new Vec3i(location.getBlockX(),location.getBlockY(),location.getBlockZ()), false);
+    };
+
+    private final Next door_next = user -> {
+        user.onPlace = null;
+        user.onBreak = null;
+        user.next = null;
+        house.save(true);
+
+        Out.printToPlayer(Bukkit.getPlayer(user.displayName), ChatColor.DARK_GREEN + "Saved the doors");
+
+    };
+
+    private final OnClick updateDoors = (player, item, inventory) -> {
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+        user.onPlace = doorPlace;
+        user.onBreak = doorBreak;
+        user.next = door_next;
+
+        Out.printToPlayer(player , ChatColor.DARK_GREEN + "Please redefine the doors.");
+        Out.printToPlayer(player ,ChatColor.DARK_GREEN + "Commit with /next");
+
+        player.getInventory().setContents(new ItemStack[]{
+                new ItemStack(Material.WOOD_DOOR),
+                new ItemStack(Material.ACACIA_DOOR_ITEM),
+                new ItemStack(Material.BIRCH_DOOR_ITEM),
+                new ItemStack(Material.DARK_OAK_DOOR_ITEM),
+                new ItemStack(Material.JUNGLE_DOOR_ITEM),
+                new ItemStack(Material.SPRUCE_DOOR_ITEM),
+                new ItemStack(Material.IRON_DOOR)
+        });
+        player.closeInventory();
+    };
+
     public void init(){
         gui.addItem(Material.NAME_TAG, 1, house.name, tt_clickToUpdate(), changeNameClick, 0,0);
         gui.addItem(Material.EMERALD, 1, house.costs.formatString(), tt_clickToUpdate(), changePriceClick, 1,0);
@@ -200,9 +255,8 @@ public class Dev_house_detail {
         gui.addItem(Material.BED, 1, ChatColor.RED + "Revoke ownership", lore, revokeOwnership, 2,0);
         gui.addItem(Material.COMPASS, 1, "Spawnpossition: " + house.spawnPosition.toString(), tt_clickToUpdate(), setSpawnpoint, 3,0);
         gui.addItem(Material.CONCRETE_POWDER, 1, "Inner Blocks", tt_clickToUpdate(), updateInterior, 4,0);
-        gui.addItem(Material.BARRIER, 1, "Delete House", tt_clickToDelete(), null, 8,0);
-
-
+        gui.addItem(Material.BIRCH_DOOR_ITEM, 1, "Doors", tt_clickToUpdate(), updateDoors, 5,0);
+        gui.addItem(Material.BARRIER, 1, "Delete House", tt_clickToDelete(), deleteHouse, 8,0);
 
     }
 
