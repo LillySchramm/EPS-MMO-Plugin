@@ -2,7 +2,7 @@ orbs:
   maven: circleci/maven@1.0.3
 version: 2.1
 workflows:
-  maven_test:
+  deploy:
     jobs:
       - maven/test:
           command: 'package'
