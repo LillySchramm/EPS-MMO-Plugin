@@ -1,24 +1,21 @@
 package de.epsdev.plugins.MMO.data.regions.cites.houses;
 
+import de.epsdev.plugins.MMO.GUI.Base_Gui;
 import de.epsdev.plugins.MMO.GUI.Dev_house_detail;
+import de.epsdev.plugins.MMO.GUI.OnClick;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
-import de.epsdev.plugins.MMO.tools.Vec3i;
-import de.epsdev.plugins.MMO.tools.WorldTools;
+import de.epsdev.plugins.MMO.tools.*;
 import de.epsdev.plugins.MMO.tools.signs.ISign;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +87,8 @@ public class House {
         if(rl){
             DataManager.reloadRegions();
         }
+
+        this.updateSign();
     }
 
     private void processArray(Vec3i pos, boolean deleted, List<Vec3i> list){
@@ -118,6 +117,8 @@ public class House {
 
         if(currentOwner_UUID.equals("0")){
             shield.lines[2] = ChatColor.GREEN + "For rent";
+        }else{
+            shield.lines[2] = ChatColor.ITALIC + "" +ChatColor.RED + "SOLD";
         }
 
         shield.lines[3] = costs.formatString();
@@ -134,5 +135,50 @@ public class House {
         DataManager.reloadRegions();
     }
 
+    public OnClick rentHouse = (player, item, inventory) -> {
+        if (this.currentOwner_UUID.equals("0")){
+            player.closeInventory();
+            this.currentOwner_UUID = player.getUniqueId().toString();
+            this.save(false);
+            this.updateSign();
+        }
+    };
+
+    public void showRentMenu(Player player){
+        Base_Gui rGui = new Base_Gui(this.name);
+        short color;
+        ArrayList<String> lore = new ArrayList<>();
+
+        String middle_name = " ";
+        ItemStack middleItem = new ItemStack(Material.BIRCH_DOOR_ITEM, 1);
+
+        if(this.currentOwner_UUID.equals("0")){
+            color = Colors.GREEN;
+            lore.add(ChatColor.GREEN + "Click to rent for:");
+            lore.add(this.costs.formatString());
+        }else {
+            color = Colors.RED;
+            String ownerName = PlayerNames.playerNameByUUID(this.currentOwner_UUID);
+
+            middleItem = PlayerHeads.getHead(this.currentOwner_UUID);
+
+            middle_name = ownerName;
+        }
+
+        for(int i = 0; i < 9; i++){
+            if(i != 4){
+                rGui.addItem(new ItemStack(Material.STAINED_GLASS_PANE, 1, color),
+                        1,
+                        this.name,
+                        lore,
+                        rentHouse,
+                        i,0);
+            }else{
+                rGui.addItem(middleItem, 1, middle_name, new ArrayList<>(), null, i,0);
+            }
+        }
+
+        rGui.show(player);
+    }
 
 }

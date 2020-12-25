@@ -10,6 +10,7 @@ import de.epsdev.plugins.MMO.data.regions.Region;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.ranks.Ranks;
+import de.epsdev.plugins.MMO.tools.Colors;
 import de.epsdev.plugins.MMO.tools.Vec3i;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -32,7 +33,7 @@ import java.util.*;
 
 
 public class DataManager {
-    public static final Material GUI_FILLER = Material.THIN_GLASS;
+    public static final ItemStack GUI_FILLER = new ItemStack(Material.STAINED_GLASS_PANE, 1, Colors.LIGHT_GREY);
 
     public static Map<String,User> onlineUsers = new HashMap<String, User>();
 

@@ -20,7 +20,7 @@ public class e_ClickEvent implements Listener {
 
             ItemStack item = e.getCurrentItem();
 
-            if (!(item.getType() == DataManager.GUI_FILLER)) {
+            if (!(item == DataManager.GUI_FILLER)) {
                 ItemMeta meta = item.getItemMeta();
                 List<String> lore = meta.getLore();
 

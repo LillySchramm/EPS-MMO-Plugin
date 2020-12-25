@@ -22,6 +22,30 @@ public class Base_Gui {
     public String name = "";
     public int rows = 1;
 
+    public void addItem(ItemStack material, int amount,String name, ArrayList<String> lore, OnClick onClick, int x, int y){
+        ItemMeta meta = material.getItemMeta();
+
+        meta.setDisplayName(name);
+
+        ArrayList<String> newLore = new ArrayList<String>();
+
+        newLore.add(HiddenItemData.encodeString("{ID: "+ DataManager.funs.size() +"}"));
+        newLore.addAll(lore);
+
+        meta.setLore(newLore);
+        material.setItemMeta(meta);
+        items.add(material);
+
+        if(onClick == null){
+            DataManager.funs.put(DataManager.funs.size(), (player, itemStack1, inventory) -> {});
+        }else {
+            DataManager.funs.put(DataManager.funs.size(), onClick);
+        }
+
+        pos.add(x);
+        pos.add(y);
+    }
+
     public void addItem(Material material, int amount,String name, ArrayList<String> lore, OnClick onClick, int x, int y){
         ItemStack itemStack = new ItemStack(material, amount);
         ItemMeta meta = itemStack.getItemMeta();
@@ -36,12 +60,10 @@ public class Base_Gui {
             newLore.add(1, lore.get(0));
         }
 
-
         meta.setLore(newLore);
-
         itemStack.setItemMeta(meta);
-
         items.add(itemStack);
+
         if(onClick == null){
             DataManager.funs.put(DataManager.funs.size(), (player, itemStack1, inventory) -> {});
         }else {
@@ -60,18 +82,21 @@ public class Base_Gui {
 
         ItemStack[] array = new ItemStack[rows * 9];
 
+        ItemStack filler = DataManager.GUI_FILLER;
+        ItemMeta filler_meta = filler.getItemMeta();
+        filler_meta.setDisplayName(" ");
+        filler.setItemMeta(filler_meta);
+
         for(int y = 0; y < rows; y++){
             for(int x = 0; x < 9; x++){
 
-                ItemStack itemStack = new ItemStack(DataManager.GUI_FILLER);
+                ItemStack itemStack = filler;
 
                 for(int i = 0; i < pos.size()/2; i++){
                     if(pos.get(i * 2) == x && pos.get(i * 2 + 1) == y){
                         itemStack = items.get(i);
                     }
                 }
-
-
                 array[y * 9 + x] = itemStack;
             }
         }

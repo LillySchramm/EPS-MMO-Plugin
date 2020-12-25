@@ -3,6 +3,8 @@ package de.epsdev.plugins.MMO.events;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
+import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
+import de.epsdev.plugins.MMO.tools.Vec3i;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -25,6 +27,7 @@ public class e_PlayerInteract implements Listener {
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
 
         Block block = e.getClickedBlock();
+        Vec3i blockPos = new Vec3i(block.getLocation());
 
         Material blockMaterial = null;
 
@@ -41,7 +44,12 @@ public class e_PlayerInteract implements Listener {
                 }
 
                 if(block.getType() == Material.WALL_SIGN){
-                    Out.printToPlayer(player, ChatColor.GOLD + "block.getType().toString()");
+
+                    House house = DataManager.getHouseBySign(blockPos);
+
+                    if(house != null){
+                        house.showRentMenu(player);
+                    }
                     e.setCancelled(true);
                 }
 
