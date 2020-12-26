@@ -36,8 +36,6 @@ public class PlayerNames {
             playerUUIDS.put(last, uuid);
         }
 
-
-
         return playerNames.get(uuid);
     }
 }

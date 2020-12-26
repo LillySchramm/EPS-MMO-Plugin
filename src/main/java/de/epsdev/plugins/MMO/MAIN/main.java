@@ -5,9 +5,9 @@ import de.epsdev.plugins.MMO.GUI.Regions_GUI;
 import de.epsdev.plugins.MMO.commands.*;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.DatabaseManager;
-import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.events.*;
-import de.epsdev.plugins.MMO.data.mysql.mysql;
+
+import de.epsdev.plugins.MMO.schedulers.MAIN_UPDATE_SCHEDULER;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -36,6 +36,9 @@ public final class main extends JavaPlugin {
         registerEvents();
         registerCommands();
         initGUIs();
+
+        startSchedulers();
+
     }
 
     @Override
@@ -45,6 +48,10 @@ public final class main extends JavaPlugin {
             DataManager.onlineUsers.get(p.getUniqueId().toString()).save();
             p.kickPlayer("Reload");
         }
+    }
+
+    private void startSchedulers(){
+        MAIN_UPDATE_SCHEDULER.run();
     }
 
     private void initRegions(){

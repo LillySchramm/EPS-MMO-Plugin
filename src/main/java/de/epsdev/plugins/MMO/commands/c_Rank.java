@@ -38,7 +38,7 @@ public class c_Rank implements CommandExecutor {
                 case "set":
                     if(sender instanceof Player){
                         Player player = (Player) sender;
-                        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());;
+                        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
                         if(user.rank.canChangeRanks || player.isOp()){
                             if(args.length == 3){
                                 User u = DataManager.getUserByName(args[1]);

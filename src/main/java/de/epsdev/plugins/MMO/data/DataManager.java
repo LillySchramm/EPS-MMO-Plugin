@@ -40,7 +40,7 @@ public class DataManager {
     public static List<Region> regions = new ArrayList<>();
 
     public static boolean chatMuted = false;
-
+    
     public static String[] defaults_user = new String[]{"","","0","1","0","player"};
     public static String[] defaults_regions = new String[]{"","1"};
     public static String[] defaults_cities = new String[]{"",""};
@@ -327,6 +327,22 @@ public class DataManager {
             }
         }
         return null;
+    }
+
+    public static ArrayList<House> getSoldHouses(){
+        
+        ArrayList<House> rented = new ArrayList<House>();
+                
+        for(Region region : regions){
+            for (City city : region.cities){
+                for(House house : city.houses){
+                    if(!house.currentOwner_UUID.equals("0")){
+                        rented.add(house);
+                    }
+                }
+            }
+        }
+        return rented;
     }
 
     public static void loadAllHouses(){
