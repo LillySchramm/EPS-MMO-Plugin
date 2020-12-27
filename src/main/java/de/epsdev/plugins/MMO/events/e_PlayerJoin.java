@@ -14,7 +14,7 @@ public class e_PlayerJoin implements Listener {
     void onPlayerJoin(PlayerJoinEvent e){
         User user = null;
         try {
-            user = DataManager.getUser(e.getPlayer());
+            user = DataManager.getUser(e.getPlayer(), true);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

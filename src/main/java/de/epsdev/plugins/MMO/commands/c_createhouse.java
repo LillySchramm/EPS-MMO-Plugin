@@ -77,7 +77,7 @@ public class c_createhouse implements CommandExecutor {
 
         Out.printToPlayer(player, ChatColor.DARK_GREEN + "Spawnpoint for this house set at: (x) " + x + " (y) " + y + " (z) " + z);
 
-        user.temp_house.save(true);
+        user.temp_house.save(true, true);
         Out.printToPlayer(Bukkit.getPlayer(user.displayName), ChatColor.DARK_GREEN + "House created successfully!");
 
         user.next = null;

@@ -13,6 +13,15 @@ public class Money {
         this.amount = amount;
     }
 
+    public boolean decreaseMoney(int a){
+        if(this.amount - a >= 0){
+            this.amount -= a;
+            return true;
+        }
+
+        return false;
+    }
+
     public String formatString(){
         String ret = "";
         int i = this.amount;
@@ -28,8 +37,6 @@ public class Money {
         ret += ChatColor.RED + Integer.toString(i) + "C ";
 
         return ret;
-
-
     }
 
 }

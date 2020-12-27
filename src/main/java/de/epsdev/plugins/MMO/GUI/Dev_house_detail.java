@@ -46,7 +46,7 @@ public class Dev_house_detail {
 
         if(Math.isNumeric(msg)){
             house.costs.amount = Integer.parseInt(msg);
-            house.save(true);
+            house.save(true, true);
         }else {
             if(msg.equalsIgnoreCase("null")){
                 Out.printToPlayer(player, ChatColor.GREEN + "Cost revamp process canceled.");
@@ -69,7 +69,7 @@ public class Dev_house_detail {
             Out.printToPlayer(player, ChatColor.GREEN + "Renaming process canceled.");
         }else {
             house.name = msg;
-            house.save(true);
+            house.save(true, true);
         }
 
         user.onChat = null;
@@ -98,7 +98,7 @@ public class Dev_house_detail {
     private final OnClick revokeOwnership = (player, item, inventory) -> {
         Out.printToPlayer(player, "Revoked the ownership!");
         house.currentOwner_UUID = "0";
-        house.save(false);
+        house.save(false, true);
     };
 
     private final Next setSpNext = user -> {
@@ -108,7 +108,7 @@ public class Dev_house_detail {
         house.spawnPosition.y = player.getLocation().getBlockY();
         house.spawnPosition.z = player.getLocation().getBlockZ();
 
-        house.save(true);
+        house.save(true, true);
 
         Out.printToPlayer(player, ChatColor.DARK_GREEN + "Set the spawn.");
 
@@ -155,7 +155,7 @@ public class Dev_house_detail {
       user.onBreak = null;
       user.next = null;
       house.fillInside(Material.AIR);
-      house.save(true);
+      house.save(true, true);
 
       Out.printToPlayer(Bukkit.getPlayer(user.displayName), ChatColor.DARK_GREEN + "Saved the blocks");
 
@@ -211,7 +211,7 @@ public class Dev_house_detail {
         user.onPlace = null;
         user.onBreak = null;
         user.next = null;
-        house.save(true);
+        house.save(true, true);
 
         Out.printToPlayer(Bukkit.getPlayer(user.displayName), ChatColor.DARK_GREEN + "Saved the doors");
 

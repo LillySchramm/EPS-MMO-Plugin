@@ -30,9 +30,7 @@ public final class main extends JavaPlugin {
 
         databaseManager.init();
 
-        initDataStructures();
         initRegions();
-        DataManager.patch();
         registerEvents();
         registerCommands();
         initGUIs();
@@ -43,7 +41,7 @@ public final class main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        DataManager.saveAllHouses();
         for(Player p : Bukkit.getOnlinePlayers()) {
             DataManager.onlineUsers.get(p.getUniqueId().toString()).save();
             p.kickPlayer("Reload");
@@ -58,16 +56,6 @@ public final class main extends JavaPlugin {
         DataManager.loadAllRegions();
         DataManager.loadAllCities();
         DataManager.loadAllHouses();
-    }
-
-    private void initDataStructures(){
-        DataManager.createDir("eps/");
-        DataManager.createDir("eps/players/");
-        DataManager.createDir("eps/regions/");
-        DataManager.createDir("eps/regions/cities/");
-        DataManager.createDir("eps/regions/cities/houses/");
-        DataManager.createDir("eps/regions/mobspawns/");
-
     }
 
     private void registerEvents(){

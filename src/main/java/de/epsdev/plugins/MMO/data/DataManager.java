@@ -34,6 +34,7 @@ import java.util.*;
 
 public class DataManager {
     public static final ItemStack GUI_FILLER = new ItemStack(Material.STAINED_GLASS_PANE, 1, Colors.LIGHT_GREY);
+    public static final int SECS_PER_RENT = 10;
 
     public static Map<String,User> onlineUsers = new HashMap<String, User>();
 
@@ -50,54 +51,6 @@ public class DataManager {
     public static int max_id_houses = 1;
 
     public static Map<Integer, OnClick> funs = new HashMap<>();
-
-    public static void patch(){
-        patchFile("plugins/eps/players/", defaults_user);
-        patchFile("plugins/eps/regions/", defaults_regions);
-        patchFile("plugins/eps/regions/cities/", defaults_cities);
-        patchFile("plugins/eps/regions/cities/houses/", defaults_houses);
-    }
-
-    public static void patchFile(String path, String[] defaults){
-        File f = new File(path);
-        if(f.list() != null) {
-            ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
-            for (String s : names) {
-                if(s.contains(".txt")){
-                    File file = new File(path + s);
-                    Scanner myReader = null;
-                    try {
-                        myReader = new Scanner(file);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    String data = "";
-                    while (myReader.hasNextLine()) {
-                        data += myReader.nextLine();
-                    }
-                    myReader.close();
-                    String[] dataArray = data.split(";;");
-
-                    if(dataArray.length < defaults.length){
-                        for(int i = dataArray.length; i < defaults.length; i++){
-                            data += defaults[i] + ";;";
-                            Out.printToConsole("Patched file");
-                        }
-                    }
-
-                    FileWriter writer = null;
-                    try {
-                        writer = new FileWriter(path + s);
-                        writer.write(data);
-                        writer.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        }
-    }
 
     public static void performClickFunction(Player player, int i, ItemStack item, Inventory inventory){
         if (funs.containsKey(i)){
@@ -118,14 +71,8 @@ public class DataManager {
 
     }
 
-    public static void createDir(String dir){
-        new File("plugins/" + dir).mkdirs();
-        Out.printToConsole("Created '" + dir + "'");
-
-    }
-
-    public static User getUser(Player player) throws SQLException {
-        return new User(player);
+    public static User getUser(Player player, boolean online) throws SQLException {
+        return new User(player, online);
     }
 
     public static User getUserByName(String name){
@@ -143,24 +90,6 @@ public class DataManager {
         }
 
         return user;
-    }
-
-    public static void createUser(Player player){
-        Path path = Paths.get("plugins/eps/players/"+ player.getUniqueId() +".txt");
-
-        try {
-            Files.createFile(path);
-            FileWriter writer = new FileWriter("plugins/eps/players/"+ player.getUniqueId() +".txt");
-            writer.write( player.getDisplayName()+ ";;");
-            writer.write(player.getUniqueId()+";;");
-            for(int i = 2; i < defaults_user.length; i++){
-                writer.write(defaults_user[i]+";;");
-            }
-            writer.close();
-        } catch (IOException ex) {
-            System.err.println("File already exists");
-        }
-
     }
 
     public static void saveUser(User user){
@@ -343,6 +272,16 @@ public class DataManager {
             }
         }
         return rented;
+    }
+
+    public static void saveAllHouses(){
+        for(Region region : regions){
+            for (City city : region.cities){
+                for(House house : city.houses){
+                    house.save(false, false);
+                }
+            }
+        }
     }
 
     public static void loadAllHouses(){

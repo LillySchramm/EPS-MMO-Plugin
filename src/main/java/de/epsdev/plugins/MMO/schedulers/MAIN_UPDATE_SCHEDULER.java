@@ -19,12 +19,7 @@ public class MAIN_UPDATE_SCHEDULER {
                 ArrayList<House> houses = DataManager.getSoldHouses();
 
                 for(House house: houses){
-                    User user = DataManager.onlineUsers.get(house.currentOwner_UUID);
-                    if(user != null){
-                        Out.printToConsole("yay");
-                    }else{
-                        Out.printToConsole("nay");
-                    }
+                    house.increaseRenttime();
                 }
             }
         }, 0L, 20L);

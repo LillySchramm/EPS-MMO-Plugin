@@ -7,6 +7,7 @@ import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.tools.*;
 import de.epsdev.plugins.MMO.tools.signs.ISign;
@@ -22,6 +23,7 @@ import java.util.List;
 public class House {
     public Money costs;
     public int id;
+    public int renttime;
     public String currentOwner_UUID = "0";
     public String name = "";
 
@@ -62,7 +64,7 @@ public class House {
         WorldTools.fillBlocks(this.blocksInside,material);
     }
 
-    public void save(boolean rl){
+    public void save(boolean rl, boolean reloadSign){
         String b_inside = "";
 
         for(Vec3i vec : this.blocksInside){
@@ -74,7 +76,7 @@ public class House {
             s_doors += vec.x + ">>" + vec.y + ">>" + vec.z + ">>";
         }
 
-        mysql.query("REPLACE INTO `eps_regions`.`houses` (`ID`, `NAME`, `COSTS`, `OWNER_UUID`, `BLOCKS_INSIDE`, `DOORS`, `SPAWN_POS`, `SHIELD_POS`, `CITY_ID`) " +
+        mysql.query("REPLACE INTO `eps_regions`.`houses` (`ID`, `NAME`, `COSTS`, `OWNER_UUID`, `BLOCKS_INSIDE`, `DOORS`, `SPAWN_POS`, `SHIELD_POS`, `CITY_ID`, `RENTTIME`) " +
                 "VALUES ("+this.id+"," +
                 "'" + this.name +"'" +
                 ", '"+this.costs.amount+"'," +
@@ -83,12 +85,13 @@ public class House {
                 " '"+s_doors+"'," +
                 " '"+this.spawnPosition.x + ">>" + this.spawnPosition.y + ">>" + this.spawnPosition.z+"'," +
                 " '"+this.shield.pos.x + ">>" + this.shield.pos.y + ">>" + this.shield.pos.z+"'," +
-                " '"+this.city.id+"');");
+                " '"+this.city.id+"'," +
+                "  "+ this.renttime +");");
         if(rl){
             DataManager.reloadRegions();
         }
 
-        this.updateSign();
+        if(reloadSign) this.updateSign();
     }
 
     private void processArray(Vec3i pos, boolean deleted, List<Vec3i> list){
@@ -137,12 +140,50 @@ public class House {
 
     public OnClick rentHouse = (player, item, inventory) -> {
         if (this.currentOwner_UUID.equals("0")){
-            player.closeInventory();
-            this.currentOwner_UUID = player.getUniqueId().toString();
-            this.save(false);
-            this.updateSign();
+            User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+            if(user.decreaseMoney(this.costs.amount, true)){
+                player.closeInventory();
+                this.currentOwner_UUID = player.getUniqueId().toString();
+                this.save(false, true);
+                this.updateSign();
+            }else{
+                Out.printToPlayer(player,ChatColor.RED + "" + ChatColor.BOLD + "Sorry but you cant afford this house.");
+            }
+
+
         }
     };
+
+    public void increaseRenttime(){
+        this.renttime++;
+
+        if(this.renttime >= DataManager.SECS_PER_RENT){
+            User user = DataManager.onlineUsers.get(this.currentOwner_UUID);
+
+            if(user != null){
+                if(user.decreaseMoney(this.costs.amount, true)){
+                    Out.printToConsole("Player was able to pay.");
+                }else{
+                    this.currentOwner_UUID = "0";
+                    this.save(false, true);
+                    Out.printToConsole("Player wasnt able to pay");
+                }
+            }else{
+                if(User.decreaseMoneyOfOfflinePlayer(this.currentOwner_UUID, this.costs.amount)){
+                    Out.printToConsole("Offline-Player was able to pay.");
+                }else{
+                    this.currentOwner_UUID = "0";
+                    this.save(false, true);
+
+                    Out.printToConsole("Offline-Player wasnt able to pay");
+                }
+            }
+
+            this.renttime = 0;
+        }
+
+    }
 
     public void showRentMenu(Player player){
         Base_Gui rGui = new Base_Gui(this.name);

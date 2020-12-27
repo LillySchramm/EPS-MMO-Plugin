@@ -41,7 +41,20 @@ public class User {
 
     public House temp_house = null;
 
-    public User(Player player) throws SQLException {
+    public User(String uuid) throws SQLException {
+        ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`players` WHERE UUID = '" + uuid + "'");
+
+        this.UUID = uuid;
+
+        if(rs.next()){
+            rs.absolute(1);
+            this.money = new Money(rs.getInt("MONEY"));
+            this.rank = Ranks.getRank(rs.getString("RANK"));
+
+        }
+    }
+
+    public User(Player player, boolean online) throws SQLException {
         displayName = player.getDisplayName();
         UUID = player.getUniqueId().toString();
 
@@ -59,7 +72,43 @@ public class User {
             this.rank = Ranks.getRank(rs.getString("RANK"));
         }
 
+        if(online) DefaultScroreboard.refresh(this);
+    }
 
+    public static void saveUser(User user){
+        user.save();
+    }
+
+    public static boolean decreaseMoneyOfOfflinePlayer(String uuid, int amount) {
+        try{
+            User user = new User(uuid);
+
+            boolean ret = user.decreaseMoney(amount, false);
+
+            User.saveUser(user);
+
+            return ret;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean decreaseMoney(int a, boolean online) {
+        boolean ret = this.money.decreaseMoney(a);
+        if(ret) {
+            if(online){
+                this.refreshScoreboard();
+                this.save();
+            }
+        }
+
+
+        return ret;
+    }
+
+    public void refreshScoreboard(){
         DefaultScroreboard.refresh(this);
     }
 
