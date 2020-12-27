@@ -9,6 +9,7 @@ import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
+import de.epsdev.plugins.MMO.ranks.Rank;
 import de.epsdev.plugins.MMO.tools.*;
 import de.epsdev.plugins.MMO.tools.signs.ISign;
 import org.bukkit.ChatColor;
@@ -141,15 +142,24 @@ public class House {
     public OnClick rentHouse = (player, item, inventory) -> {
         if (this.currentOwner_UUID.equals("0")){
             User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+            Rank user_rank = user.rank;
 
-            if(user.decreaseMoney(this.costs.amount, true)){
-                player.closeInventory();
-                this.currentOwner_UUID = player.getUniqueId().toString();
-                this.save(false, true);
-                this.updateSign();
+            ArrayList<House> housesOwnedByPlayer = DataManager.getHousesOwnedByPlayer(player);
+
+            if(!(housesOwnedByPlayer.size() >= user_rank.maxHousesForRent)){
+                if(user.decreaseMoney(this.costs.amount, true)){
+                    player.closeInventory();
+                    this.currentOwner_UUID = player.getUniqueId().toString();
+                    this.save(false, true);
+                    this.updateSign();
+                }else{
+                    Out.printToPlayer(player,ChatColor.RED + "" + ChatColor.BOLD + "Sorry but you cant afford this house.");
+                }
             }else{
-                Out.printToPlayer(player,ChatColor.RED + "" + ChatColor.BOLD + "Sorry but you cant afford this house.");
+                Out.printToPlayer(player,ChatColor.RED + "" + ChatColor.BOLD + "Sorry but a player with the '" + user_rank.name +
+                        "' rank can only rent " + user_rank.maxHousesForRent + " houses at the same time.");
             }
+
 
 
         }

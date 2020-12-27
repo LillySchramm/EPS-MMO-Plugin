@@ -34,18 +34,13 @@ import java.util.*;
 
 public class DataManager {
     public static final ItemStack GUI_FILLER = new ItemStack(Material.STAINED_GLASS_PANE, 1, Colors.LIGHT_GREY);
-    public static final int SECS_PER_RENT = 10;
+    public static final int SECS_PER_RENT = 60 * 60;
 
     public static Map<String,User> onlineUsers = new HashMap<String, User>();
 
     public static List<Region> regions = new ArrayList<>();
 
     public static boolean chatMuted = false;
-    
-    public static String[] defaults_user = new String[]{"","","0","1","0","player"};
-    public static String[] defaults_regions = new String[]{"","1"};
-    public static String[] defaults_cities = new String[]{"",""};
-    public static String[] defaults_houses = new String[]{"","1","","0>>0>>0","0>>0>>0", "0>>0>>0", "0>>0>>0", "0"}; //HouseName;HouseCost;CurrentOwnerUUID;BlocksInside;Doors;Spawnpoint;Shield;City_id;
 
     public static int max_id_cities = 0;
     public static int max_id_houses = 1;
@@ -58,17 +53,6 @@ public class DataManager {
         }else {
             Err.funNotRegisteredError();
         }
-    }
-
-    public static void loadData(String dir){
-        File f = new File("plugins/" + dir);
-        if(f.list() != null){
-            ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
-            for(String s : names){
-                Out.printToConsole(s);
-            }
-        }
-
     }
 
     public static User getUser(Player player, boolean online) throws SQLException {
@@ -256,6 +240,28 @@ public class DataManager {
             }
         }
         return null;
+    }
+
+    public static ArrayList<House> getHousesOwnedByPlayer(String uuid){
+        ArrayList<House> houses = new ArrayList<>();
+
+        for(House house : getSoldHouses()){
+            if(house.currentOwner_UUID.equalsIgnoreCase(uuid)) houses.add(house);
+        }
+
+        return houses;
+    }
+
+    public static ArrayList<House> getHousesOwnedByPlayer(Player player){
+        ArrayList<House> houses = new ArrayList<>();
+
+        String uuid = player.getUniqueId().toString();
+
+        for(House house : getSoldHouses()){
+            if(house.currentOwner_UUID.equalsIgnoreCase(uuid)) houses.add(house);
+        }
+
+        return houses;
     }
 
     public static ArrayList<House> getSoldHouses(){

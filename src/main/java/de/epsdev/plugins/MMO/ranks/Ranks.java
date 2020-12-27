@@ -16,7 +16,7 @@ public class Ranks {
             true  //CanManageHouses
     },
         new  int[]{
-            0     //MaxHousesOwn
+            999     //MaxHousesOwn
     });
     public static Rank Builder = new Rank("builder", ChatColor.BLUE + "Builder", new boolean[]{
             true, //CanBuild
@@ -31,7 +31,7 @@ public class Ranks {
             true  //CanManageHouses
     },
         new  int[]{
-                0     //MaxHousesOwn
+                999     //MaxHousesOwn
     });
     public static Rank Player = new Rank("player", "Player",new  boolean[]{
             false, //CanBuild
@@ -62,7 +62,7 @@ public class Ranks {
             false  //CanManageHouses
     },
         new  int[]{
-                0     //MaxHousesOwn
+                999     //MaxHousesOwn
     });
 
     public static Rank VIP = new Rank("vip", ChatColor.GOLD + "VIP",new  boolean[]{
