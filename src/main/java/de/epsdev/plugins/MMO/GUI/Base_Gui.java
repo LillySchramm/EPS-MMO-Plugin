@@ -1,13 +1,12 @@
 package de.epsdev.plugins.MMO.GUI;
 
+import de.epsdev.plugins.MMO.GUI.dev.OnClick;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.tools.HiddenItemData;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -22,7 +21,7 @@ public class Base_Gui {
     public String name = "";
     public int rows = 1;
 
-    public void addItem(ItemStack material, int amount,String name, ArrayList<String> lore, OnClick onClick, int x, int y){
+    public void addItem(ItemStack material, int amount, String name, ArrayList<String> lore, OnClick onClick, int x, int y){
         ItemMeta meta = material.getItemMeta();
 
         meta.setDisplayName(name);
@@ -72,6 +71,13 @@ public class Base_Gui {
 
         pos.add(x);
         pos.add(y);
+    }
+
+    public void adjustRowCount(int amount){
+        this.rows = amount/9;
+
+        if(this.rows < 1) this.rows = 1;
+
     }
 
     public Base_Gui(String name){

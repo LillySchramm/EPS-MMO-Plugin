@@ -1,6 +1,9 @@
 package de.epsdev.plugins.MMO.data;
 
 import de.epsdev.plugins.MMO.GUI.*;
+import de.epsdev.plugins.MMO.GUI.dev.Dev_Houses_Gui;
+import de.epsdev.plugins.MMO.GUI.dev.OnClick;
+import de.epsdev.plugins.MMO.GUI.dev.Regions_GUI;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Err;
@@ -9,7 +12,6 @@ import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.Region;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
-import de.epsdev.plugins.MMO.ranks.Ranks;
 import de.epsdev.plugins.MMO.tools.Colors;
 import de.epsdev.plugins.MMO.tools.Vec3i;
 import org.bukkit.Material;
@@ -17,16 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import javax.jws.soap.SOAPBinding;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -234,6 +226,35 @@ public class DataManager {
             for (City city : region.cities){
                 for(House house : city.houses){
                     if(house.shield.pos.equals(pos)){
+                        return house;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public static House getHouseByDoor(Vec3i pos){
+        for(Region region : regions){
+            for (City city : region.cities){
+                for(House house : city.houses){
+                    for(Vec3i vec3i : house.doors){
+                        if(vec3i.equals(pos) || pos.equals(new Vec3i(vec3i.x,vec3i.y + 1, vec3i.z))){
+                            return house;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public static House getHouseByID(int id)
+    {
+        for(Region region : regions){
+            for (City city : region.cities){
+                for(House house : city.houses){
+                    if(house.id == id){
                         return house;
                     }
                 }

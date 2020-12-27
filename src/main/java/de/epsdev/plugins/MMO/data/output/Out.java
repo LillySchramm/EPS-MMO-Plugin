@@ -28,6 +28,10 @@ public class Out {
         player.sendMessage("[EPS-MMO] " + msg);
     }
 
+    public static void printToPlayer(Player player, int msg){
+        player.sendMessage("[EPS-MMO] " + msg);
+    }
+
     public static void printToBroadcast(String msg){
         Bukkit.broadcastMessage(msg);
     }

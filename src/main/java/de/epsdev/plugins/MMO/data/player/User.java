@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.data.player;
 
+import de.epsdev.plugins.MMO.GUI.player.PlayerHouses_GUI;
 import de.epsdev.plugins.MMO.commands.Next;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
@@ -38,7 +39,6 @@ public class User {
     public OnPlace onPlace = null;
     public Next next = null;
     public OnRightObj onRightObj = null;
-
     public House temp_house = null;
 
     public User(String uuid) throws SQLException {

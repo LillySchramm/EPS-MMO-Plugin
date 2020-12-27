@@ -1,7 +1,7 @@
 package de.epsdev.plugins.MMO.MAIN;
 
-import de.epsdev.plugins.MMO.GUI.CheatMenu_GUI;
-import de.epsdev.plugins.MMO.GUI.Regions_GUI;
+import de.epsdev.plugins.MMO.GUI.dev.CheatMenu_GUI;
+import de.epsdev.plugins.MMO.GUI.dev.Regions_GUI;
 import de.epsdev.plugins.MMO.commands.*;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.DatabaseManager;
@@ -15,9 +15,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-
-import java.sql.SQLException;
-import java.util.concurrent.Callable;
 
 public final class main extends JavaPlugin {
 
@@ -86,6 +83,7 @@ public final class main extends JavaPlugin {
         getCommand("createcity").setExecutor(new c_createcity());
 
         getCommand("createhouse").setExecutor(new c_createhouse());
+        getCommand("houses").setExecutor(new c_houses());
 
     }
 

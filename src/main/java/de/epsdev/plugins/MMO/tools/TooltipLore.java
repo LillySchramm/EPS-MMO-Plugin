@@ -20,6 +20,10 @@ public class TooltipLore {
         return toTT(ChatColor.GREEN + "Click to update");
     }
 
+    public static ArrayList<String> tt_clickToTeleport(){
+        return toTT(ChatColor.GREEN + "Click to teleport");
+    }
+
     public static ArrayList<String> tt_clickToDelete(){
         return toTT(ChatColor.GREEN + "Click to delete");
     }

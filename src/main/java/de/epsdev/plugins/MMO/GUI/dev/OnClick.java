@@ -1,4 +1,4 @@
-package de.epsdev.plugins.MMO.GUI;
+package de.epsdev.plugins.MMO.GUI.dev;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

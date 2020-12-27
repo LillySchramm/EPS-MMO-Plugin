@@ -1,8 +1,8 @@
 package de.epsdev.plugins.MMO.data.regions.cites.houses;
 
 import de.epsdev.plugins.MMO.GUI.Base_Gui;
-import de.epsdev.plugins.MMO.GUI.Dev_house_detail;
-import de.epsdev.plugins.MMO.GUI.OnClick;
+import de.epsdev.plugins.MMO.GUI.dev.Dev_house_detail;
+import de.epsdev.plugins.MMO.GUI.dev.OnClick;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
@@ -139,6 +139,15 @@ public class House {
         DataManager.reloadRegions();
     }
 
+    public Vec3i getDoorByPosition(Vec3i pos){
+        for(Vec3i vec3i : this.doors){
+            if(vec3i.equals(pos) || pos.equals(new Vec3i(vec3i.x,vec3i.y + 1, vec3i.z))){
+                return vec3i;
+            }
+        }
+        return null;
+    }
+
     public OnClick rentHouse = (player, item, inventory) -> {
         if (this.currentOwner_UUID.equals("0")){
             User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
@@ -159,8 +168,11 @@ public class House {
                 Out.printToPlayer(player,ChatColor.RED + "" + ChatColor.BOLD + "Sorry but a player with the '" + user_rank.name +
                         "' rank can only rent " + user_rank.maxHousesForRent + " houses at the same time.");
             }
-
-
+        }else if(player.getUniqueId().toString().equalsIgnoreCase(this.currentOwner_UUID)){
+            player.closeInventory();
+            this.currentOwner_UUID = "0";
+            this.save(false,true);
+            Out.printToPlayer(player, ChatColor.RED + "" + ChatColor.BOLD + "Revoked your ownership");
 
         }
     };
@@ -199,7 +211,6 @@ public class House {
         Base_Gui rGui = new Base_Gui(this.name);
         short color;
         ArrayList<String> lore = new ArrayList<>();
-
         String middle_name = " ";
         ItemStack middleItem = new ItemStack(Material.BIRCH_DOOR_ITEM, 1);
 
@@ -209,10 +220,13 @@ public class House {
             lore.add(this.costs.formatString());
         }else {
             color = Colors.RED;
+
+            if(player.getUniqueId().toString().equalsIgnoreCase(this.currentOwner_UUID)){
+                lore.add(ChatColor.RED + "" + ChatColor.BOLD +"Click to revoke ownership");
+            }
+
             String ownerName = PlayerNames.playerNameByUUID(this.currentOwner_UUID);
-
             middleItem = PlayerHeads.getHead(this.currentOwner_UUID);
-
             middle_name = ownerName;
         }
 

@@ -1,6 +1,6 @@
 package de.epsdev.plugins.MMO.commands;
 
-import de.epsdev.plugins.MMO.GUI.Regions_GUI;
+import de.epsdev.plugins.MMO.GUI.dev.Regions_GUI;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.player.User;

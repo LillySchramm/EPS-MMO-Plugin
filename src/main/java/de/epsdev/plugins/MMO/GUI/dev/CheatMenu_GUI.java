@@ -1,16 +1,13 @@
-package de.epsdev.plugins.MMO.GUI;
+package de.epsdev.plugins.MMO.GUI.dev;
 
+import de.epsdev.plugins.MMO.GUI.Base_Gui;
 import de.epsdev.plugins.MMO.data.DataManager;
-import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.ranks.Rank;
 import de.epsdev.plugins.MMO.ranks.Ranks;
 import de.epsdev.plugins.MMO.scoreboards.DefaultScroreboard;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 

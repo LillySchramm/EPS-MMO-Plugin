@@ -18,4 +18,16 @@ public class Colors {
     public static short RED = 14;
     public static short BLACK = 15;
 
+    public static String removeBukkitColorCodes(String toAlter){
+        toAlter.replace("&0", ""); toAlter.replace("&1", ""); toAlter.replace("&2", "");
+        toAlter.replace("&3", ""); toAlter.replace("&4", ""); toAlter.replace("&5", "");
+        toAlter.replace("&6", ""); toAlter.replace("&7", ""); toAlter.replace("&8", "");
+        toAlter.replace("&9", ""); toAlter.replace("&A", ""); toAlter.replace("&B", "");
+        toAlter.replace("&C", ""); toAlter.replace("&D", ""); toAlter.replace("&E", "");
+        toAlter.replace("&F", ""); toAlter.replace("&M", ""); toAlter.replace("&N", "");
+        toAlter.replace("&L", ""); toAlter.replace("&K", ""); toAlter.replace("&O", "");
+        return toAlter;
+    }
+
+
 }
