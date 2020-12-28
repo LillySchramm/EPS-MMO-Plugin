@@ -85,6 +85,8 @@ public final class main extends JavaPlugin {
         getCommand("createhouse").setExecutor(new c_createhouse());
         getCommand("houses").setExecutor(new c_houses());
 
+        getCommand("npc").setExecutor(new c_npc());
+
     }
 
     private void initGUIs(){

@@ -1,4 +1,4 @@
-name: EPSRL
+name: EPS-MMO
 version: 0.1 (Build ${buildNumber})
 main: de.epsdev.plugins.MMO.MAIN.main
 authors: [EliasSchramm]
@@ -7,6 +7,9 @@ commands:
   money:
     description: Doing money stuff
     aliases: [m, gold]
+
+  npc:
+    description: ...
 
   houses:
     description: Showing the players their houses.
