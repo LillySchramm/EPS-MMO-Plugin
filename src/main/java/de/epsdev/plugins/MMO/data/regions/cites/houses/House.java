@@ -46,7 +46,7 @@ public class House {
     }
 
     public House(Money costs, int id, String currentOwner_UUID, String name, ArrayList<Vec3i> blocksInside,
-                 ArrayList<Vec3i> doors, Vec3i shield, Vec3i spawnPosition, City city) {
+                 ArrayList<Vec3i> doors, Vec3i shield, Vec3i spawnPosition, City city, int renttime) {
         this.costs = costs;
         this.id = id;
         this.currentOwner_UUID = currentOwner_UUID;
@@ -56,6 +56,7 @@ public class House {
         this.shield = new ISign(shield);
         this.spawnPosition = spawnPosition;
         this.city = city;
+        this.renttime = renttime;
 
         this.detail_gui = new Dev_house_detail(this);
 

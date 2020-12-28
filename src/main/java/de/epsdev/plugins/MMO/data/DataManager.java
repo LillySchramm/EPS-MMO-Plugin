@@ -377,6 +377,8 @@ public class DataManager {
 
                 City city = DataManager.getCityByID(rs.getInt("CITY_ID"));
 
+                int renttime = rs.getInt("RENTTIME");
+
                 House house = new House(house_cost,
                         house_id ,
                         house_current_ownerUUID,
@@ -385,7 +387,8 @@ public class DataManager {
                         house_doors,
                         house_shield,
                         house_spawnpoint,
-                        city);
+                        city,
+                        renttime);
 
                 city.houses.add(house);
                 city.gui.houses_gui = new Dev_Houses_Gui(city);
