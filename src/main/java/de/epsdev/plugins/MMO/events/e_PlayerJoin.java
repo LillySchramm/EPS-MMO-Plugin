@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.events;
 
 import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.nms.PacketReader;
 import de.epsdev.plugins.MMO.data.player.User;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +13,10 @@ public class e_PlayerJoin implements Listener {
 
     @EventHandler
     void onPlayerJoin(PlayerJoinEvent e){
+
+        PacketReader reader = new PacketReader();
+        reader.inject(e.getPlayer());
+
         User user = null;
         try {
             user = DataManager.getUser(e.getPlayer(), true);

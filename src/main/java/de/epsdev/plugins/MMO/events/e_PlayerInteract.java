@@ -97,4 +97,10 @@ public class e_PlayerInteract implements Listener {
             }
         }
     }
+
+    @EventHandler
+    void onRightNPC(RightClickNPC e){
+        Player player = e.player.getPlayer();
+        Out.printToPlayer(player, "Hi");
+    }
 }

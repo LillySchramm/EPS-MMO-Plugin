@@ -11,7 +11,7 @@ public class c_npc implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
-            NPC.createNPC(player);
+            NPC.createNPC(player, "WielandHD");
         }
         return true;
     }
