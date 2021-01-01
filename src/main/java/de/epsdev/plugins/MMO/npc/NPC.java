@@ -28,6 +28,13 @@ public class NPC {
         this.script = script;
     }
 
+    public void reload(Player player){
+        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
+        connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.UPDATE_LATENCY,
+                this.entityPlayer));
+
+    }
+
     public void display(Player player){
         PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
 

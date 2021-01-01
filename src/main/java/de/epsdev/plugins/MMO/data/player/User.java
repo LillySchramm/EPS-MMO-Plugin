@@ -13,6 +13,7 @@ import de.epsdev.plugins.MMO.events.OnRightObj;
 import de.epsdev.plugins.MMO.ranks.Rank;
 import de.epsdev.plugins.MMO.ranks.Ranks;
 import de.epsdev.plugins.MMO.scoreboards.DefaultScroreboard;
+import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
 import javax.sql.RowSet;
@@ -40,6 +41,8 @@ public class User {
     public Next next = null;
     public OnRightObj onRightObj = null;
     public House temp_house = null;
+
+    public Chunk lastChunk = null;
 
     public User(String uuid) throws SQLException {
         ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`players` WHERE UUID = '" + uuid + "'");
