@@ -4,6 +4,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import de.epsdev.plugins.MMO.tools.PlayerNames;
+import de.epsdev.plugins.MMO.tools.Vec2f;
+import de.epsdev.plugins.MMO.tools.Vec3f;
+import de.epsdev.plugins.MMO.tools.Vec3i;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,16 +25,18 @@ public class NPC_Manager {
         public static List<NPC> NPCs = new ArrayList<>();
         public static Map<String, Skin> textureHash = new HashMap<>();
 
-        public static NPC createNPC(Player player, String skin){
+        public static EntityPlayer createNPC_ENTITY(String name ,Vec3f pos, Vec2f rotation, String skin){
             MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
-            WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
-            GameProfile gameProfile = new GameProfile(UUID.randomUUID(), ChatColor.DARK_AQUA + "NPC");
+            WorldServer world = ((CraftWorld) Bukkit.getServer().getWorld("world")).getHandle();
+            GameProfile gameProfile = new GameProfile(UUID.randomUUID(), name);
 
-            Location playerLocation = player.getLocation();
+            Location location = new Location(Bukkit.getServer().getWorld("world"), pos.x, pos.y, pos.z);
+            location.setYaw(rotation.yaw);
+            location.setPitch(rotation.pitch);
 
             EntityPlayer npc = new EntityPlayer(server, world, gameProfile, new PlayerInteractManager(world));
-            npc.setLocation(playerLocation.getX(),playerLocation.getY(),playerLocation.getZ(),
-                    playerLocation.getYaw(), playerLocation.getPitch());
+            npc.setLocation(location.getX(),location.getY(),location.getZ(),
+                    location.getYaw(), location.getPitch());
 
             npc.getBukkitEntity().setRemoveWhenFarAway(false);
 
@@ -38,15 +44,18 @@ public class NPC_Manager {
                 Skin skinValues = getSkin(skin);
                 if(skinValues != null){
                     gameProfile.getProperties().put("textures", new Property("textures", skinValues.texture[0], skinValues.texture[1]));
-
                 }
-                return addNPCPacket(npc, skinValues);
             }
-            return addNPCPacket(npc, null);
 
+            return npc;
         }
 
-        private static Skin getSkin(String name){
+        public static NPC createNPC(Player player, String skin){
+            EntityPlayer npc = createNPC_ENTITY(player.getDisplayName() ,new Vec3f(player.getLocation()), new Vec2f(player.getLocation()), skin);
+            return addNPCPacket(npc, getSkin(skin), "");
+        }
+
+        public static Skin getSkin(String name){
             Skin res = null;
 
             if(textureHash.containsKey(name)){
@@ -54,9 +63,7 @@ public class NPC_Manager {
             }
 
             try{
-                URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);
-                InputStreamReader reader = new InputStreamReader(url.openStream());
-                String uuid = new JsonParser().parse(reader).getAsJsonObject().get("id").getAsString();
+                String uuid = PlayerNames.getUUID(name);
 
                 URL url2 = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid + "?unsigned=false");
                 InputStreamReader reader2 = new InputStreamReader(url2.openStream());
@@ -76,8 +83,8 @@ public class NPC_Manager {
             return res;
         }
 
-        public static NPC addNPCPacket(EntityPlayer npc_e, Skin skin){
-            NPC npc = new NPC(0,npc_e.getName(), npc_e, skin);
+        public static NPC addNPCPacket(EntityPlayer npc_e, Skin skin, String script){
+            NPC npc = new NPC(0,npc_e.getName(), npc_e, skin, script);
             NPCs.add(npc);
             for(Player player : Bukkit.getOnlinePlayers()){
                 npc.display(player);

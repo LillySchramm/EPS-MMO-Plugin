@@ -227,7 +227,7 @@ public class House {
             }
 
             String ownerName = PlayerNames.playerNameByUUID(this.currentOwner_UUID);
-            middleItem = PlayerHeads.getHead(this.currentOwner_UUID);
+            middleItem = PlayerHeads.getHeadByUUID(this.currentOwner_UUID);
             middle_name = ownerName;
         }
 

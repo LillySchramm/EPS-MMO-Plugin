@@ -62,7 +62,7 @@ public class PacketReader {
 
             for (NPC npc : NPC_Manager.NPCs){
                 if(npc.entityPlayer.getId() == id){
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(main.plugin, () -> Bukkit.getPluginManager().callEvent(new RightClickNPC(player, npc.entityPlayer)), 0);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(main.plugin, () -> Bukkit.getPluginManager().callEvent(new RightClickNPC(player, npc)), 0);
                 }
             }
 

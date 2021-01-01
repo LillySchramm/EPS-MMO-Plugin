@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.events;
 
 import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
@@ -101,6 +102,17 @@ public class e_PlayerInteract implements Listener {
     @EventHandler
     void onRightNPC(RightClickNPC e){
         Player player = e.player.getPlayer();
-        Out.printToPlayer(player, "Hi");
+        User user = e.user;
+
+        if(player.getGameMode() == GameMode.SURVIVAL){
+            Out.printToPlayer(player, "Hi there.", e.npc);
+        }else if(player.getGameMode() == GameMode.CREATIVE){
+            if(user.rank.canManageNPC){
+                e.npc.showManageGUI(player);
+            }else {
+                Err.rankError(player);
+            }
+        }
+
     }
 }

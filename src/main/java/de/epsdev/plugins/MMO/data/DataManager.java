@@ -12,8 +12,13 @@ import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.Region;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
+import de.epsdev.plugins.MMO.npc.NPC;
+import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import de.epsdev.plugins.MMO.tools.Colors;
+import de.epsdev.plugins.MMO.tools.Vec2f;
+import de.epsdev.plugins.MMO.tools.Vec3f;
 import de.epsdev.plugins.MMO.tools.Vec3i;
+import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -402,6 +407,43 @@ public class DataManager {
             }
 
             }catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //-----------------------------------------------------------------
+    //NPC Stuff
+    //-----------------------------------------------------------------
+
+    public static void loadAllNPC() {
+        try {
+            ResultSet rs = mysql.query("SELECT * FROM `eps_regions`.`npc`");
+
+            while (rs.next()) {
+                String name = rs.getString("NAME");
+                String skin = rs.getString("SKIN");
+                String script = rs.getString("SCRIPT");
+
+                String tmp = rs.getString("POS");
+                String[] _tmp = tmp.split(">>");
+
+                Vec3f pos = new Vec3f(Float.parseFloat(_tmp[0]),
+                        Float.parseFloat(_tmp[1]),
+                        Float.parseFloat(_tmp[2]));
+
+                tmp = rs.getString("ROTATION");
+                _tmp = tmp.split(">>");
+
+                Vec2f rot = new Vec2f(Float.parseFloat(_tmp[0]),
+                        Float.parseFloat(_tmp[1]));
+
+                EntityPlayer npc_e = NPC_Manager.createNPC_ENTITY(name, pos, rot, skin);
+                NPC_Manager.addNPCPacket(npc_e, NPC_Manager.getSkin(skin), script);
+
+
+            }
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

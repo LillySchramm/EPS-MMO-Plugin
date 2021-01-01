@@ -13,7 +13,8 @@ public class Ranks {
             true, //CanReloadServer
             true, //CanChangeGamemode
             true, //CanManageRegions
-            true  //CanManageHouses
+            true, //CanManageHouses
+            true  //CanManageNPC
     },
         new  int[]{
             999     //MaxHousesOwn
@@ -28,7 +29,8 @@ public class Ranks {
             false,  //CanReloadServer
             true, //CanChangeGamemode
             true, //CanManageRegions
-            true  //CanManageHouses
+            true, //CanManageHouses
+            true  //CanManageNPC
     },
         new  int[]{
                 999     //MaxHousesOwn
@@ -43,7 +45,8 @@ public class Ranks {
             false,  //CanReloadServer
             false, //CanChangeGamemode
             false, //CanManageRegions
-            false  //CanManageHouses
+            false , //CanManageHouses
+            false  //CanManageNPC
     },
         new  int[]{
                 1     //MaxHousesOwn
@@ -59,7 +62,8 @@ public class Ranks {
             false,  //CanReloadServer
             true, //CanChangeGamemode
             true, //CanManageRegions
-            false  //CanManageHouses
+            false, //CanManageHouses
+            false  //CanManageNPC
     },
         new  int[]{
                 999     //MaxHousesOwn
@@ -75,7 +79,8 @@ public class Ranks {
             false,  //CanReloadServer
             false, //CanChangeGamemode
             false, //CanManageRegions
-            false  //CanManageHouses
+            false , //CanManageHouses
+            false  //CanManageNPC
     },
             new  int[]{
                     5     //MaxHousesOwn

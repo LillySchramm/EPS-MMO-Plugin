@@ -1,11 +1,16 @@
 package de.epsdev.plugins.MMO.npc;
 
+import de.epsdev.plugins.MMO.GUI.Base_Gui;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
-import de.epsdev.plugins.MMO.tools.Vec3i;
+import de.epsdev.plugins.MMO.tools.PlayerHeads;
+import de.epsdev.plugins.MMO.tools.Vec2f;
+import de.epsdev.plugins.MMO.tools.Vec3f;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
 
 public class NPC {
 
@@ -15,11 +20,12 @@ public class NPC {
     public String script = "";
     public Skin skin = null;
 
-    public NPC(int id, String name, EntityPlayer entityPlayer, Skin skin){
+    public NPC(int id, String name, EntityPlayer entityPlayer, Skin skin, String script){
         this.npc_id = id;
         this.entityPlayer = entityPlayer;
         this.name = name;
         this.skin = skin;
+        this.script = script;
     }
 
     public void display(Player player){
@@ -31,29 +37,38 @@ public class NPC {
         connection.sendPacket(new PacketPlayOutEntityHeadRotation(this.entityPlayer, (byte) (this.entityPlayer.yaw * 256 / 360)));
     }
 
+    public void showManageGUI(Player player){
+        Base_Gui gui = new Base_Gui(this.name);
+
+        gui.addItem(PlayerHeads.getHeadByName(this.skin.Owner),
+                1,
+                this.name,
+                new ArrayList<>(),
+                null,
+                0,
+                0
+                );
+
+        gui.show(player);
+
+    }
+
     public void save(boolean n){
         Location loc = entityPlayer.getBukkitEntity().getLocation();
-        Vec3i pos = new Vec3i(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        Vec3f pos = new Vec3f(loc);
+        Vec2f rot = new Vec2f(loc);
         Skin skin = this.skin;
 
         if(skin == null){
             skin = new Skin(new String[]{}, "0");
         }
 
-        if(n){
-            mysql.query("REPLACE INTO `eps_regions`.`npc` (`ID`, `NAME`, `SCRIPT`, `POS`, `SKIN`) VALUES (" + this.npc_id + "," +
-                    " '" + this.name + "'," +
-                    " '" + this.script + "'," +
-                    " '" + pos.x + ">> " + pos.y + " >> " + pos.z + "', " +
-                    " '" + this.skin.Owner + "') ");
-            return;
-        }
 
-        mysql.query("REPLACE INTO `eps_regions`.`npc` (`ID`, `NAME`, `SCRIPT`, `POS`, `SKIN`) VALUES (" + this.npc_id + "," +
+        mysql.query("REPLACE INTO `eps_regions`.`npc` (`ID`, `NAME`, `SCRIPT`, `POS`, `ROTATION`, `SKIN`) VALUES (" + this.npc_id + "," +
                 " '" + this.name + "'," +
                 " '" + this.script + "'," +
                 " '" + pos.x + ">> " + pos.y + " >> " + pos.z + "', " +
+                " '" + rot.yaw + ">> " + rot.pitch + "', " +
                 " '" + this.skin.Owner + "') ");
-
     }
 }

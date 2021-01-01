@@ -11,6 +11,7 @@ public class Rank {
     public boolean canChangeGamemode = false;
     public boolean canManageRegions = false;
     public boolean canManageHouses = false;
+    public boolean canManageNPC = false;
 
 
     public String name;
@@ -29,6 +30,7 @@ public class Rank {
         canChangeGamemode = args[7];
         canManageRegions = args[8];
         canManageHouses = args[9];
+        canManageNPC = args[10];
 
         this.maxHousesForRent = int_args[0];
 
