@@ -1,90 +1,59 @@
 package de.epsdev.plugins.MMO.npc;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.data.mysql.mysql;
+import de.epsdev.plugins.MMO.tools.Vec3i;
 import net.minecraft.server.v1_12_R1.*;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 public class NPC {
-    public static List<EntityPlayer> NPC = new ArrayList<>();
 
-    public static void createNPC(Player player, String skin){
-        MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
-        WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
-        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), ChatColor.DARK_AQUA + "NPC");
+    public int npc_id;
+    public String name;
+    public EntityPlayer entityPlayer;
+    public String script = "";
+    public Skin skin = null;
 
-        Location playerLocation = player.getLocation();
-
-        EntityPlayer npc = new EntityPlayer(server, world, gameProfile, new PlayerInteractManager(world));
-        npc.setLocation(playerLocation.getX(),playerLocation.getY(),playerLocation.getZ(),
-                playerLocation.getYaw(), playerLocation.getPitch());
-
-        npc.getBukkitEntity().setRemoveWhenFarAway(false);
-
-        if(skin != null){
-            String[] skinValues = getSkin(skin);
-            if(skinValues != null){
-                gameProfile.getProperties().put("textures", new Property("textures", skinValues[0], skinValues[1]));
-
-            }
-        }
-
-
-
-
-        addNPCPacket(npc);
-
+    public NPC(int id, String name, EntityPlayer entityPlayer, Skin skin){
+        this.npc_id = id;
+        this.entityPlayer = entityPlayer;
+        this.name = name;
+        this.skin = skin;
     }
 
-    private static String[] getSkin(String name){
-        String[] res = null;
+    public void display(Player player){
+        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
 
-        try{
-            URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);
-            InputStreamReader reader = new InputStreamReader(url.openStream());
-            String uuid = new JsonParser().parse(reader).getAsJsonObject().get("id").getAsString();
-
-            URL url2 = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid + "?unsigned=false");
-            InputStreamReader reader2 = new InputStreamReader(url2.openStream());
-
-            JsonObject property = new JsonParser().parse(reader2).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
-            String texture = property.get("value").getAsString();
-            String signature = property.get("signature").getAsString();
-
-            res = new String[]{texture,signature};
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        return res;
+        connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
+                this.entityPlayer));
+        connection.sendPacket(new PacketPlayOutNamedEntitySpawn(this.entityPlayer));
+        connection.sendPacket(new PacketPlayOutEntityHeadRotation(this.entityPlayer, (byte) (this.entityPlayer.yaw * 256 / 360)));
     }
 
-    public static void addNPCPacket(EntityPlayer npc){
-        NPC.add(npc);
-        for(Player player : Bukkit.getOnlinePlayers()){
-            PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
+    public void save(boolean n){
+        Location loc = entityPlayer.getBukkitEntity().getLocation();
+        Vec3i pos = new Vec3i(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        Skin skin = this.skin;
 
-            connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
-                    npc));
-            connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
-            connection.sendPacket(new PacketPlayOutEntityHeadRotation(npc, (byte) (npc.yaw * 256 / 360)));
+        if(skin == null){
+            skin = new Skin(new String[]{}, "0");
         }
-    }
 
+        if(n){
+            mysql.query("REPLACE INTO `eps_regions`.`npc` (`ID`, `NAME`, `SCRIPT`, `POS`, `SKIN`) VALUES (" + this.npc_id + "," +
+                    " '" + this.name + "'," +
+                    " '" + this.script + "'," +
+                    " '" + pos.x + ">> " + pos.y + " >> " + pos.z + "', " +
+                    " '" + this.skin.Owner + "') ");
+            return;
+        }
+
+        mysql.query("REPLACE INTO `eps_regions`.`npc` (`ID`, `NAME`, `SCRIPT`, `POS`, `SKIN`) VALUES (" + this.npc_id + "," +
+                " '" + this.name + "'," +
+                " '" + this.script + "'," +
+                " '" + pos.x + ">> " + pos.y + " >> " + pos.z + "', " +
+                " '" + this.skin.Owner + "') ");
+
+    }
 }

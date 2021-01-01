@@ -4,11 +4,11 @@ import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.events.RightClickNPC;
 import de.epsdev.plugins.MMO.npc.NPC;
+import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
-import net.minecraft.server.v1_12_R1.Packet;
 import net.minecraft.server.v1_12_R1.PacketPlayInUseEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
@@ -36,8 +36,8 @@ public class PacketReader {
         channel.pipeline().addAfter("decoder", "PacketInjector", new MessageToMessageDecoder<PacketPlayInUseEntity>() {
             @Override
             protected void decode(ChannelHandlerContext channelHandlerContext, PacketPlayInUseEntity packet, List<Object> arg) throws Exception {
-                arg.add(packet);
                 readPacket(player,packet);
+                arg.add(packet);
             }
         });
 
@@ -50,23 +50,23 @@ public class PacketReader {
         }
     }
 
-    public void readPacket(Player player, Packet<?> packet){
+    public void readPacket(Player player, PacketPlayInUseEntity packet){
 
+        String val_action = getValue(packet, "action").toString();
 
-        if(getValue(packet, "action").toString().equalsIgnoreCase("ATTACK")) return;
-        if(getValue(packet, "d").toString().equalsIgnoreCase("OFF")) return;
-        if(getValue(packet, "action").toString().equalsIgnoreCase("INTERACT_AT")) return;
+        if(!val_action.equals("INTERACT")) return;
+
+        if(getValue(packet, "d").toString().equals("OFF_HAND")) return;
 
         int id = (int) getValue(packet, "a");
 
-        if(getValue(packet, "action").toString().equalsIgnoreCase("INTERACT")) {
-            for (EntityPlayer npc : NPC.NPC){
-                if(npc.getId() == id){
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(main.plugin, () -> Bukkit.getPluginManager().callEvent(new RightClickNPC(player, npc)), 0);
+            for (NPC npc : NPC_Manager.NPCs){
+                if(npc.entityPlayer.getId() == id){
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(main.plugin, () -> Bukkit.getPluginManager().callEvent(new RightClickNPC(player, npc.entityPlayer)), 0);
                 }
             }
+
         }
-    }
 
     private Object getValue(Object instance, String name){
 

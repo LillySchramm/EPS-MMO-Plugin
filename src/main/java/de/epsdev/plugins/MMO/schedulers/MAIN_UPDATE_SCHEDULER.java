@@ -6,7 +6,7 @@ import de.epsdev.plugins.MMO.data.mysql.DatabaseManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
-import de.epsdev.plugins.MMO.npc.NPC;
+import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;

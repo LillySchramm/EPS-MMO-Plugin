@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.commands;
 
 import de.epsdev.plugins.MMO.npc.NPC;
+import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,7 +12,8 @@ public class c_npc implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
-            NPC.createNPC(player, "WielandHD");
+            NPC npc = NPC_Manager.createNPC(player, "WielandHD");
+            npc.save(true);
         }
         return true;
     }
