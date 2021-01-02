@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.tools;
 
 import org.bukkit.Location;
+import java.lang.Math;
 
 public class Vec3f {
     public float x = 0;
@@ -21,6 +22,11 @@ public class Vec3f {
         this.x = (float) location.getX();
         this.y = (float) location.getY();
         this.z = (float) location.getZ();
+    }
+
+    public float distance2d(Vec3f arg){
+        float distance = (float) Math.sqrt((this.x-arg.x)*(this.x-arg.x) + (this.z-arg.z)*(this.z-arg.z));
+        return distance;
     }
 
     public boolean equals(Vec3f pos){

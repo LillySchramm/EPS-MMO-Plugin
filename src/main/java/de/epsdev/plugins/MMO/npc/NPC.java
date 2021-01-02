@@ -1,7 +1,11 @@
 package de.epsdev.plugins.MMO.npc;
 
 import de.epsdev.plugins.MMO.GUI.Base_Gui;
+import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
+import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.tools.PlayerHeads;
 import de.epsdev.plugins.MMO.tools.Vec2f;
 import de.epsdev.plugins.MMO.tools.Vec3f;
@@ -9,6 +13,7 @@ import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
 
@@ -28,20 +33,21 @@ public class NPC {
         this.script = script;
     }
 
-    public void reload(Player player){
-        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-        connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.UPDATE_LATENCY,
-                this.entityPlayer));
-
-    }
-
     public void display(Player player){
         PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
+
+        entityPlayer.getBukkitEntity().setPlayerListName("");
 
         connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
                 this.entityPlayer));
         connection.sendPacket(new PacketPlayOutNamedEntitySpawn(this.entityPlayer));
         connection.sendPacket(new PacketPlayOutEntityHeadRotation(this.entityPlayer, (byte) (this.entityPlayer.yaw * 256 / 360)));
+        BukkitScheduler scheduler = main.plugin.getServer().getScheduler();
+        scheduler.scheduleSyncDelayedTask(main.plugin, () -> {
+            connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER,
+                    this.entityPlayer));
+        }, 20L);
+
     }
 
     public void showManageGUI(Player player){
@@ -77,5 +83,10 @@ public class NPC {
                 " '" + pos.x + ">> " + pos.y + " >> " + pos.z + "', " +
                 " '" + rot.yaw + ">> " + rot.pitch + "', " +
                 " '" + this.skin.Owner + "') ");
+    }
+
+    public void unload(Player player) {
+        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
+        connection.sendPacket(new PacketPlayOutEntityDestroy(new int[]{this.entityPlayer.getId()}));
     }
 }

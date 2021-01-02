@@ -4,6 +4,7 @@ import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
+import de.epsdev.plugins.MMO.tools.Vec3f;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,7 @@ public class e_PlayerMove implements Listener {
         Chunk chunk = player.getLocation().getChunk();
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
 
+        Vec3f pos = new Vec3f(player.getLocation());
         if(chunk != user.lastChunk){
             user.lastChunk = chunk;
             NPC_Manager.loadAllNPC(player);

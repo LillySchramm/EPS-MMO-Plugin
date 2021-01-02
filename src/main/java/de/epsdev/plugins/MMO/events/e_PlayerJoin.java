@@ -18,8 +18,6 @@ public class e_PlayerJoin implements Listener {
         PacketReader reader = new PacketReader();
         reader.inject(e.getPlayer());
 
-        NPC_Manager.loadAllNPC(e.getPlayer());
-
         User user = null;
         try {
             user = DataManager.getUser(e.getPlayer(), true);
@@ -28,6 +26,8 @@ public class e_PlayerJoin implements Listener {
         }
         user.print();
         DataManager.onlineUsers.put(user.UUID,user);
+
+        NPC_Manager.loadAllNPC(e.getPlayer());
     }
 
 }

@@ -28,6 +28,12 @@ public class Out {
     public static void printToPlayer(Player player, String msg){
         player.sendMessage("[EPS-MMO] " + msg);
     }
+    public static void printToPlayer(Player player, float msg){
+        player.sendMessage("[EPS-MMO] " + msg);
+    }
+    public static void printToPlayer(Player player, double msg){
+        player.sendMessage("[EPS-MMO] " + msg);
+    }
     public static void printToPlayer(Player player, String msg, NPC npc){
         player.sendMessage("[" + npc.name + "] " + msg);
     }

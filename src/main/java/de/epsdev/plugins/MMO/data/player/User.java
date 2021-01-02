@@ -44,6 +44,8 @@ public class User {
 
     public Chunk lastChunk = null;
 
+    public ArrayList<Integer> loadedNPC = new ArrayList<>();
+
     public User(String uuid) throws SQLException {
         ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`players` WHERE UUID = '" + uuid + "'");
 

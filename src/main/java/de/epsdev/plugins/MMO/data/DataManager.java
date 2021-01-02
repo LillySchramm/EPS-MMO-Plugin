@@ -424,6 +424,8 @@ public class DataManager {
                 String skin = rs.getString("SKIN");
                 String script = rs.getString("SCRIPT");
 
+                int id = rs.getInt("ID");
+
                 String tmp = rs.getString("POS");
                 String[] _tmp = tmp.split(">>");
 
@@ -438,7 +440,7 @@ public class DataManager {
                         Float.parseFloat(_tmp[1]));
 
                 EntityPlayer npc_e = NPC_Manager.createNPC_ENTITY(name, pos, rot, skin);
-                NPC_Manager.addNPCPacket(npc_e, NPC_Manager.getSkin(skin), script);
+                NPC_Manager.addNPCPacket(npc_e, NPC_Manager.getSkin(skin), script, id);
 
 
             }
