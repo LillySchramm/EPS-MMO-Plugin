@@ -16,8 +16,8 @@ public class Vec2f {
     }
 
     public Vec2f(Location location){
-        this.yaw = (float) location.getYaw();
-        this.pitch = (float) location.getPitch();
+        this.yaw = location.getYaw();
+        this.pitch = location.getPitch();
     }
 
     public boolean equals(Vec2f pos){

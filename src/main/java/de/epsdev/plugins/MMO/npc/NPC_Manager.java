@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.io.InputStreamReader;
@@ -35,7 +36,7 @@ public class NPC_Manager {
 
             EntityPlayer npc = new EntityPlayer(server, world, gameProfile, new PlayerInteractManager(world));
             npc.setLocation(location.getX(),location.getY(),location.getZ(),
-                    location.getYaw(), location.getPitch());
+                    rotation.yaw, rotation.pitch);
 
             npc.getBukkitEntity().setRemoveWhenFarAway(false);
 
@@ -50,7 +51,9 @@ public class NPC_Manager {
         }
 
         public static NPC createNPC(Player player, String skin){
-            EntityPlayer npc = createNPC_ENTITY(player.getDisplayName() ,new Vec3f(player.getLocation()), new Vec2f(player.getLocation()), skin);
+            EntityPlayer player_ = ((CraftPlayer) player).getHandle();
+
+            EntityPlayer npc = createNPC_ENTITY(player.getDisplayName() ,new Vec3f(player.getLocation()), new Vec2f(player_.yaw,player_.pitch), skin);
             return addNPCPacket(npc, getSkin(skin), "", 0);
         }
 

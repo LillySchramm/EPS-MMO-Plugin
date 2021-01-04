@@ -40,6 +40,9 @@ public class NPC {
 
         connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
                 this.entityPlayer));
+
+        Out.printToConsole(this.entityPlayer.yaw * 256 / 360);
+
         connection.sendPacket(new PacketPlayOutNamedEntitySpawn(this.entityPlayer));
         connection.sendPacket(new PacketPlayOutEntityHeadRotation(this.entityPlayer, (byte) (this.entityPlayer.yaw * 256 / 360)));
         BukkitScheduler scheduler = main.plugin.getServer().getScheduler();
@@ -81,7 +84,7 @@ public class NPC {
                 " '" + this.name + "'," +
                 " '" + this.script + "'," +
                 " '" + pos.x + ">> " + pos.y + " >> " + pos.z + "', " +
-                " '" + rot.yaw + ">> " + rot.pitch + "', " +
+                " '" + entityPlayer.yaw + ">> " + entityPlayer.pitch + "', " +
                 " '" + this.skin.Owner + "') ");
     }
 
