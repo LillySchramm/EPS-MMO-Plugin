@@ -19,6 +19,7 @@ import de.epsdev.plugins.MMO.tools.Vec2f;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import de.epsdev.plugins.MMO.tools.Vec3i;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -417,6 +418,10 @@ public class DataManager {
 
     public static void loadAllNPC() {
         try {
+            for(Player player : Bukkit.getOnlinePlayers()){
+                NPC_Manager.unloadAllNPC(player);
+            }
+
             ResultSet rs = mysql.query("SELECT * FROM `eps_regions`.`npc`");
 
             while (rs.next()) {

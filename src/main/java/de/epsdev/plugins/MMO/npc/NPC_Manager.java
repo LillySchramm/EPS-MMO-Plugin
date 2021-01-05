@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.tools.PlayerNames;
 import de.epsdev.plugins.MMO.tools.Vec2f;
@@ -31,12 +32,10 @@ public class NPC_Manager {
             GameProfile gameProfile = new GameProfile(UUID.randomUUID(), name);
 
             Location location = new Location(Bukkit.getServer().getWorld("world"), pos.x, pos.y, pos.z);
-            location.setYaw(rotation.yaw);
-            location.setPitch(rotation.pitch);
 
             EntityPlayer npc = new EntityPlayer(server, world, gameProfile, new PlayerInteractManager(world));
-            npc.setLocation(location.getX(),location.getY(),location.getZ(),
-                    rotation.yaw, rotation.pitch);
+
+            npc.setPositionRotation(location.getX(),location.getY(),location.getZ(), rotation.yaw, rotation.pitch);
 
             npc.getBukkitEntity().setRemoveWhenFarAway(false);
 
@@ -92,6 +91,49 @@ public class NPC_Manager {
                 npc.display(player);
             }
             return npc;
+        }
+
+        public static void unloadAllNPC(Player player){
+            User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+            user.lastChunk = null;
+            user.loadedNPC = new ArrayList<>();
+            for(NPC npc : NPCs){
+                npc.unload(player);
+            }
+
+            NPCs.clear();
+        }
+
+        public static void unloadNPC(NPC npc){
+            for (Player player : Bukkit.getOnlinePlayers()){
+                User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+                if(user.loadedNPC.contains(npc.npc_id)){
+                    npc.unload(player);
+                    user.loadedNPC.remove((Object) npc.npc_id);
+                }
+            }
+        }
+
+        public static void reloadNPC(NPC npc){
+            for (NPC n : NPCs){
+                if(n.npc_id == npc.npc_id){
+                    NPCs.remove(n);
+                    NPCs.add(npc);
+
+                    break;
+                }
+            }
+
+            for (Player player : Bukkit.getOnlinePlayers()){
+                User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+                Vec3f pos = new Vec3f(player.getLocation());
+                Vec3f npc_pos = new Vec3f(npc.entityPlayer.getBukkitEntity().getLocation());
+
+                if(pos.distance2d(npc_pos) < 100)
+                    npc.display(player);
+            }
         }
 
         public static void loadAllNPC(Player player){

@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.npc;
 
 import de.epsdev.plugins.MMO.GUI.Base_Gui;
+import de.epsdev.plugins.MMO.GUI.dev.Dev_NPC_GUI;
 import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
@@ -22,8 +23,12 @@ public class NPC {
     public int npc_id;
     public String name;
     public EntityPlayer entityPlayer;
+    public EntityPlayer oldEntityPlayer;
     public String script = "";
     public Skin skin = null;
+
+    public Boolean deleted = false;
+    public Dev_NPC_GUI gui;
 
     public NPC(int id, String name, EntityPlayer entityPlayer, Skin skin, String script){
         this.npc_id = id;
@@ -31,17 +36,22 @@ public class NPC {
         this.name = name;
         this.skin = skin;
         this.script = script;
+
+        this.gui = new Dev_NPC_GUI(this);
+    }
+
+    public void recreateEntity(){
+        NPC_Manager.unloadNPC(this);
+        this.entityPlayer = NPC_Manager.createNPC_ENTITY(name, new Vec3f(this.entityPlayer.getBukkitEntity().getLocation()), new Vec2f(this.entityPlayer.yaw, this.entityPlayer.pitch), this.skin.Owner);
     }
 
     public void display(Player player){
+
+        if(this.deleted) return;
+
         PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-
-        entityPlayer.getBukkitEntity().setPlayerListName("");
-
         connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
                 this.entityPlayer));
-
-        Out.printToConsole(this.entityPlayer.yaw * 256 / 360);
 
         connection.sendPacket(new PacketPlayOutNamedEntitySpawn(this.entityPlayer));
         connection.sendPacket(new PacketPlayOutEntityHeadRotation(this.entityPlayer, (byte) (this.entityPlayer.yaw * 256 / 360)));
@@ -54,19 +64,7 @@ public class NPC {
     }
 
     public void showManageGUI(Player player){
-        Base_Gui gui = new Base_Gui(this.name);
-
-        gui.addItem(PlayerHeads.getHeadByName(this.skin.Owner),
-                1,
-                this.name,
-                new ArrayList<>(),
-                null,
-                0,
-                0
-                );
-
         gui.show(player);
-
     }
 
     public void save(boolean n){
@@ -86,10 +84,23 @@ public class NPC {
                 " '" + pos.x + ">> " + pos.y + " >> " + pos.z + "', " +
                 " '" + entityPlayer.yaw + ">> " + entityPlayer.pitch + "', " +
                 " '" + this.skin.Owner + "') ");
+
+        this.gui = new Dev_NPC_GUI(this);
     }
 
     public void unload(Player player) {
         PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
         connection.sendPacket(new PacketPlayOutEntityDestroy(new int[]{this.entityPlayer.getId()}));
+    }
+
+    public void unloadOld(Player player) {
+        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
+        connection.sendPacket(new PacketPlayOutEntityDestroy(new int[]{this.oldEntityPlayer.getId()}));
+    }
+
+    public void delete(){
+        mysql.query("DELETE FROM `eps_regions`.`npc` WHERE ID = " + this.npc_id + ";");
+        this.deleted = true;
+        NPC_Manager.unloadNPC(this);
     }
 }
