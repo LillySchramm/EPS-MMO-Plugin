@@ -1,6 +1,8 @@
 package de.epsdev.plugins.MMO.GUI.dev;
 
 import de.epsdev.plugins.MMO.GUI.Base_Gui;
+import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.commands.Next;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
@@ -8,11 +10,19 @@ import de.epsdev.plugins.MMO.events.OnChat;
 import de.epsdev.plugins.MMO.npc.NPC;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import de.epsdev.plugins.MMO.tools.PlayerHeads;
+import de.epsdev.plugins.MMO.tools.Vec3f;
+import de.epsdev.plugins.MMO.tools.Vec3i;
+import net.minecraft.server.v1_12_R1.EntityPlayer;
+import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerInfo;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static de.epsdev.plugins.MMO.tools.TooltipLore.tt_clickToUpdate;
 
@@ -36,11 +46,11 @@ public class Dev_NPC_GUI {
             return;
         }
 
-        NPC_Manager.unloadNPC(npc);
-
-        npc.name = massage;
+        npc.changeName(massage);
         npc.save(false);
-        npc.recreateEntity();
+
+        BukkitScheduler scheduler = Bukkit.getScheduler();
+
         NPC_Manager.reloadNPC(npc);
 
         user.onChat = null;
@@ -65,6 +75,24 @@ public class Dev_NPC_GUI {
         NPC_Manager.unloadNPC(npc);
     };
 
+    private final Next next_npc_pos = user -> {
+        Out.printToPlayer(Bukkit.getPlayer(UUID.fromString(user.UUID)), ChatColor.DARK_GREEN + "NPC renamed successfully");
+        npc.changePos(((CraftPlayer) Bukkit.getPlayer(UUID.fromString(user.UUID))).getHandle());
+        npc.save(false);
+        NPC_Manager.reloadNPC(npc);
+        user.next = null;
+    };
+
+
+    private final OnClick click_change_pos = (player, item, inventory) -> {
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+        user.next = next_npc_pos;
+        Out.printToPlayer(player, ChatColor.DARK_GREEN + "Please stand in the new position.");
+        Out.printToPlayer(player, ChatColor.DARK_GREEN + "Confirm with /next");
+        player.closeInventory();
+
+    };
+
     public Dev_NPC_GUI(NPC npc){
         this.npc = npc;
 
@@ -85,6 +113,15 @@ public class Dev_NPC_GUI {
                 tt_clickToUpdate(),
                 click_rename,
                 1,
+                0
+        );
+
+        gui.addItem(Material.COMPASS,
+                1,
+                "Position: " + new Vec3i(this.npc.entityPlayer.getBukkitEntity().getLocation()).toString(),
+                tt_clickToUpdate(),
+                click_change_pos,
+                2,
                 0
         );
 

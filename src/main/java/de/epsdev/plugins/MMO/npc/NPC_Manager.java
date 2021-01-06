@@ -110,7 +110,6 @@ public class NPC_Manager {
 
                 if(user.loadedNPC.contains(npc.npc_id)){
                     npc.unload(player);
-                    user.loadedNPC.remove((Object) npc.npc_id);
                 }
             }
         }
@@ -120,7 +119,6 @@ public class NPC_Manager {
                 if(n.npc_id == npc.npc_id){
                     NPCs.remove(n);
                     NPCs.add(npc);
-
                     break;
                 }
             }
@@ -128,10 +126,8 @@ public class NPC_Manager {
             for (Player player : Bukkit.getOnlinePlayers()){
                 User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
 
-                Vec3f pos = new Vec3f(player.getLocation());
-                Vec3f npc_pos = new Vec3f(npc.entityPlayer.getBukkitEntity().getLocation());
-
-                if(pos.distance2d(npc_pos) < 100)
+                if(user.loadedNPC.contains(npc.npc_id))
+                    npc.unload(player);
                     npc.display(player);
             }
         }
@@ -146,11 +142,9 @@ public class NPC_Manager {
                 if(pos.distance2d(npc_pos) < 100){
                     if(!user.loadedNPC.contains(npc.npc_id)){
                         npc.display(player);
-                        user.loadedNPC.add(npc.npc_id);
                     }
                 }else {
                     if(user.loadedNPC.contains(npc.npc_id)){
-                        user.loadedNPC.remove((Object) npc.npc_id);
                         npc.unload(player);
                     }
                 }

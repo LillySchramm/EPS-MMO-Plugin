@@ -6,24 +6,23 @@ import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.tools.PlayerHeads;
 import de.epsdev.plugins.MMO.tools.Vec2f;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import net.minecraft.server.v1_12_R1.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
-
-import java.util.ArrayList;
 
 public class NPC {
 
     public int npc_id;
     public String name;
     public EntityPlayer entityPlayer;
-    public EntityPlayer oldEntityPlayer;
     public String script = "";
     public Skin skin = null;
 
@@ -41,7 +40,6 @@ public class NPC {
     }
 
     public void recreateEntity(){
-        NPC_Manager.unloadNPC(this);
         this.entityPlayer = NPC_Manager.createNPC_ENTITY(name, new Vec3f(this.entityPlayer.getBukkitEntity().getLocation()), new Vec2f(this.entityPlayer.yaw, this.entityPlayer.pitch), this.skin.Owner);
     }
 
@@ -60,6 +58,9 @@ public class NPC {
             connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER,
                     this.entityPlayer));
         }, 20L);
+
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+        user.loadedNPC.add(this.npc_id);
 
     }
 
@@ -89,13 +90,26 @@ public class NPC {
     }
 
     public void unload(Player player) {
+
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
         PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
         connection.sendPacket(new PacketPlayOutEntityDestroy(new int[]{this.entityPlayer.getId()}));
+
+        user.loadedNPC.remove((Object) this.npc_id);
+
     }
 
-    public void unloadOld(Player player) {
-        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-        connection.sendPacket(new PacketPlayOutEntityDestroy(new int[]{this.oldEntityPlayer.getId()}));
+    public void changePos(EntityPlayer player){
+        NPC_Manager.unloadNPC(this);
+        this.entityPlayer = player;
+        recreateEntity();
+    }
+
+    public void changeName(String newname){
+        NPC_Manager.unloadNPC(this);
+        this.name = newname;
+        recreateEntity();
     }
 
     public void delete(){
