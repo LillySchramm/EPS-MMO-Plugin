@@ -1,14 +1,20 @@
 package de.epsdev.plugins.MMO.data.player;
 
+import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
+import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.tools.Vec3f;
+import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitScheduler;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.UUID;
 
 
@@ -32,18 +38,33 @@ public class Character {
         this.pos = pos;
     }
 
-    public void save(){
-        Player player = Bukkit.getPlayer(UUID.fromString(this.OwnerUUID));
-        Location location = player.getLocation();
+    public void save() {
+        if(!this.name.equals("")){
 
-        mysql.query("REPLACE INTO `eps_users`.`characters` (`ID`, `UUID`, `STATS`, `LAST_POS`, `NAME`, `EXP`, `LEVEL`) VALUES " +
-                "(" + this.id + "," +
-                " '" + this.OwnerUUID +"'," +
-                " '', " +
-                "'" + location.getX() + ">>" + location.getY() + ">>" + location.getZ() +"'," +
-                " '" + this.name + "'," +
-                " '"+ this.exp +"', " +
-                "'"+ this.level +"'); ");
+            Player player = Bukkit.getPlayer(UUID.fromString(this.OwnerUUID));
+            Location location = player.getLocation();
+
+            mysql.query("REPLACE INTO `eps_users`.`characters` (`ID`, `UUID`, `STATS`, `LAST_POS`, `NAME`, `EXP`, `LEVEL`) VALUES " +
+                    "(" + this.id + "," +
+                    " '" + this.OwnerUUID +"'," +
+                    " '', " +
+                    "'" + location.getX() + ">>" + location.getY() + ">>" + location.getZ() +"'," +
+                    " '" + this.name + "'," +
+                    " '"+ this.exp +"', " +
+                    "'"+ this.level +"'); ");
+
+            if(this.id == 0){
+                ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`characters` WHERE NAME = '" + this.name + "';");
+                try {
+                    rs.next();
+                    this.id = rs.getInt("ID");
+                    Out.printToConsole(this.id);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        }
     }
 
     public void setPlayerListName(Player player, User user){
@@ -51,12 +72,18 @@ public class Character {
     }
 
     public void load(Player player, User user){
-        player.setDisplayName(this.name);
-        player.setFlying(false);
-        setPlayerListName(player, user);
-        player.setLevel(this.level);
-        player.removePotionEffect(PotionEffectType.BLINDNESS);
-        player.teleport(new Location(player.getWorld(), this.pos.x, this.pos.y, this.pos.z));
-        user.refreshScoreboard();
+
+        BukkitScheduler scheduler = main.plugin.getServer().getScheduler();
+        scheduler.scheduleSyncDelayedTask(main.plugin, () -> {
+            player.setDisplayName(this.name);
+            player.setFlying(false);
+            setPlayerListName(player, user);
+            player.setLevel(this.level);
+            player.removePotionEffect(PotionEffectType.BLINDNESS);
+            player.teleport(new Location(player.getWorld(), this.pos.x, this.pos.y, this.pos.z));
+            user.refreshScoreboard();
+        }, 1L);
+
+
     }
 }

@@ -28,7 +28,7 @@ public class e_PlayerMove implements Listener {
             player.setAllowFlight(false);
         }
 
-        if(user.currentCharacter != null) {
+        if(user.currentCharacter != null && !user.currentCharacter.name.equals("")) {
 
             Vec3f pos = new Vec3f(player.getLocation());
             if (chunk != user.lastChunk) {

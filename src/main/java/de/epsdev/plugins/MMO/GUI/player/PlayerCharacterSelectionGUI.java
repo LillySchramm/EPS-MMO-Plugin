@@ -3,16 +3,23 @@ package de.epsdev.plugins.MMO.GUI.player;
 import de.epsdev.plugins.MMO.GUI.Base_Gui;
 import de.epsdev.plugins.MMO.GUI.dev.OnClick;
 import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.commands.Next;
 import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.output.Err;
+import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.Character;
 import de.epsdev.plugins.MMO.data.player.User;
+import de.epsdev.plugins.MMO.events.OnChat;
+import de.epsdev.plugins.MMO.tools.Math;
 import de.epsdev.plugins.MMO.tools.PlayerHeads;
 import de.epsdev.plugins.MMO.tools.Vec2i;
+import de.epsdev.plugins.MMO.tools.Vec3f;
 import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
@@ -29,6 +36,39 @@ public class PlayerCharacterSelectionGUI {
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
         user.currentCharacter = c;
         c.load(player, user);
+    };
+
+    private final OnChat onChat_character_name = e -> {
+        Player player = e.getPlayer();
+        String massage = e.getMessage();
+
+        if(!Math.isAlphabetical(massage)){
+            Err.justAlphabeticalCharactersError(player);
+        }else if(DataManager.doesCharWithNameExist(massage)){
+            Err.characterExistsError(player);
+        }else if(massage.length() > 16){
+            Err.characterNameLengthError(player);
+        }
+
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+        user.currentCharacter.name = massage;
+        user.currentCharacter.save();
+
+        user.onChat = null;
+
+        user.currentCharacter.load(player, user);
+
+    };
+
+    private final OnClick click_create_character = (player, item, inventory) ->  {
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+        user.currentCharacter = new Character("",0,1,0, new Vec3f(DataManager.spawnLocation), user.UUID);
+        player.closeInventory();
+
+        Out.printToPlayer(player, ChatColor.DARK_GREEN + "Please type the name of your new character.");
+
+        user.onChat = onChat_character_name;
+
     };
 
     public PlayerCharacterSelectionGUI(User user){
@@ -59,7 +99,7 @@ public class PlayerCharacterSelectionGUI {
                         1,
                         ChatColor.DARK_GREEN + "Empty Slot",
                         tt_clickToCreate(),
-                        null,
+                        click_create_character,
                         cursor.x,
                         cursor.y
                 );

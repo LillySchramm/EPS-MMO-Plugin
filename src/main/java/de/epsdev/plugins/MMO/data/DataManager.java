@@ -20,6 +20,7 @@ import de.epsdev.plugins.MMO.tools.Vec3f;
 import de.epsdev.plugins.MMO.tools.Vec3i;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -33,6 +34,7 @@ import java.util.*;
 public class DataManager {
     public static final ItemStack GUI_FILLER = new ItemStack(Material.STAINED_GLASS_PANE, 1, Colors.LIGHT_GREY);
     public static final int SECS_PER_RENT = 60 * 60;
+    public static final Location spawnLocation = new Location(Bukkit.getWorld("world"), 75,72,166);
 
     public static Map<String,User> onlineUsers = new HashMap<String, User>();
 
@@ -486,6 +488,19 @@ public class DataManager {
         }
 
         return characters;
+    }
+
+    public static boolean doesCharWithNameExist(String name){
+
+        try {
+            ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`characters` WHERE NAME = '" + name + "';");
+            if(rs.next()) return true;
+
+        }catch (Exception e){
+            return true;
+        }
+
+        return false;
     }
 
 }

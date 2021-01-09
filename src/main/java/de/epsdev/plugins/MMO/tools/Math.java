@@ -9,4 +9,16 @@ public class Math {
             return false;
         }
     }
+
+    public static boolean isAlphabetical(String name) {
+        char[] chars = name.toCharArray();
+
+        for (char c : chars) {
+            if(!Character.isLetter(c)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

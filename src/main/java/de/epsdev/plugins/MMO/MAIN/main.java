@@ -77,6 +77,7 @@ public final class main extends JavaPlugin {
         pm.registerEvents(new e_PlayerMove(), this);
         pm.registerEvents(new e_PlayerClosesInventory(), this);
         pm.registerEvents(new e_FoodDepleteEvent(), this);
+        pm.registerEvents(new e_PlayerKick(), this);
     }
 
     private void registerCommands(){

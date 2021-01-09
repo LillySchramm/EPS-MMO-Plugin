@@ -44,6 +44,17 @@ public class Err {
         Out.printToPlayer(player, ChatColor.RED + "This isn't a number.");
     }
 
+    public static void justAlphabeticalCharactersError(Player player){
+        Out.printToPlayer(player, ChatColor.RED + "Only alphabetical characters are allowed in names.");
+    }
+    public static void characterExistsError(Player player){
+        Out.printToPlayer(player, ChatColor.RED + "A character with that name already exists.");
+    }
+
+    public static void characterNameLengthError(Player player){
+        Out.printToPlayer(player, ChatColor.RED + "A charactername is only allowed to be 16 characters long.");
+    }
+
     public static void correctUsage(Player player, String[] args){
 
         String s = "";
