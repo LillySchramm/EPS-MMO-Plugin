@@ -6,6 +6,7 @@ import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import org.bukkit.Chunk;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,10 +22,21 @@ public class e_PlayerMove implements Listener {
         Chunk chunk = player.getLocation().getChunk();
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
 
-        Vec3f pos = new Vec3f(player.getLocation());
-        if(chunk != user.lastChunk){
-            user.lastChunk = chunk;
-            NPC_Manager.loadAllNPC(player);
+        if(player.getGameMode() == GameMode.CREATIVE){
+            player.setAllowFlight(true);
+        }else {
+            player.setAllowFlight(false);
+        }
+
+        if(user.currentCharacter != null) {
+
+            Vec3f pos = new Vec3f(player.getLocation());
+            if (chunk != user.lastChunk) {
+                user.lastChunk = chunk;
+                NPC_Manager.loadAllNPC(player);
+            }
+        }else {
+            e.setCancelled(true);
         }
 
     }

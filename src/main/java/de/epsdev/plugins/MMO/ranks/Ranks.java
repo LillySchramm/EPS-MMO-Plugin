@@ -3,7 +3,7 @@ package de.epsdev.plugins.MMO.ranks;
 import org.bukkit.ChatColor;
 
 public class Ranks {
-    public static Rank Admin = new Rank("admin", ChatColor.DARK_RED + "Admin" ,new boolean[]{
+    public static Rank Admin = new Rank("admin", ChatColor.DARK_RED + "" + ChatColor.BOLD + "Admin" ,new boolean[]{
             true, //CanBuild
             true, //CanHandleMoney
             true, //CanChangeRanks
@@ -17,7 +17,8 @@ public class Ranks {
             true  //CanManageNPC
     },
         new  int[]{
-            999     //MaxHousesOwn
+            999,     //MaxHousesOwn
+            20       //MaxCharacters
     });
     public static Rank Builder = new Rank("builder", ChatColor.BLUE + "Builder", new boolean[]{
             true, //CanBuild
@@ -33,7 +34,8 @@ public class Ranks {
             true  //CanManageNPC
     },
         new  int[]{
-                999     //MaxHousesOwn
+                999,     //MaxHousesOwn
+                20       //MaxCharacters
     });
     public static Rank Player = new Rank("player", "Player",new  boolean[]{
             false, //CanBuild
@@ -49,7 +51,8 @@ public class Ranks {
             false  //CanManageNPC
     },
         new  int[]{
-                1     //MaxHousesOwn
+                1,     //MaxHousesOwn
+                5       //MaxCharacters
     });
 
     public static Rank Mod = new Rank("mod", ChatColor.DARK_BLUE +"Mod",new  boolean[]{
@@ -66,7 +69,8 @@ public class Ranks {
             false  //CanManageNPC
     },
         new  int[]{
-                999     //MaxHousesOwn
+                999,     //MaxHousesOwn
+                20       //MaxCharacters
     });
 
     public static Rank VIP = new Rank("vip", ChatColor.GOLD + "VIP",new  boolean[]{
@@ -83,7 +87,8 @@ public class Ranks {
             false  //CanManageNPC
     },
             new  int[]{
-                    5     //MaxHousesOwn
+                    5,     //MaxHousesOwn
+                    10       //MaxCharacters
     });
 
     public static Rank getRank(String name){

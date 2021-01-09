@@ -1,6 +1,6 @@
 package de.epsdev.plugins.MMO.data;
 
-import de.epsdev.plugins.MMO.GUI.*;
+import de.epsdev.plugins.MMO.GUI.dev.City_GUI;
 import de.epsdev.plugins.MMO.GUI.dev.Dev_Houses_Gui;
 import de.epsdev.plugins.MMO.GUI.dev.OnClick;
 import de.epsdev.plugins.MMO.GUI.dev.Regions_GUI;
@@ -8,11 +8,11 @@ import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.data.player.Character;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.Region;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
-import de.epsdev.plugins.MMO.npc.NPC;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import de.epsdev.plugins.MMO.tools.Colors;
 import de.epsdev.plugins.MMO.tools.Vec2f;
@@ -453,6 +453,39 @@ public class DataManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    //-----------------------------------------------------------------
+    //Character Stuff
+    //-----------------------------------------------------------------
+
+    public static List<Character> getPlayerCharacters(String uuid){
+        List<Character> characters = new ArrayList<>();
+
+        try {
+            ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`characters` WHERE UUID='" + uuid + "';");
+
+            while (rs.next()) {
+                String name = rs.getString("NAME");
+                int id = rs.getInt("ID");
+                int exp = rs.getInt("EXP");
+                int level = rs.getInt("LEVEL");
+
+                String tmp = rs.getString("LAST_POS");
+                String[] _tmp = tmp.split(">>");
+
+                Vec3f pos = new Vec3f(Float.parseFloat(_tmp[0]),
+                        Float.parseFloat(_tmp[1]),
+                        Float.parseFloat(_tmp[2]));
+
+                characters.add(new Character(name, exp, level, id, pos));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return characters;
     }
 
 }

@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.tools;
 
+import de.epsdev.plugins.MMO.data.player.Character;
 import org.bukkit.ChatColor;
 
 import java.io.StringReader;
@@ -22,6 +23,18 @@ public class TooltipLore {
 
     public static ArrayList<String> tt_clickToTeleport(){
         return toTT(ChatColor.GREEN + "Click to teleport");
+    }
+
+    public static ArrayList<String> tt_clickToSelect(){
+        return toTT(ChatColor.GREEN + "Click to select");
+    }
+
+    public static ArrayList<String> tt_clickToCreate(){
+        return toTT(ChatColor.GREEN + "Click to create");
+    }
+
+    public static ArrayList<String> tt_buyCharSpace(){
+        return toTT(ChatColor.RED + "" + ChatColor.BOLD + "Buy a higher rank for more character slots.");
     }
 
     public static ArrayList<String> tt_clickToDelete(){

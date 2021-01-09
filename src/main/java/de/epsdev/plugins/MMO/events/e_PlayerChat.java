@@ -22,8 +22,8 @@ public class e_PlayerChat implements Listener {
         if(user.onChat == null){
             if(!DataManager.chatMuted || user.rank.canSpeakWhenChatMuted) {
                 Out.printToBroadcast("[" + user.rank.prefix + ChatColor.WHITE + "] " +
-                        user.displayName +
-                        " [" + ChatColor.GOLD + " user.level"  + ChatColor.WHITE + "] "
+                        player.getDisplayName() +
+                        " [" + ChatColor.GOLD + user.currentCharacter.level + ChatColor.WHITE + "] "
                         + e.getMessage());
             }else {
                 Err.chat_mutedError(player);

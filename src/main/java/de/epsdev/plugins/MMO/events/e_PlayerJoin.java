@@ -7,6 +7,8 @@ import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.sql.SQLException;
 
@@ -24,8 +26,11 @@ public class e_PlayerJoin implements Listener {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
         user.print();
         DataManager.onlineUsers.put(user.UUID,user);
+        user.showCharacterSelectionMenu(e.getPlayer());
+        e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 99999, 200, true));
 
         NPC_Manager.loadAllNPC(e.getPlayer());
     }

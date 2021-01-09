@@ -18,6 +18,7 @@ public class Rank {
     public String prefix;
 
     public int maxHousesForRent = 1;
+    public int maxCharacters = 1;
 
     public Rank(String name, String prefix ,boolean[] args, int[] int_args){
         canBuild = args[0];
@@ -33,6 +34,7 @@ public class Rank {
         canManageNPC = args[10];
 
         this.maxHousesForRent = int_args[0];
+        this.maxCharacters = int_args[1];
 
         this.name = name;
         this.prefix = prefix;

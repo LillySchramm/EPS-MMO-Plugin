@@ -1,7 +1,9 @@
 package de.epsdev.plugins.MMO.data.player;
 
+import de.epsdev.plugins.MMO.GUI.player.PlayerCharacterSelectionGUI;
 import de.epsdev.plugins.MMO.GUI.player.PlayerHouses_GUI;
 import de.epsdev.plugins.MMO.commands.Next;
+import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.events.OnBreak;
@@ -14,6 +16,8 @@ import de.epsdev.plugins.MMO.ranks.Rank;
 import de.epsdev.plugins.MMO.ranks.Ranks;
 import de.epsdev.plugins.MMO.scoreboards.DefaultScroreboard;
 import org.bukkit.Chunk;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import javax.sql.RowSet;
@@ -32,6 +36,9 @@ public class User {
     public String UUID;
     public Rank rank;
     public Money money;
+
+    public List<Character> characters = new ArrayList<>();
+    public Character currentCharacter = null;
 
     public List<String> temp_strings = new ArrayList<>();
 
@@ -55,8 +62,9 @@ public class User {
             rs.absolute(1);
             this.money = new Money(rs.getInt("MONEY"));
             this.rank = Ranks.getRank(rs.getString("RANK"));
-
         }
+
+        this.characters = DataManager.getPlayerCharacters(UUID);
     }
 
     public User(Player player, boolean online) throws SQLException {
@@ -78,6 +86,8 @@ public class User {
         }
 
         if(online) DefaultScroreboard.refresh(this);
+
+        this.characters = DataManager.getPlayerCharacters(UUID);
     }
 
     public static void saveUser(User user){
@@ -125,6 +135,15 @@ public class User {
         Out.printToConsole("UUID: " + UUID);
         Out.printToConsole("Money: " + money.amount);
         Out.printToConsole("Rank: " + rank.name);
+    }
+
+    public void showCharacterSelectionMenu(Player player){
+        new PlayerCharacterSelectionGUI(this).show(player);
+        player.setAllowFlight(true);
+        player.setFlying(true);
+        player.setGameMode(GameMode.SURVIVAL);
+        Location location = new Location(player.getWorld(), 1000.0f,200.0f,1000.0f);
+        player.teleport(location);
     }
 
 

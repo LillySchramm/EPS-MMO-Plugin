@@ -10,6 +10,7 @@ import de.epsdev.plugins.MMO.events.*;
 import de.epsdev.plugins.MMO.schedulers.MAIN_UPDATE_SCHEDULER;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -27,6 +28,7 @@ public final class main extends JavaPlugin {
 
         databaseManager.init();
 
+        initGameRules();
         initRegions();
         registerEvents();
         registerCommands();
@@ -56,6 +58,13 @@ public final class main extends JavaPlugin {
         DataManager.loadAllNPC();
     }
 
+    private void initGameRules(){
+        Bukkit.getWorld("world").setDifficulty(Difficulty.EASY);
+        Bukkit.getWorld("world").setMonsterSpawnLimit(0);
+        Bukkit.getWorld("world").setAnimalSpawnLimit(0);
+
+    }
+
     private void registerEvents(){
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new e_PlayerJoin(), this);
@@ -66,6 +75,8 @@ public final class main extends JavaPlugin {
         pm.registerEvents(new e_ClickEvent(), this);
         pm.registerEvents(new e_PlayerInteract(), this);
         pm.registerEvents(new e_PlayerMove(), this);
+        pm.registerEvents(new e_PlayerClosesInventory(), this);
+        pm.registerEvents(new e_FoodDepleteEvent(), this);
     }
 
     private void registerCommands(){
