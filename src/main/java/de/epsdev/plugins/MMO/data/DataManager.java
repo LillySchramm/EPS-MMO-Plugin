@@ -478,7 +478,7 @@ public class DataManager {
                         Float.parseFloat(_tmp[1]),
                         Float.parseFloat(_tmp[2]));
 
-                characters.add(new Character(name, exp, level, id, pos));
+                characters.add(new Character(name, exp, level, id, pos, uuid));
             }
 
         } catch (SQLException e) {

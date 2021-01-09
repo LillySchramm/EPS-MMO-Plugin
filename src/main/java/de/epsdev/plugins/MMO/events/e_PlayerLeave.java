@@ -12,10 +12,18 @@ import java.sql.SQLException;
 
 public class e_PlayerLeave implements Listener {
     @EventHandler
-    void onPlayerJoin(PlayerQuitEvent e) {
+    void onPlayerLeave(PlayerQuitEvent e) {
         PacketReader reader = new PacketReader();
         reader.uninject(e.getPlayer());
-        DataManager.onlineUsers.get(e.getPlayer().getUniqueId().toString()).save();
+
+        User user = DataManager.onlineUsers.get(e.getPlayer().getUniqueId().toString());
+
+        user.save();
+
+        if(user.currentCharacter != null){
+            user.currentCharacter.save();
+        }
+
         DataManager.onlineUsers.remove(e.getPlayer().getUniqueId().toString());
     }
 }
