@@ -30,7 +30,7 @@ public class e_PlayerJoin implements Listener {
         user.print();
         DataManager.onlineUsers.put(user.UUID,user);
         user.showCharacterSelectionMenu(e.getPlayer());
-        e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 99999, 200, true));
+
 
         NPC_Manager.loadAllNPC(e.getPlayer());
     }

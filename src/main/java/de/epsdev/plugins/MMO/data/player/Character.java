@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.data.player;
 
 import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.tools.Vec3f;
@@ -15,6 +16,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -64,6 +66,20 @@ public class Character {
                 }
 
             }
+
+            User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+            ArrayList<Character> characters = new ArrayList<>();
+
+            for (Character character : user.characters){
+                if(character.name.equals(this.name)){
+                    characters.add(this);
+                    continue;
+                }
+
+                characters.add(character);
+            }
+
+            user.characters = characters;
         }
     }
 

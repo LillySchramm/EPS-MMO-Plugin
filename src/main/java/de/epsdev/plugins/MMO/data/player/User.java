@@ -2,6 +2,7 @@ package de.epsdev.plugins.MMO.data.player;
 
 import de.epsdev.plugins.MMO.GUI.player.PlayerCharacterSelectionGUI;
 import de.epsdev.plugins.MMO.GUI.player.PlayerHouses_GUI;
+import de.epsdev.plugins.MMO.GUI.player.PlayerInGameGUI;
 import de.epsdev.plugins.MMO.commands.Next;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
@@ -15,10 +16,13 @@ import de.epsdev.plugins.MMO.events.OnRightObj;
 import de.epsdev.plugins.MMO.ranks.Rank;
 import de.epsdev.plugins.MMO.ranks.Ranks;
 import de.epsdev.plugins.MMO.scoreboards.DefaultScroreboard;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import javax.sql.RowSet;
 import java.io.FileWriter;
@@ -138,12 +142,22 @@ public class User {
     }
 
     public void showCharacterSelectionMenu(Player player){
+        this.currentCharacter = null;
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 99999, 200, true));
+
         new PlayerCharacterSelectionGUI(this).show(player);
+
         player.setAllowFlight(true);
         player.setFlying(true);
         player.setGameMode(GameMode.SURVIVAL);
         Location location = new Location(player.getWorld(), 1000.0f,200.0f,1000.0f);
         player.teleport(location);
+    }
+
+    public void showInGameMenu(Player player){
+        PlayerInGameGUI ig_gui = new PlayerInGameGUI(this);
+        ig_gui.show(player);
     }
 
 

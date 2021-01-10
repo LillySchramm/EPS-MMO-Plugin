@@ -37,6 +37,10 @@ public class TooltipLore {
         return toTT(ChatColor.RED + "" + ChatColor.BOLD + "Buy a higher rank for more character slots.");
     }
 
+    public static ArrayList<String> tt_changeChar(){
+        return toTT(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Click to change characters");
+    }
+
     public static ArrayList<String> tt_clickToDelete(){
         return toTT(ChatColor.GREEN + "Click to delete");
     }

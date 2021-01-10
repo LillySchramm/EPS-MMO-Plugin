@@ -11,6 +11,10 @@ commands:
   npc:
     description: ...
 
+  menu:
+    description:
+      Shows the ingame menu
+
   houses:
     description: Showing the players their houses.
     aliases: [ hauses, hoses ]

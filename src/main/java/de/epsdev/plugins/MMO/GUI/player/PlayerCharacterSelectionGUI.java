@@ -120,8 +120,6 @@ public class PlayerCharacterSelectionGUI {
 
     public void show(Player player){
         BukkitScheduler scheduler = Bukkit.getScheduler();
-
-
         scheduler.scheduleSyncDelayedTask(main.plugin, () -> {
             gui.show(player);
         }, 2L);

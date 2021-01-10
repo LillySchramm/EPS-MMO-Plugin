@@ -88,6 +88,8 @@ public final class main extends JavaPlugin {
         getCommand("rlc").setExecutor(new c_rlc());
         getCommand("next").setExecutor(new c_next());
 
+        getCommand("menu").setExecutor(new c_menu());
+
         getCommand("gmc").setExecutor(new c_gmc());
         getCommand("gms").setExecutor(new c_gms());
         getCommand("gmspec").setExecutor(new c_gmspec());
