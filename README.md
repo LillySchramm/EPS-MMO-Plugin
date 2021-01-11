@@ -54,5 +54,5 @@ Every rank has its own prefix that is always shown in the tablist, and the Chat.
 
 `/gmc, /gms, /gmspec` for easy gamemode switching.
 <br>
-
 `/mutechat` gives the server staff the possibility to mut the chat on a global scale.
+
