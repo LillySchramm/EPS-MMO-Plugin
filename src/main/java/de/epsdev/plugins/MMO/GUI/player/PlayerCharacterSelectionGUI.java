@@ -10,16 +10,16 @@ import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.Character;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.events.OnChat;
+import de.epsdev.plugins.MMO.tools.*;
 import de.epsdev.plugins.MMO.tools.Math;
-import de.epsdev.plugins.MMO.tools.PlayerHeads;
-import de.epsdev.plugins.MMO.tools.Vec2i;
-import de.epsdev.plugins.MMO.tools.Vec3f;
 import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
@@ -71,6 +71,10 @@ public class PlayerCharacterSelectionGUI {
 
     };
 
+    private final OnClick click_disconnect = (player, item, inventory) -> {
+        player.kickPlayer("Disconnect");
+    };
+
     public PlayerCharacterSelectionGUI(User user){
         this.gui = new Base_Gui("Characters");
         this.gui.rows = 3;
@@ -91,7 +95,7 @@ public class PlayerCharacterSelectionGUI {
             cursor.increase2D(8);
         }
 
-        while (!cursor.equals(new Vec2i(8,3))){
+        while (!cursor.equals(new Vec2i(8,2))){
             int num = cursor.x + cursor.y * 8;
 
             if(user.rank.maxCharacters >= num){
@@ -104,9 +108,9 @@ public class PlayerCharacterSelectionGUI {
                         cursor.y
                 );
             }else {
-                gui.addItem(Material.BARRIER,
+                gui.addItem(new ItemStack(Material.STAINED_GLASS_PANE, 1, Colors.RED),
                         1,
-                        ChatColor.DARK_GREEN + "Blocked Slot",
+                        ChatColor.RED + "Blocked Slot",
                         tt_buyCharSpace(),
                         null,
                         cursor.x,
@@ -115,7 +119,17 @@ public class PlayerCharacterSelectionGUI {
             }
 
             cursor.increase2D(8);
+
         }
+
+        gui.addItem(Material.BARRIER,
+                1,
+                ChatColor.DARK_RED + "" + ChatColor.BOLD + "Disconnect",
+                tt_clickToDisconnect(),
+                click_disconnect,
+                8,
+                2
+        );
     }
 
     public void show(Player player){

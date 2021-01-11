@@ -33,6 +33,10 @@ public class TooltipLore {
         return toTT(ChatColor.GREEN + "Click to create");
     }
 
+    public static ArrayList<String> tt_clickToDisconnect(){
+        return toTT(ChatColor.RED + "Click to disconnect");
+    }
+
     public static ArrayList<String> tt_buyCharSpace(){
         return toTT(ChatColor.RED + "" + ChatColor.BOLD + "Buy a higher rank for more character slots.");
     }

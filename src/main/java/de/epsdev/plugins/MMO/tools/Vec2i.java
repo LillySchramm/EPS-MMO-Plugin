@@ -20,7 +20,7 @@ public class Vec2i {
     }
 
     public String toString(){
-        return "X: " + x + " Pitch: " + y;
+        return "X: " + x + " Y: " + y;
     }
 
     public void increase2D(int max_X){
