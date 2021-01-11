@@ -15,7 +15,6 @@ import java.sql.SQLException;
 public class e_PlayerLeave implements Listener {
     @EventHandler
     void onPlayerLeave(PlayerQuitEvent e) {
-        Out.printToConsole(1);
         HandleDisconnect(e.getPlayer());
     }
 
