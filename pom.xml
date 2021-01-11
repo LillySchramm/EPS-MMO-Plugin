@@ -6,7 +6,7 @@
 
     <groupId>de.epsdev.plugins</groupId>
     <artifactId>EPS-MMO</artifactId>
-    <version>.0.1</version>
+    <version>0.1</version>
     <packaging>jar</packaging>
 
     <name>EPS MMO</name>
