@@ -45,6 +45,10 @@ public class TooltipLore {
         return toTT(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Click to change characters");
     }
 
+    public static ArrayList<String> tt_deleteChar(){
+        return toTT(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Click to delete this character");
+    }
+
     public static ArrayList<String> tt_clickToDelete(){
         return toTT(ChatColor.GREEN + "Click to delete");
     }

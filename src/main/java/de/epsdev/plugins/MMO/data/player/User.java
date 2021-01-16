@@ -3,6 +3,7 @@ package de.epsdev.plugins.MMO.data.player;
 import de.epsdev.plugins.MMO.GUI.player.PlayerCharacterSelectionGUI;
 import de.epsdev.plugins.MMO.GUI.player.PlayerHouses_GUI;
 import de.epsdev.plugins.MMO.GUI.player.PlayerInGameGUI;
+import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.commands.Next;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
@@ -143,18 +144,21 @@ public class User {
 
     public void showCharacterSelectionMenu(Player player){
         try {
-            this.currentCharacter = null;
+            Bukkit.getScheduler().scheduleSyncDelayedTask(main.plugin, () -> {
+                this.currentCharacter = null;
 
-            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 99999, 200, true));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 99999, 200, true));
 
-            new PlayerCharacterSelectionGUI(this).show(player);
+                new PlayerCharacterSelectionGUI(this).show(player);
 
-            player.setAllowFlight(true);
-            player.setFlying(true);
-            player.setGameMode(GameMode.SURVIVAL);
-            Location location = new Location(player.getWorld(), 1000.0f,200.0f,1000.0f);
-            player.teleport(location);
+                player.setAllowFlight(true);
+                player.setFlying(true);
+                player.setGameMode(GameMode.SURVIVAL);
+                Location location = new Location(player.getWorld(), 1000.0f,200.0f,1000.0f);
+                player.teleport(location);
+            });
         }catch (Exception e){
+            e.printStackTrace();
         }
 
     }

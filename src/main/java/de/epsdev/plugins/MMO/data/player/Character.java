@@ -87,6 +87,28 @@ public class Character {
         player.setPlayerListName("[" +user.rank.prefix + ChatColor.RESET + "] " + user.currentCharacter.name);
     }
 
+    public void delete(){
+        mysql.query("DELETE FROM `eps_users`.`characters` WHERE ID=" + this.id + ";");
+
+        Player player = Bukkit.getPlayer(UUID.fromString(this.OwnerUUID));
+
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+        ArrayList<Character> characters = new ArrayList<>();
+
+        for (Character character : user.characters){
+            if(character.name.equals(this.name)){
+                continue;
+            }
+
+            characters.add(character);
+        }
+
+        user.characters = characters;
+
+        Out.printToPlayer(player, ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "'" + this.name + "' deleted!");
+
+    }
+
     public void load(Player player, User user){
 
         BukkitScheduler scheduler = main.plugin.getServer().getScheduler();
