@@ -1,14 +1,16 @@
 package de.epsdev.plugins.MMO.data.mysql;
 
+import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.data.DataManager;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.sql.SQLException;
+import java.io.File;
 
 
 public class DatabaseManager {
 
     public void init() {
-
         mysql.connect();
 
         mysql.createDatabaseIfNotExists("eps_users");

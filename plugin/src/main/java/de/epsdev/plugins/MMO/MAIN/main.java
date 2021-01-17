@@ -3,6 +3,7 @@ package de.epsdev.plugins.MMO.MAIN;
 import de.epsdev.plugins.MMO.GUI.dev.CheatMenu_GUI;
 import de.epsdev.plugins.MMO.GUI.dev.Regions_GUI;
 import de.epsdev.plugins.MMO.commands.*;
+import de.epsdev.plugins.MMO.config.Config;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.DatabaseManager;
 import de.epsdev.plugins.MMO.events.*;
@@ -25,6 +26,8 @@ public final class main extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+
+        Config.load();
 
         databaseManager.init();
 
