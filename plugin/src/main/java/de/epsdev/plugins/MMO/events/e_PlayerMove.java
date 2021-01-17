@@ -22,13 +22,13 @@ public class e_PlayerMove implements Listener {
         Chunk chunk = player.getLocation().getChunk();
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
 
-        if(player.getGameMode() == GameMode.CREATIVE){
+        if(player.getGameMode() != GameMode.SURVIVAL){
             player.setAllowFlight(true);
         }else {
             player.setAllowFlight(false);
         }
 
-        if(user.currentCharacter != null && !user.currentCharacter.name.equals("")) {
+        if(user.currentCharacter != null && !user.currentCharacter.name.equals("") ) {
 
             Vec3f pos = new Vec3f(player.getLocation());
             if (chunk != user.lastChunk) {

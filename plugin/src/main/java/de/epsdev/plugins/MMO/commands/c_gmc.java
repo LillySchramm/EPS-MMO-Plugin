@@ -28,6 +28,8 @@ public class c_gmc implements CommandExecutor {
                 Err.rankError(player);
             }
 
+            player.getInventory().clear();
+
         }
 
         return true;

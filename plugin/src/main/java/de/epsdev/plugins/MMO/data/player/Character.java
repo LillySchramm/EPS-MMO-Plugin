@@ -4,12 +4,15 @@ import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.tools.Colors;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -109,19 +112,42 @@ public class Character {
 
     }
 
+    public void updateHotbar(Player player){
+        for (int i = 0; i < 9; i++){
+            ItemStack stack = null;
+
+            if(i < 4){
+                stack = new ItemStack(Material.STAINED_GLASS_PANE,1 , Colors.RED);
+            }else if(i > 4){
+                stack = new ItemStack(Material.STAINED_GLASS_PANE,1 , Colors.BLUE);
+            }
+
+            player.getInventory().setItem(i, stack);
+        }
+    }
+
     public void load(Player player, User user){
 
         BukkitScheduler scheduler = main.plugin.getServer().getScheduler();
         scheduler.scheduleSyncDelayedTask(main.plugin, () -> {
             player.setDisplayName(this.name);
             player.setFlying(false);
+
+            updateHotbar(player);
+
             setPlayerListName(player, user);
             player.setLevel(this.level);
             player.removePotionEffect(PotionEffectType.BLINDNESS);
             player.teleport(new Location(player.getWorld(), this.pos.x, this.pos.y, this.pos.z));
             user.refreshScoreboard();
         }, 1L);
+    }
 
-
+    public void handleSkill(Player player, int slot){
+        if(slot <= 4){
+            Out.printToPlayer(player, ChatColor.RED + "Offensive Skill NR." + slot + " activated." );
+        }else {
+            Out.printToPlayer(player, ChatColor.BLUE + "Support Skill NR." + (slot - 4) + " activated." );
+        }
     }
 }

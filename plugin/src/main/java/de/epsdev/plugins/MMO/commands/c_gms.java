@@ -22,6 +22,8 @@ public class c_gms implements CommandExecutor {
             if(user.rank.canChangeGamemode){
                 player.setGameMode(GameMode.SURVIVAL);
                 Out.printToPlayer(player, ChatColor.BLUE + "Your gamemode has been changed to SURVIVAL.");
+                player.getInventory().setHeldItemSlot(4);
+                user.currentCharacter.updateHotbar(player);
             }else {
                 Err.rankError(player);
             }

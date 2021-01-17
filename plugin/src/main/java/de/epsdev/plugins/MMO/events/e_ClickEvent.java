@@ -3,11 +3,13 @@ package de.epsdev.plugins.MMO.events;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.tools.HiddenItemData;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -16,7 +18,11 @@ import java.util.List;
 public class e_ClickEvent implements Listener {
     @EventHandler
     void playerClick(InventoryClickEvent e) {
-        if (e.getClickedInventory().getName().contains("[MMO]")) {
+
+        Inventory inventory = e.getClickedInventory();
+        Player player = (Player) e.getWhoClicked();
+
+        if (inventory.getName().contains("[MMO]")) {
 
             ItemStack item = e.getCurrentItem();
 
@@ -41,6 +47,12 @@ public class e_ClickEvent implements Listener {
             }
 
             e.setCancelled(true);
+        }else {
+            if(e.getSlot() <= 8){
+                if(player.getGameMode() != GameMode.CREATIVE){
+                    e.setCancelled(true);
+                }
+            }
         }
     }
 }

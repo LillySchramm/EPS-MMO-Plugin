@@ -12,9 +12,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class mysql {
-    public static String mysql_host = "localhost";
-    public static String mysql_user = "admin";
-    public static String mysql_pwd = "1111";
+    public static String mysql_host;
+    public static String mysql_user;
+    public static String mysql_pwd;
 
     public static MariaDbDataSource DB_DATASOURCE;
     public static Connection DB_CONN;

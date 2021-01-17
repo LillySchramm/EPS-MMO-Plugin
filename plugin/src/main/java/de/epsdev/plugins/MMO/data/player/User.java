@@ -148,6 +148,7 @@ public class User {
                 this.currentCharacter = null;
 
                 player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 99999, 200, true));
+                player.getInventory().setHeldItemSlot(4);
 
                 new PlayerCharacterSelectionGUI(this).show(player);
 
