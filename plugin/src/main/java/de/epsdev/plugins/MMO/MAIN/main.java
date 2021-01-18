@@ -83,6 +83,7 @@ public final class main extends JavaPlugin {
         pm.registerEvents(new e_PlayerKick(), this);
         pm.registerEvents(new e_Inventory_Slot_Switch(), this);
         pm.registerEvents(new e_PlayerItemDrop(), this);
+        pm.registerEvents(new e_Inventory_Item_Switch(), this);
     }
 
     private void registerCommands(){

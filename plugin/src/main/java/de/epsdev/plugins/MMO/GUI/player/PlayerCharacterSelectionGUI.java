@@ -35,7 +35,7 @@ public class PlayerCharacterSelectionGUI {
         Character c = characters.get(item.getItemMeta().getDisplayName());
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
         user.currentCharacter = c;
-        c.load(player, user);
+        c.load(player);
     };
 
     private final OnChat onChat_character_name = e -> {
@@ -56,7 +56,7 @@ public class PlayerCharacterSelectionGUI {
 
         user.onChat = null;
 
-        user.currentCharacter.load(player, user);
+        user.currentCharacter.load(player);
 
     };
 

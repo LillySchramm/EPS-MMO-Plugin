@@ -47,20 +47,29 @@ public class NPC {
 
         if(this.deleted) return;
 
-        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-        connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
-                this.entityPlayer));
-
-        connection.sendPacket(new PacketPlayOutNamedEntitySpawn(this.entityPlayer));
-        connection.sendPacket(new PacketPlayOutEntityHeadRotation(this.entityPlayer, (byte) (this.entityPlayer.yaw * 256 / 360)));
         BukkitScheduler scheduler = main.plugin.getServer().getScheduler();
-        scheduler.scheduleSyncDelayedTask(main.plugin, () -> {
-            connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER,
-                    this.entityPlayer));
-        }, 20L);
 
-        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
-        user.loadedNPC.add(this.npc_id);
+        scheduler.scheduleSyncDelayedTask(main.plugin, () -> {
+
+            PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
+            connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
+                    this.entityPlayer));
+
+            connection.sendPacket(new PacketPlayOutNamedEntitySpawn(this.entityPlayer));
+            connection.sendPacket(new PacketPlayOutEntityHeadRotation(this.entityPlayer, (byte) (this.entityPlayer.yaw * 256 / 360)));
+
+            scheduler.scheduleSyncDelayedTask(main.plugin, () -> {
+                connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER,
+                        this.entityPlayer));
+            }, 20L);
+
+            User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+            user.loadedNPC.add(this.npc_id);
+
+
+        }, 1L);
+
+
 
     }
 
@@ -87,6 +96,7 @@ public class NPC {
                 " '" + this.skin.Owner + "') ");
 
         this.gui = new Dev_NPC_GUI(this);
+
     }
 
     public void unload(Player player) {

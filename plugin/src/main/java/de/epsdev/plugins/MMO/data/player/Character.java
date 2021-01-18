@@ -4,6 +4,7 @@ import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import de.epsdev.plugins.MMO.tools.Colors;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerInfo;
@@ -13,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -122,13 +124,24 @@ public class Character {
                 stack = new ItemStack(Material.STAINED_GLASS_PANE,1 , Colors.BLUE);
             }
 
+            if (stack != null){
+                ItemMeta meta = stack.getItemMeta();
+
+                meta.setDisplayName("[SKILL]");
+
+                stack.setItemMeta(meta);
+            }
+
+
             player.getInventory().setItem(i, stack);
         }
     }
 
-    public void load(Player player, User user){
-
+    public void load(Player player){
         BukkitScheduler scheduler = main.plugin.getServer().getScheduler();
+
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
         scheduler.scheduleSyncDelayedTask(main.plugin, () -> {
             player.setDisplayName(this.name);
             player.setFlying(false);
@@ -140,6 +153,10 @@ public class Character {
             player.removePotionEffect(PotionEffectType.BLINDNESS);
             player.teleport(new Location(player.getWorld(), this.pos.x, this.pos.y, this.pos.z));
             user.refreshScoreboard();
+
+            user.loadedNPC = new ArrayList<>();
+            NPC_Manager.loadAllNPC(player);
+
         }, 1L);
     }
 
