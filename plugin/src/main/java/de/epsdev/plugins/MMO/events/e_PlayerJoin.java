@@ -28,8 +28,11 @@ public class e_PlayerJoin implements Listener {
         }
 
         user.print();
+
         DataManager.onlineUsers.put(user.UUID,user);
         user.showCharacterSelectionMenu(e.getPlayer());
+
+
     }
 
 }

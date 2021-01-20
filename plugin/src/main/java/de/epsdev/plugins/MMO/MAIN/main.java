@@ -8,6 +8,7 @@ import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.DatabaseManager;
 import de.epsdev.plugins.MMO.events.*;
 
+import de.epsdev.plugins.MMO.schedulers.Inventory_Check_Scheduler;
 import de.epsdev.plugins.MMO.schedulers.MAIN_UPDATE_SCHEDULER;
 
 import org.bukkit.Bukkit;
@@ -52,6 +53,7 @@ public final class main extends JavaPlugin {
 
     private void startSchedulers(){
         MAIN_UPDATE_SCHEDULER.run();
+        Inventory_Check_Scheduler.run();
     }
 
     private void initRegions(){
@@ -83,7 +85,6 @@ public final class main extends JavaPlugin {
         pm.registerEvents(new e_PlayerKick(), this);
         pm.registerEvents(new e_Inventory_Slot_Switch(), this);
         pm.registerEvents(new e_PlayerItemDrop(), this);
-        pm.registerEvents(new e_Inventory_Item_Switch(), this);
     }
 
     private void registerCommands(){

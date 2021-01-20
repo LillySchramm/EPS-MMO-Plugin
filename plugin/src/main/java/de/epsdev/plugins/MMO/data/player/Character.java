@@ -115,6 +115,8 @@ public class Character {
     }
 
     public void updateHotbar(Player player){
+        User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
         for (int i = 0; i < 9; i++){
             ItemStack stack = null;
 
@@ -126,19 +128,22 @@ public class Character {
 
             if (stack != null){
                 ItemMeta meta = stack.getItemMeta();
-
-                meta.setDisplayName("[SKILL]");
-
+                meta.setDisplayName("[SKILL] " + i);
                 stack.setItemMeta(meta);
             }
 
-
             player.getInventory().setItem(i, stack);
+
+
         }
+
+        user.playerInventory = player.getInventory().getStorageContents();
+
     }
 
     public void load(Player player){
         BukkitScheduler scheduler = main.plugin.getServer().getScheduler();
+        player.getInventory().clear();
 
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
 

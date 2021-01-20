@@ -22,6 +22,8 @@ import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -53,6 +55,8 @@ public class User {
     public Next next = null;
     public OnRightObj onRightObj = null;
     public House temp_house = null;
+
+    public ItemStack[] playerInventory;
 
     public Chunk lastChunk = null;
 
