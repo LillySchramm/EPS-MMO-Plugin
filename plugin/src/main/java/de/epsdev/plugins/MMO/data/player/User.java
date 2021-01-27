@@ -8,6 +8,7 @@ import de.epsdev.plugins.MMO.commands.Next;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
+import de.epsdev.plugins.MMO.data.sessions.Session;
 import de.epsdev.plugins.MMO.events.OnBreak;
 import de.epsdev.plugins.MMO.events.OnChat;
 import de.epsdev.plugins.MMO.data.money.Money;
@@ -58,6 +59,8 @@ public class User {
 
     public ItemStack[] playerInventory;
 
+    public Session session;
+
     public Chunk lastChunk = null;
 
     public ArrayList<Integer> loadedNPC = new ArrayList<>();
@@ -74,11 +77,16 @@ public class User {
         }
 
         this.characters = DataManager.getPlayerCharacters(UUID);
+
+        this.session = new Session(UUID);
+
     }
 
     public User(Player player, boolean online) throws SQLException {
         displayName = player.getDisplayName();
         UUID = player.getUniqueId().toString();
+
+        this.session = new Session(UUID);
 
         ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`players` WHERE UUID = '" + UUID + "'");
 

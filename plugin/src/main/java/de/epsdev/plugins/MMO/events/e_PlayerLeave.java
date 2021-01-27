@@ -29,7 +29,7 @@ public class e_PlayerLeave implements Listener {
         if(user.currentCharacter != null){
             user.currentCharacter.save();
         }
-
+        user.session.unload();
         DataManager.onlineUsers.remove(player.getUniqueId().toString());
     }
 }
