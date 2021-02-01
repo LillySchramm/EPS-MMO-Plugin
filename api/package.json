@@ -13,6 +13,8 @@
   "author": "Elias Schramm",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.0",
+    "crypto": "^1.0.1",
     "express": "^4.17.1",
     "mysql": "^2.18.1"
   }
