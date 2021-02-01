@@ -1,5 +1,7 @@
 const sql = require('./mysql')
 const encrypt = require('../tools/encryption')
+const crypto = require('crypto');
+
 
 const databases = ["eps_sessions", "eps_users", "eps_regions"];
 const tables = 
@@ -12,7 +14,7 @@ const tables =
     {db_name: "eps_regions", table_name: "houses", constructor: "`ID` INT NOT NULL AUTO_INCREMENT , `NAME` TEXT NOT NULL , `COSTS` INT NOT NULL , `OWNER_UUID` TEXT NOT NULL , `BLOCKS_INSIDE` TEXT NOT NULL , `DOORS` TEXT NOT NULL , `SPAWN_POS` TEXT NOT NULL , `SHIELD_POS` TEXT NOT NULL , `CITY_ID` INT NOT NULL, `RENTTIME` INT NOT NULL , PRIMARY KEY (`ID`)"},
     {db_name: "eps_regions", table_name: "npc", constructor: "`ID` INT NOT NULL AUTO_INCREMENT , `NAME` TEXT NOT NULL, `SCRIPT` TEXT NOT NULL , `POS` TEXT NOT NULL, `ROTATION` TEXT NOT NULL, `SKIN` TEXT NOT NULL, PRIMARY KEY (`ID`)"},
     {db_name: "eps_sessions", table_name: "sessions", constructor: "`ID` INT NOT NULL AUTO_INCREMENT , `SESSION_ID` TEXT NOT NULL, `UUID` TEXT NOT NULL, `ACTIVE` INT NOT NULL, PRIMARY KEY (`ID`)"},
-    {db_name: "eps_sessions", table_name: "web_sessions", constructor: "`ID` INT NOT NULL AUTO_INCREMENT , `SESSION_ID` TEXT NOT NULL,  `EXP_DATE` DATE NOT NULL, PRIMARY KEY (`ID`)"}
+    {db_name: "eps_sessions", table_name: "web_sessions", constructor: "`ID` INT NOT NULL AUTO_INCREMENT , `SESSION_ID` TEXT NOT NULL, `USERNAME` TEXT NOT NULL,  `EXP_DATE` DATE NOT NULL, PRIMARY KEY (`ID`)"}
 ]
 
 function init(){
@@ -79,5 +81,32 @@ const verifyUser = (name, password) =>{
     })    
 }
 
+const genSessionKey = () => {
+    return new Promise((resolve, reject) => {
+        
+        let key = crypto.randomBytes(100).toString('hex'); 
 
-module.exports = {init, getSession, getUser, verifyUser}
+        sql.query("SELECT * FROM `eps_sessions`.`web_sessions` WHERE SESSION_ID = '" + key + "';").then((ret) => {       
+            if(sql.isRSempty(ret)){
+                found = true;                    
+                resolve(key);                                                            
+            }else{
+                resolve(genSessionKey())
+            }                           
+        })
+             
+    })
+}
+
+const genSession = (user) => {
+    return new Promise((resolve, reject) => {
+        genSessionKey().then((key) =>{
+            sql.query("INSERT INTO `eps_sessions`.`web_sessions` (`ID`, `SESSION_ID`, `USERNAME`, `EXP_DATE`) VALUES (NULL, '"  + key + "', '" +user +"', NOW() + INTERVAL 1 DAY) ").then((rs) => {
+                resolve(key)
+            })  
+        });                       
+    })         
+}
+
+
+module.exports = {init, getSession, getUser, verifyUser, genSession}

@@ -35,10 +35,10 @@ const connection = () => {
  };
  
 const query = (sql, binding) => {
-  return new Promise((resolve, reject) => {
-    pool.query(sql, binding, (err, result, fields) => {
-      if (err) reject(err);
-      var resultArray = JSON.parse(JSON.stringify(result))
+  return new Promise((resolve, reject) => {    
+    pool.query(sql, binding, (err, result, fields) => {            
+      if (err) console.log(err);
+      var resultArray = JSON.parse(JSON.stringify(result))      
       resolve(resultArray);
     });
   });

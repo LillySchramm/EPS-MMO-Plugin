@@ -1,4 +1,5 @@
 var bcrypt = require('bcrypt');
+var db_manager = require('../mysql/db_manager')
 
 exports.cryptPassword = function(password, callback) {
    bcrypt.genSalt(10, function(err, salt) {
