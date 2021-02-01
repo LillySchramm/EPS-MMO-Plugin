@@ -13,6 +13,6 @@ wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifac
 java -Xms512M -Xmx512M -jar BuildTools.jar --rev 1.12.2
 
 echo "eula=true" > eula.txt
-echo "java -Xms1G -Xmx1G -jar spigot-1.12.2.jar -nogui" > start.sh
+echo "java -Xms1G -Xmx1G -jar spigot-1.12.2.jar" > start.sh
 
 chmod +x ./*
