@@ -8,10 +8,13 @@ const coockie = require('../../tools/coockies');
 class AdminPage extends React.Component {
     constructor(probs){
       super(probs);    
-    } 
-  
-    render(){
+    }   
 
+    componentDidMount(){
+        this.ticker = setInterval(() => {this.forceUpdate()}, 250);        
+    }    
+  
+    render(){   
         if(coockie.readCookie("login")){
             return [
                 <div>
@@ -22,10 +25,7 @@ class AdminPage extends React.Component {
             return (
                 <LoginForm/>
             );
-        }
-      
-    
-        
+        }        
     }
   
   }

@@ -63,6 +63,7 @@ const getUser = (name) =>{
 }
 
 const verifyUser = (name, password) =>{
+    console.log("s");
     return new Promise((resolve, reject) => {
         getUser(name).then((ret) =>{
             if(sql.isRSempty(ret)){
@@ -84,7 +85,7 @@ const verifyUser = (name, password) =>{
 const genSessionKey = () => {
     return new Promise((resolve, reject) => {
         
-        let key = crypto.randomBytes(100).toString('hex'); 
+        let key = crypto.randomBytes(300).toString('hex'); 
 
         sql.query("SELECT * FROM `eps_sessions`.`web_sessions` WHERE SESSION_ID = '" + key + "';").then((ret) => {       
             if(sql.isRSempty(ret)){
