@@ -115,7 +115,7 @@ const genSessionKey = () => {
 const genSession = (user) => {
     return new Promise((resolve, reject) => {
         genSessionKey().then((key) =>{
-            sql.query("INSERT INTO `eps_sessions`.`web_sessions` (`ID`, `SESSION_ID`, `USERNAME`, `EXP_DATE`) VALUES (NULL, '"  + key + "', '" +user +"', NOW() + INTERVAL 1 DAY) ").then((rs) => {
+            sql.query("INSERT INTO `eps_sessions`.`web_sessions` (`ID`, `SESSION_ID`, `USERNAME`, `EXP_DATE`) VALUES (NULL, '"  + key + "', '" +user +"', CAST(CURRENT_TIMESTAMP AS DATE));").then((rs) => {
                 resolve(key)
             })  
         });                       
