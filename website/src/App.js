@@ -6,7 +6,7 @@ import AdminPage from './sites/admin/admin';
 function App() {
   return (
     <Router>
-      <Route path='/admin' exact component={AdminPage} />      
+      <Route path='/admin' component={AdminPage} />      
     </Router>
   );
 }

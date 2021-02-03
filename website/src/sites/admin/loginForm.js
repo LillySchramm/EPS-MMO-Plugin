@@ -30,9 +30,7 @@ class LoginForm extends React.Component {
 
         if(data.successfull){
             coockie.setCookie("login",data.session,3)
-        }
-
-                
+        }                
     }
 
     render(){

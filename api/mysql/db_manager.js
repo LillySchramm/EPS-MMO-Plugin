@@ -63,7 +63,6 @@ const getUser = (name) =>{
 }
 
 const verifyUser = (name, password) =>{
-    console.log("s");
     return new Promise((resolve, reject) => {
         getUser(name).then((ret) =>{
             if(sql.isRSempty(ret)){
@@ -79,6 +78,20 @@ const verifyUser = (name, password) =>{
                            
             }
         })
+    })    
+}
+
+const verifyWebSession = (key) =>{
+    return new Promise((resolve, reject) => {
+    
+        sql.query("SELECT * FROM `eps_sessions`.`web_sessions` WHERE SESSION_ID = '" + key + "' AND EXP_DATE = CAST(CURRENT_TIMESTAMP AS DATE)").then((ret) => {
+            if(sql.isRSempty(ret)){
+                resolve(false)
+            }else{
+                resolve(true)
+            }
+        })
+      
     })    
 }
 
@@ -110,4 +123,4 @@ const genSession = (user) => {
 }
 
 
-module.exports = {init, getSession, getUser, verifyUser, genSession}
+module.exports = {init, getSession, getUser, verifyUser, verifyWebSession, genSession}

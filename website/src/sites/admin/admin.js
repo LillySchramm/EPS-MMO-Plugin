@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import LoginForm from './loginForm'
+import Site_NPC from './site_npc';
+import Admin_Header from './admin_header';
 
 const coockie = require('../../tools/coockies');
 
@@ -15,10 +18,13 @@ class AdminPage extends React.Component {
     }    
   
     render(){   
-        if(coockie.readCookie("login")){
+        if(coockie.readCookie("login")){                 
             return [
                 <div>
-                    <h1>Logged in successfully </h1>
+                    <Admin_Header/>
+                    <Router>
+                        <Route path='/admin/npc' exact component={Site_NPC} />      
+                    </Router>    
                 </div>
             ];
         }else{
