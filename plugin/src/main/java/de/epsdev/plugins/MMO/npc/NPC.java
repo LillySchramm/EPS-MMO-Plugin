@@ -18,6 +18,9 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class NPC {
 
     public int npc_id;
@@ -126,5 +129,20 @@ public class NPC {
         mysql.query("DELETE FROM `eps_regions`.`npc` WHERE ID = " + this.npc_id + ";");
         this.deleted = true;
         NPC_Manager.unloadNPC(this);
+    }
+
+    public void fullReload(){
+        NPC_Manager.unloadNPC(this);
+        ResultSet rs = mysql.query("SELECT * FROM `eps_regions`.`npc` WHERE ID = " + this.npc_id + ";");
+
+        try {
+            rs.next();
+            this.name = rs.getString("NAME");
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        recreateEntity();
+
     }
 }

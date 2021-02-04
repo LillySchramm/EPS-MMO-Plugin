@@ -11,6 +11,8 @@ public class MAIN_UPDATE_SCHEDULER {
     public static void run() {
         BukkitScheduler scheduler = main.plugin.getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(main.plugin, () -> {
+            DataManager.server_session.processCommands();
+
             ArrayList<House> houses = DataManager.getSoldHouses();
             for(House house: houses){
                 house.increaseRenttime();

@@ -45,6 +45,7 @@ public final class main extends JavaPlugin {
     @Override
     public void onDisable() {
         DataManager.saveAllHouses();
+        DataManager.server_session.unload();
         for(Player p : Bukkit.getOnlinePlayers()) {
             DataManager.onlineUsers.get(p.getUniqueId().toString()).save();
             p.kickPlayer("Reload");

@@ -132,6 +132,25 @@ public class NPC_Manager {
             }
         }
 
+    public static void fullReloadNPC(NPC npc){
+        for (NPC n : NPCs){
+            if(n.npc_id == npc.npc_id){
+                n.fullReload();
+                NPCs.remove(n);
+                NPCs.add(npc);
+                break;
+            }
+        }
+
+        for (Player player : Bukkit.getOnlinePlayers()){
+            User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+            if(user.loadedNPC.contains(npc.npc_id))
+                npc.unload(player);
+            npc.display(player);
+        }
+    }
+
         public static void loadAllNPC(Player player){
             User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
             Vec3f pos = new Vec3f(player.getLocation());

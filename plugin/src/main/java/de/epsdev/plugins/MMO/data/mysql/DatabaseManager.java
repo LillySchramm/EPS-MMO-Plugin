@@ -19,11 +19,10 @@ public class DatabaseManager {
         mysql.createTableIfNotExists("eps_regions", "npc","`ID` INT NOT NULL AUTO_INCREMENT , `NAME` TEXT NOT NULL, `SCRIPT` TEXT NOT NULL , `POS` TEXT NOT NULL, `ROTATION` TEXT NOT NULL, `SKIN` TEXT NOT NULL, PRIMARY KEY (`ID`)");
 
         mysql.createTableIfNotExists("eps_sessions", "sessions","`ID` INT NOT NULL AUTO_INCREMENT , `SESSION_ID` TEXT NOT NULL, `UUID` TEXT NOT NULL, `ACTIVE` INT NOT NULL, PRIMARY KEY (`ID`)");
-
+        mysql.createTableIfNotExists("eps_sessions", "server_sessions","`ID` INT NOT NULL AUTO_INCREMENT , `SESSION_ID` TEXT NOT NULL, PRIMARY KEY (`ID`)");
+        mysql.createTableIfNotExists("eps_sessions", "server_commands","`ID` INT NOT NULL AUTO_INCREMENT , `FOR` TEXT NOT NULL, `CMD` TEXT NOT NULL, PRIMARY KEY (`ID`)");
     }
 
-    public DatabaseManager(){
-
-    }
+    public DatabaseManager(){}
 
 }

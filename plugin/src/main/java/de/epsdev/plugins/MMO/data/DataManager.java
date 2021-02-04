@@ -13,6 +13,7 @@ import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.Region;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
+import de.epsdev.plugins.MMO.data.sessions.Server_Session;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import de.epsdev.plugins.MMO.tools.Colors;
 import de.epsdev.plugins.MMO.tools.Vec2f;
@@ -35,6 +36,8 @@ public class DataManager {
     public static final ItemStack GUI_FILLER = new ItemStack(Material.STAINED_GLASS_PANE, 1, Colors.LIGHT_GREY);
     public static final int SECS_PER_RENT = 60 * 60;
     public static final Location spawnLocation = new Location(Bukkit.getWorld("world"), 75,72,166);
+
+    public static Server_Session server_session = new Server_Session();
 
     public static Map<String,User> onlineUsers = new HashMap<String, User>();
 
