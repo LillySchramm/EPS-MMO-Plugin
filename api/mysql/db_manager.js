@@ -123,5 +123,25 @@ const genSession = (user) => {
     })         
 }
 
+const getAllInstances = () => {
+    return new Promise((resolve, reject) => {        
+        sql.query("SELECT * FROM `eps_sessions`.`server_sessions`;").then((rs) => {
+            resolve(rs)
+        })                      
+    }) 
+}
 
-module.exports = {init, getSession, getUser, verifyUser, verifyWebSession, genSession}
+const sendCommadToAllInstances = (cmd) => {
+    return new Promise((resolve, reject) => {
+        getAllInstances().then((instances) => {
+            instances.forEach(instance => {
+                sql.query("INSERT INTO `eps_sessions`.`server_commands` (`ID`, `FOR`, `CMD`) VALUES (NULL, '" + instance.SESSION_ID + "', '" + cmd + "')").then((rs) => {
+                    resolve(true);
+                })
+            });
+        })
+    })         
+}
+
+
+module.exports = {init, getSession, getUser, verifyUser, verifyWebSession, genSession, sendCommadToAllInstances}

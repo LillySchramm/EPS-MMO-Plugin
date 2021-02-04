@@ -43,6 +43,52 @@ router.get('/:session/npc/getall', (req,res,next) => {
     })    
 });
 
+router.get('/:session/server/instances/reload/all', (req,res,next) => {
+    let session = req.params.session;  
+    
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){      
+            db_manager.sendCommadToAllInstances("server reload").then((() => {
+                res.status(200).json({
+                    verified: true
+                });      
+            }))                  
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }
+
+        
+    })    
+});
+
+
+router.get('/:session/npc/set/:npc_id/:attr/:value', (req,res,next) => {
+    let session = req.params.session;
+    let npc_id = req.params.npc_id;
+    let attr = req.params.attr;
+    let value = req.params.value;
+    
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){      
+            sql.query("UPDATE `eps_regions`.`npc` SET " + attr + " = '" + value + "' WHERE ID = " + npc_id + ";").then(() => {
+                db_manager.sendCommadToAllInstances("npc reload " + npc_id).then((list => {
+                    res.status(200).json({
+                        list: list,
+                        verified: true
+                    });      
+                }))
+            })          
+                              
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }       
+    })    
+});
+
 router.get('/:session/npc/get/:id', (req,res,next) => {
     let session = req.params.session;
     let id = req.params.id;
