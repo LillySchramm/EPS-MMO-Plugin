@@ -133,6 +133,7 @@ public class NPC {
         try {
             rs.next();
             this.name = rs.getString("NAME");
+            this.skin = new Skin(rs.getString("SKIN"));
         } catch (Exception exception) {
             exception.printStackTrace();
         }

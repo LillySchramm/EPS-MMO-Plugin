@@ -92,7 +92,7 @@ router.get('/:session/npc/set/:npc_id/:attr/:value', (req,res,next) => {
     
     db_manager.verifyWebSession(session).then((ret) => {
         if(ret){      
-            sql.query("UPDATE `eps_regions`.`npc` SET " + attr + " = '" + value + "' WHERE ID = " + npc_id + ";").then(() => {
+            sql.query("UPDATE `eps_regions`.`npc` SET " + attr + " = '" + value.hexDecode() + "' WHERE ID = " + npc_id + ";").then(() => {
                 db_manager.sendCommadToAllInstances("npc reload " + npc_id).then((() => {
                     res.status(200).json({
                         verified: true

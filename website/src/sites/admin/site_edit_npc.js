@@ -16,7 +16,8 @@ class NPC_edit extends React.Component {
         
         this.onSubmit = this.onSubmit.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this)
-        this.handleSkinChange = this.handleSkinChange.bind(this)
+        this.handleSkinChange_0 = this.handleSkinChange_0.bind(this)
+        this.handleSkinChange_1 = this.handleSkinChange_1.bind(this)
         this.handleScriptChange = this.handleScriptChange.bind(this)
     }
 
@@ -53,12 +54,26 @@ class NPC_edit extends React.Component {
         })
     }
 
-    handleSkinChange(e){
+    handleSkinChange_0(e){     
+
+        let newSkin = e.target.value + "<!>" + this.state.npc_skin.split("<!>")[1];
+
         this.setState({
-            _npc_skin: e.target.value,
-            npc_skin: e.target.value
+            _npc_skin: newSkin,
+            npc_skin: newSkin
         })
     }
+
+    handleSkinChange_1(e){     
+
+        let newSkin = this.state.npc_skin.split("<!>")[0] + "<!>" + e.target.value ;
+
+        this.setState({
+            _npc_skin: newSkin,
+            npc_skin: newSkin
+        })
+    }
+
 
     handleScriptChange(e){
         this.setState({
@@ -102,9 +117,17 @@ class NPC_edit extends React.Component {
                     <label>Name: </label>
                     <input type='text' value={this.state.npc_name} onChange={this.handleNameChange}/>
                     <br/>
+                    <br/>
+                    <br/>
 
-                    <label>Skin: </label>
-                    <input type='text' value={this.state.npc_skin} onChange={this.handleSkinChange}/>
+                    <h3>Skin: </h3>
+                    <label>Texture_Data: </label>
+                    <input type='text' value={this.state.npc_skin.split("<!>")[0]} onChange={this.handleSkinChange_0}/>
+                    <br/>
+                    <label>Texture_Signature: </label>
+                    <input type='text' value={this.state.npc_skin.split("<!>")[1]} onChange={this.handleSkinChange_1}/>
+                    <br/>
+                    <br/>
                     <br/>
 
                     <label>Script: </label>

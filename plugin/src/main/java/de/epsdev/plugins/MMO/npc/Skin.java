@@ -9,8 +9,11 @@ public class Skin {
         this.texture_signature = texture_signature;
     }
 
-    public Skin(){
+    public Skin(String raw){
+        String[] _raw = raw.split("<!>");
 
+        this.texture_data = _raw[0];
+        this.texture_signature = _raw[1];
     }
 
     public String toString(){
