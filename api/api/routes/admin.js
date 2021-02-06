@@ -37,11 +37,31 @@ router.get('/:session/npc/getall', (req,res,next) => {
             res.status(200).json({
                 verified: false
             });   
-        }
-
-        
+        }        
     })    
 });
+
+router.get('/:session/npc/get/:id', (req,res,next) => {
+    let session = req.params.session;
+    let id = req.params.id;
+    
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){      
+            sql.query("SELECT * FROM `eps_regions`.`npc` WHERE ID = " + id).then((npcs => {
+                res.status(200).json({
+                    npc: npcs[0],
+                    verified: true
+                });      
+            }))
+                  
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }        
+    })    
+});
+
 
 router.get('/:session/server/instances/reload/all', (req,res,next) => {
     let session = req.params.session;  
@@ -85,29 +105,6 @@ router.get('/:session/npc/set/:npc_id/:attr/:value', (req,res,next) => {
                 verified: false
             });   
         }       
-    })    
-});
-
-router.get('/:session/npc/get/:id', (req,res,next) => {
-    let session = req.params.session;
-    let id = req.params.id;
-    
-    db_manager.verifyWebSession(session).then((ret) => {
-        if(ret){      
-            sql.query("SELECT * FROM `eps_regions`.`npc` WHERE ID = " + id).then((npcs => {
-                res.status(200).json({
-                    npc: npcs[0],
-                    verified: true
-                });      
-            }))
-                  
-        }else{
-            res.status(200).json({
-                verified: false
-            });   
-        }
-
-        
     })    
 });
 

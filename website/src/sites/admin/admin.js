@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import LoginForm from './loginForm'
 import Site_NPC from './site_npc';
 import Admin_Header from './admin_header';
+import NPC_edit from './site_edit_npc';
 
 const coockie = require('../../tools/coockies');
 
@@ -24,6 +25,9 @@ class AdminPage extends React.Component {
                     <Admin_Header/>
                     <Router>
                         <Route path='/admin/npc' exact component={Site_NPC} />      
+                    </Router>    
+                    <Router>
+                        <Route path='/admin/npc/:id' exact component={NPC_edit} />      
                     </Router>    
                 </div>
             ];

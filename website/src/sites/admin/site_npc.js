@@ -12,19 +12,25 @@ class NPC_row extends React.Component {
 
     render() {
         return (
+            
             <tr>
                 <td>
-                    {this.props.id}
+                    <a href={'http://0.0.0.0:3000/admin/npc/' + this.props.id}>
+                        {this.props.id}
+                    </a>
                 </td>
 
                 <td>
-                    {this.props.name}
+                    <a href={'http://0.0.0.0:3000/admin/npc/' + this.props.id}>
+                        {this.props.name}
+                    </a>
                 </td>
 
                 <td>
                     {this.props.pos}
                 </td>
             </tr>
+            
         );
     }
 }
@@ -38,7 +44,7 @@ class NPC_table extends React.Component {
     }
 
     componentDidMount(){
-        this.ticker = setInterval(() => {this.createTable()}, 2000);        
+        this.ticker = setInterval(() => {this.createTable()}, 500);        
     }    
 
     async createTable() {
@@ -71,7 +77,7 @@ class NPC_table extends React.Component {
 
     render() {
         return (
-            <table>
+            <table>                
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
