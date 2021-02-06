@@ -98,14 +98,14 @@ public class Dev_NPC_GUI {
 
         gui = new Base_Gui(npc.name);
 
-        gui.addItem(PlayerHeads.getHeadByName(this.npc.skin.Owner),
+        /*gui.addItem(PlayerHeads.getHeadByName(this.npc.skin.Owner),
                 1,
                 npc.name + " ID: " + ChatColor.RESET + npc.npc_id,
                 new ArrayList<>(),
                 null,
                 0,
                 0
-        );
+        );*/
 
         gui.addItem(Material.NAME_TAG,
                 1,

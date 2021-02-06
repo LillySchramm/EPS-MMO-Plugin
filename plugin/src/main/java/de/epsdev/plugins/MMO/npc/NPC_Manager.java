@@ -26,7 +26,7 @@ public class NPC_Manager {
         public static List<NPC> NPCs = new ArrayList<>();
         public static Map<String, Skin> textureHash = new HashMap<>();
 
-        public static EntityPlayer createNPC_ENTITY(String name ,Vec3f pos, Vec2f rotation, String skin){
+        public static EntityPlayer createNPC_ENTITY(String name ,Vec3f pos, Vec2f rotation, Skin skin){
             MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
             WorldServer world = ((CraftWorld) Bukkit.getServer().getWorld("world")).getHandle();
             GameProfile gameProfile = new GameProfile(UUID.randomUUID(), name);
@@ -39,49 +39,17 @@ public class NPC_Manager {
 
             npc.getBukkitEntity().setRemoveWhenFarAway(false);
 
-            if(skin != null){
-                Skin skinValues = getSkin(skin);
-                if(skinValues != null){
-                    gameProfile.getProperties().put("textures", new Property("textures", skinValues.texture[0], skinValues.texture[1]));
-                }
-            }
+            gameProfile.getProperties().put("textures", new Property("textures", skin.texture_data, skin.texture_signature));
+
 
             return npc;
         }
 
-        public static NPC createNPC(Player player, String skin){
+        public static NPC createNPC(Player player, Skin skin){
             EntityPlayer player_ = ((CraftPlayer) player).getHandle();
 
             EntityPlayer npc = createNPC_ENTITY(player.getDisplayName() ,new Vec3f(player.getLocation()), new Vec2f(player_.yaw,player_.pitch), skin);
-            return addNPCPacket(npc, getSkin(skin), "", 0);
-        }
-
-        public static Skin getSkin(String name){
-            Skin res = null;
-
-            if(textureHash.containsKey(name)){
-                return textureHash.get(name);
-            }
-
-            try{
-                String uuid = PlayerNames.getUUID(name);
-
-                URL url2 = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid + "?unsigned=false");
-                InputStreamReader reader2 = new InputStreamReader(url2.openStream());
-
-                JsonObject property = new JsonParser().parse(reader2).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
-                String texture = property.get("value").getAsString();
-                String signature = property.get("signature").getAsString();
-
-                res = new Skin(new String[]{texture,signature}, name);
-
-                textureHash.put(name, res);
-
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-
-            return res;
+            return addNPCPacket(npc, skin, "", 0);
         }
 
         public static NPC addNPCPacket(EntityPlayer npc_e, Skin skin, String script, int id){

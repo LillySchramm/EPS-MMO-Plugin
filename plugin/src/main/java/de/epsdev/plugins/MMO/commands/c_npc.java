@@ -13,7 +13,7 @@ public class c_npc implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
-            NPC npc = NPC_Manager.createNPC(player, player.getName());
+            NPC npc = NPC_Manager.createNPC(player, DataManager.default_skin);
             npc.save(true);
             DataManager.loadAllNPC();
         }

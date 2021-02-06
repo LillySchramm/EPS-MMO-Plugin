@@ -43,7 +43,7 @@ public class NPC {
     }
 
     public void recreateEntity(){
-        this.entityPlayer = NPC_Manager.createNPC_ENTITY(name, new Vec3f(this.entityPlayer.getBukkitEntity().getLocation()), new Vec2f(this.entityPlayer.yaw, this.entityPlayer.pitch), this.skin.Owner);
+        this.entityPlayer = NPC_Manager.createNPC_ENTITY(name, new Vec3f(this.entityPlayer.getBukkitEntity().getLocation()), new Vec2f(this.entityPlayer.yaw, this.entityPlayer.pitch), this.skin);
     }
 
     public void display(Player player){
@@ -86,17 +86,12 @@ public class NPC {
         Vec2f rot = new Vec2f(loc);
         Skin skin = this.skin;
 
-        if(skin == null){
-            skin = new Skin(new String[]{}, "0");
-        }
-
-
         mysql.query("REPLACE INTO `eps_regions`.`npc` (`ID`, `NAME`, `SCRIPT`, `POS`, `ROTATION`, `SKIN`) VALUES (" + this.npc_id + "," +
                 " '" + this.name + "'," +
                 " '" + this.script + "'," +
                 " '" + pos.x + ">> " + pos.y + " >> " + pos.z + "', " +
                 " '" + entityPlayer.yaw + ">> " + entityPlayer.pitch + "', " +
-                " '" + this.skin.Owner + "') ");
+                " '" + this.skin.toString() + "') ");
 
         this.gui = new Dev_NPC_GUI(this);
 

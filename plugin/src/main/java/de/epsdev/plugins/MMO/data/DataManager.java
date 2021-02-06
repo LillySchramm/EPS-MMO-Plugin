@@ -15,6 +15,7 @@ import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.data.sessions.Server_Session;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
+import de.epsdev.plugins.MMO.npc.Skin;
 import de.epsdev.plugins.MMO.tools.Colors;
 import de.epsdev.plugins.MMO.tools.Vec2f;
 import de.epsdev.plugins.MMO.tools.Vec3f;
@@ -47,6 +48,11 @@ public class DataManager {
 
     public static int max_id_cities = 0;
     public static int max_id_houses = 1;
+
+    public static Skin default_skin = new Skin(
+            "ewogICJ0aW1lc3RhbXAiIDogMTU5MTU3NDcyMzc4MywKICAicHJvZmlsZUlkIiA6ICI4NjY3YmE3MWI4NWE0MDA0YWY1NDQ1N2E5NzM0ZWVkNyIsCiAgInByb2ZpbGVOYW1lIiA6ICJTdGV2ZSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS82ZDNiMDZjMzg1MDRmZmMwMjI5Yjk0OTIxNDdjNjlmY2Y1OWZkMmVkNzg4NWY3ODUwMjE1MmY3N2I0ZDUwZGUxIgogICAgfSwKICAgICJDQVBFIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS85NTNjYWM4Yjc3OWZlNDEzODNlNjc1ZWUyYjg2MDcxYTcxNjU4ZjIxODBmNTZmYmNlOGFhMzE1ZWE3MGUyZWQ2IgogICAgfQogIH0KfQ==",
+            "kCbGa8IhGN8Y51+ZLMkytztjtfXHKi08lReu/07w25Iyre8zQ4U9aR8HpHi/FGcqFT10Ik1W3QjkUYQ2BmY1rWOhErnkb2nJQjsWIc7mHDjkIkKq7zx4xbP5yEz6BcM8n261QmHgx2jgueiF0EPx6PORKP4xI7YcJe92jTOjZaN1u9Lxm2pDj3hQ69SoE/QgrR7BvFXBgJWcCIJEwqYSvGkQCxlMKNrxofF4IpHer5Lv4ne6u+yqEyN973bUNoLmc+lnNQq4jz1Stf1Jm2TtlQeWwSJ/0tvYg1srOCrZ8/MBcbzFTm2f7NK6NkulL4IfmDLwnwl3dUpZJKfyRaXYSGWyWygAALQ/04caJyKkTseNueqGSRg1otz94GjDQvQ9P0lzAqGC1ROG9IGORhcVDWpn7+qwwJe724i27LESDR6E+vF0NZGKPbBXqE8WFsxrYVxB9iGkOL67YpiCvJDuQkleSXl84tGykt5r1+XB2yicAcIKKAGaH/WBHQIl60kxIcGxLT/g+pS5zTDdhFQtawWsQTxd0LYEC+NOkMGcfkjkqyU7aueCNHkmN4FLYTLBaY2IPru+4tcaEZGcKgL3Txgj03uici1dxjdkHFF8t3dc5vieTvArdfyG4YSKnByt6J3wuD2wqTUW9OlLaxJ2Q3ieCHXl62vmaEVWgr402f8="
+    );
 
     public static Map<Integer, OnClick> funs = new HashMap<>();
 
@@ -431,7 +437,11 @@ public class DataManager {
 
             while (rs.next()) {
                 String name = rs.getString("NAME");
+
                 String skin = rs.getString("SKIN");
+                String[] _skin = skin.split("<!>");
+                Skin __skin = new Skin(_skin[0], _skin[1]);
+
                 String script = rs.getString("SCRIPT");
 
                 int id = rs.getInt("ID");
@@ -449,10 +459,8 @@ public class DataManager {
                 Vec2f rot = new Vec2f(Float.parseFloat(_tmp[0]),
                         Float.parseFloat(_tmp[1]));
 
-                EntityPlayer npc_e = NPC_Manager.createNPC_ENTITY(name, pos, rot, skin);
-                NPC_Manager.addNPCPacket(npc_e, NPC_Manager.getSkin(skin), script, id);
-
-
+                EntityPlayer npc_e = NPC_Manager.createNPC_ENTITY(name, pos, rot, __skin);
+                NPC_Manager.addNPCPacket(npc_e, __skin, script, id);
             }
 
         } catch (SQLException e) {
