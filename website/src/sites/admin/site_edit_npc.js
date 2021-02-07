@@ -109,31 +109,31 @@ class NPC_edit extends React.Component {
 
     render() {
         return (
-            <div>
+            <div class="Site_Edit_NPC">
 
                 <h2>Currently selected: {this.state.npc_name} [ID:{this.state.npc_id}]</h2>
 
                 <form>
-                    <label>Name: </label>
+                    <label><h3>Name</h3></label>                
                     <input type='text' value={this.state.npc_name} onChange={this.handleNameChange}/>
                     <br/>
-                    <br/>
-                    <br/>
 
-                    <h3>Skin: </h3>
-                    <label>Texture_Data: </label>
+                    <h3>Skin</h3>
+
+                    <label>Texture_Data</label>
+                    <br/>                    
                     <input type='text' value={this.state.npc_skin.split("<!>")[0]} onChange={this.handleSkinChange_0}/>
                     <br/>
-                    <label>Texture_Signature: </label>
+                    
+                    <label>Texture_Signature</label>
+                    <br/>
                     <input type='text' value={this.state.npc_skin.split("<!>")[1]} onChange={this.handleSkinChange_1}/>
-                    <br/>
-                    <br/>
-                    <br/>
+                    <br/>                   
 
-                    <label>Script: </label>
+                    <label><h3>Script</h3></label>
                     <input type='text' value={this.state.npc_script} onChange={this.handleScriptChange}/>
                     <br/>
-
+                    
                     <br/>
                     <input type="button" value="Submit" onClick={this.onSubmit}/>
                 </form>

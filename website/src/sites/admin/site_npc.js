@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Coord_Span from "../general/Coord_Span";
 
+const formater = require('../../tools/formater');
 const coockie = require('../../tools/coockies');
 
 class NPC_row extends React.Component {
@@ -16,7 +18,7 @@ class NPC_row extends React.Component {
             <tr>
                 <td>
                     <a href={'http://0.0.0.0:3000/admin/npc/' + this.props.id}>
-                        {this.props.id}
+                        {this.props.id} 
                     </a>
                 </td>
 
@@ -26,8 +28,8 @@ class NPC_row extends React.Component {
                     </a>
                 </td>
 
-                <td>
-                    {this.props.pos}
+                <td>                    
+                    <Coord_Span pos={this.props.pos}/>
                 </td>
             </tr>
             
@@ -77,7 +79,7 @@ class NPC_table extends React.Component {
 
     render() {
         return (
-            <table>                
+            <table class='NPC_Table'>                
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
@@ -96,11 +98,7 @@ class Site_NPC extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>NPCS</h1>
-
-                <br />
-
+            <div class='Site_NPC'>
                 <NPC_table />
             </div>
         );

@@ -10,8 +10,9 @@ class Admin_Header extends React.Component {
 
     render(){
         return(
-            <div>
-                <h1>Welcome ADMIN</h1>
+            <div class="Admin_Header">
+                <h1>Admin Panel</h1>
+                <hr/>   
                 <h2> <a href='http://0.0.0.0:3000/admin/npc'>NPC</a> | <a href='http://0.0.0.0:3000/admin/instances'>Instances</a> | <a href='http://0.0.0.0:3000/admin/items'>Items</a> | <a href='http://0.0.0.0:3000/admin/players'>Players</a></h2>
                 <hr/>                
             </div>

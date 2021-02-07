@@ -1,38 +1,72 @@
-.App {
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
+*{
+  margin: 0;
+  padding: 0;
   text-align: center;
+  font-family: 'Poppins';
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1{
+  font-size: 5em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.LoginForm input{
+  text-align: left;
+  margin-top: 3%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.Admin_Header hr{
+  width: 50%;
+  margin-left: 25%;
+  margin-right: 25%;
 }
 
-.App-link {
-  color: #61dafb;
+.Admin_Header a {
+  color: inherit; 
+  text-decoration: inherit; 
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.NPC_Table{
+  margin: 2% auto;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.NPC_Table th,.NPC_Table td{
+  border: 2px solid black;
+  padding: 5px;
+}
+
+.Coord_Span span{
+  padding-right: 10px;
+}
+
+.Coord_Span .X{
+  color: rgb(48, 153, 0);
+}
+
+.Coord_Span .Y{
+  color: rgb(24, 17, 126);
+}
+
+.Coord_Span .Z{
+  color: rgb(122, 10, 10);
+}
+
+.Site_Edit_NPC, .Site_Edit_NPC form{
+  margin-top: 2%;
+}
+
+.Site_Edit_NPC h2{
+  font-size: 3em;
+}
+
+.Site_Edit_NPC form h3{
+  margin-top: 2%;
+}
+
+.Site_Edit_NPC form input{
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
