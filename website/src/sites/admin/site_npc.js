@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Coord_Span from "../general/Coord_Span";
+import Skin_Obj from "../general/Skin_Obj"
 
 const formater = require('../../tools/formater');
 const coockie = require('../../tools/coockies');
@@ -10,7 +11,6 @@ class NPC_row extends React.Component {
     constructor(probs) {
         super(probs);
     }
-
 
     render() {
         return (
@@ -30,6 +30,10 @@ class NPC_row extends React.Component {
 
                 <td>                    
                     <Coord_Span pos={this.props.pos}/>
+                </td>
+
+                <td>                    
+                    <Skin_Obj skin={this.props.skin} size={100} type={"avatar"} />
                 </td>
             </tr>
             
@@ -63,7 +67,7 @@ class NPC_table extends React.Component {
 
             let table = [];
             data.npc.forEach(element => {
-                table.push(<NPC_row id={element.ID} name={element.NAME} pos={element.POS} />);
+                table.push(<NPC_row id={element.ID} name={element.NAME} pos={element.POS} skin={element.SKIN.split("<!>")[0]}/>);
             });         
             this.setState({npcs: table});
                 
@@ -84,6 +88,7 @@ class NPC_table extends React.Component {
                     <th>ID</th>
                     <th>Name</th>
                     <th>Position</th>
+                    <th> </th>
                 </tr>
                 {this.state.npcs}
             </table>

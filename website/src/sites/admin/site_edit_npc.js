@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Skin_Obj from '../general/Skin_Obj'
 
 const coockie = require('../../tools/coockies');
 const api = require('../../tools/api/api');
@@ -109,10 +110,9 @@ class NPC_edit extends React.Component {
 
     render() {
         return (
-            <div class="Site_Edit_NPC">
-
+            <div class="Site_Edit_NPC"> 
                 <h2>Currently selected: {this.state.npc_name} [ID:{this.state.npc_id}]</h2>
-
+                
                 <form>
                     <label><h3>Name</h3></label>                
                     <input type='text' value={this.state.npc_name} onChange={this.handleNameChange}/>
@@ -128,12 +128,16 @@ class NPC_edit extends React.Component {
                     <label>Texture_Signature</label>
                     <br/>
                     <input type='text' value={this.state.npc_skin.split("<!>")[1]} onChange={this.handleSkinChange_1}/>
-                    <br/>                   
+                    <br/>                         
 
+                    <Skin_Obj skin={this.state.npc_skin.split("<!>")[0]} size={100} type={"body"} />
+
+                    <p>Attention: In the case that the character ingame doesn't look like the one in the preview, check the Texture_Signature</p>
+                    
                     <label><h3>Script</h3></label>
                     <input type='text' value={this.state.npc_script} onChange={this.handleScriptChange}/>
                     <br/>
-                    
+
                     <br/>
                     <input type="button" value="Submit" onClick={this.onSubmit}/>
                 </form>
