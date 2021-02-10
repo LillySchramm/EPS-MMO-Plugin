@@ -6,7 +6,10 @@ import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.npc.NPC;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import de.epsdev.plugins.MMO.tools.Math;
+import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.tools.WhatIsMyIP;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +29,12 @@ public class Server_Session {
             }
         }
 
-        mysql.query("INSERT INTO `eps_sessions`.`server_sessions` (`ID`, `SESSION_ID`) VALUES (NULL, '" + this.id + "');");
+        Server server = main.plugin.getServer();
+
+        int PORT = server.getPort();
+        String ip = WhatIsMyIP.getIP() + ":" + PORT;
+
+        mysql.query("INSERT INTO `eps_sessions`.`server_sessions` (`ID`, `SESSION_ID`, `IP`) VALUES (NULL, '" + this.id + "', '"+ ip +"');");
     }
 
     public void processCommands(){
