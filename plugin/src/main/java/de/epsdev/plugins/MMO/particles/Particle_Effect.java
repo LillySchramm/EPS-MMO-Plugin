@@ -7,23 +7,17 @@ import org.bukkit.entity.Player;
 
 public class Particle_Effect {
 
-    public Particle type;
-    public int density;
+    public ParticleConfig config;
 
-    public Particle_Effect(Particle type, int density){
-        this.type = type;
-        this.density = density;
+    public Particle_Effect(ParticleConfig config){
+        this.config = config;
+
     }
 
     public void renderParticle(Location location){
-        location.getWorld().spawnParticle(type,location,density,0,0,0);
+        location.getWorld().spawnParticle(config.particle,location, config.density,config.getArg(0),config.getArg(1),config.getArg(2));
     }
 
     public void display(Location location){
-
-        /*
-
-               */
-
     }
 }

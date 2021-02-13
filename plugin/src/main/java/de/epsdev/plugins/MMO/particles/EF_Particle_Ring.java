@@ -13,8 +13,8 @@ public class EF_Particle_Ring extends Particle_Effect{
     public double radius;
     public int ringPoints;
 
-    public EF_Particle_Ring(Particle type, int density, double radius, int points){
-        super(type, density);
+    public EF_Particle_Ring(ParticleConfig config, double radius, int points){
+        super(config);
 
         this.radius = radius;
         this.ringPoints = points;

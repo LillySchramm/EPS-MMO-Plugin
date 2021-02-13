@@ -5,8 +5,8 @@ import org.bukkit.Particle;
 
 public class EF_Single_Particle extends Particle_Effect {
 
-    EF_Single_Particle(Particle type, int density){
-        super(type, density);
+    EF_Single_Particle(ParticleConfig config){
+        super(config);
     }
 
     @Override
