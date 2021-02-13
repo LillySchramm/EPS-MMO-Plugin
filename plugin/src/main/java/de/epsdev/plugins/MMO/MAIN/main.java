@@ -11,6 +11,7 @@ import de.epsdev.plugins.MMO.events.*;
 import de.epsdev.plugins.MMO.schedulers.Inventory_Check_Scheduler;
 import de.epsdev.plugins.MMO.schedulers.MAIN_UPDATE_SCHEDULER;
 
+import de.epsdev.plugins.MMO.schedulers.Static_Effect_Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.entity.Player;
@@ -55,6 +56,7 @@ public final class main extends JavaPlugin {
     private void startSchedulers(){
         MAIN_UPDATE_SCHEDULER.run();
         Inventory_Check_Scheduler.run();
+        Static_Effect_Scheduler.run();
     }
 
     private void initRegions(){
@@ -62,6 +64,7 @@ public final class main extends JavaPlugin {
         DataManager.loadAllCities();
         DataManager.loadAllHouses();
         DataManager.loadAllNPC();
+        DataManager.loadAllStaticEffects();
     }
 
     private void initGameRules(){

@@ -11,7 +11,6 @@ public class Particle_Effect {
 
     public Particle_Effect(ParticleConfig config){
         this.config = config;
-
     }
 
     public void renderParticle(Location location){

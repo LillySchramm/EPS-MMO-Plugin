@@ -39,21 +39,6 @@ public class Inventory_Check_Scheduler {
                     }
                 }
 
-                ParticleConfig config = new ParticleConfig(Particle.SPELL, new D_RGB(70,0,90));
-                ParticleConfig config1 = new ParticleConfig(Particle.REDSTONE, new D_RGB(10,10,100));
-
-                EF_Particle_Ring ef_particle_ring =     new EF_Particle_Ring(config, 16, 160);
-                EF_Particle_Ring ef_particle_ring_2 =   new EF_Particle_Ring(config1,  8,80);
-                EF_Particle_Ring ef_particle_ring_3 =   new EF_Particle_Ring(config,  4,40);
-                EF_Particle_Ring ef_particle_ring_4 =   new EF_Particle_Ring(config1,  2,20);
-                EF_Particle_Ring ef_particle_ring_5 =   new EF_Particle_Ring(config,  0,10);
-                ef_particle_ring.display(player.getLocation());
-                ef_particle_ring_2.display(player.getLocation());
-                ef_particle_ring_3.display(player.getLocation());
-                ef_particle_ring_4.display(player.getLocation());
-                ef_particle_ring_5.display(player.getLocation());
-
-
             }
 
         }, 0L, 10L);

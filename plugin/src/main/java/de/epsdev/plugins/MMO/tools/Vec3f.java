@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.tools;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import java.lang.Math;
 
@@ -35,5 +36,9 @@ public class Vec3f {
 
     public String toString(){
         return "X: " + x + " Y: " + y + " Z: " + z;
+    }
+
+    public Location toLocation(){
+        return new Location(Bukkit.getWorld("world"), this.x, this.y, this.z);
     }
 }

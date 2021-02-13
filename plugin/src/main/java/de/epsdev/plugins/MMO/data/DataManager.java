@@ -4,6 +4,7 @@ import de.epsdev.plugins.MMO.GUI.dev.City_GUI;
 import de.epsdev.plugins.MMO.GUI.dev.Dev_Houses_Gui;
 import de.epsdev.plugins.MMO.GUI.dev.OnClick;
 import de.epsdev.plugins.MMO.GUI.dev.Regions_GUI;
+import de.epsdev.plugins.MMO.config.Config;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Err;
@@ -16,14 +17,18 @@ import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.data.sessions.Server_Session;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import de.epsdev.plugins.MMO.npc.Skin;
-import de.epsdev.plugins.MMO.tools.Colors;
-import de.epsdev.plugins.MMO.tools.Vec2f;
-import de.epsdev.plugins.MMO.tools.Vec3f;
-import de.epsdev.plugins.MMO.tools.Vec3i;
+import de.epsdev.plugins.MMO.npc.eNpc.eNpc;
+import de.epsdev.plugins.MMO.particles.EF_Particle_Ring;
+import de.epsdev.plugins.MMO.particles.EF_Single_Particle;
+import de.epsdev.plugins.MMO.particles.ParticleConfig;
+import de.epsdev.plugins.MMO.particles.Particle_Effect;
+import de.epsdev.plugins.MMO.schedulers.Static_Effect_Scheduler;
+import de.epsdev.plugins.MMO.tools.*;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -512,6 +517,83 @@ public class DataManager {
         }
 
         return false;
+    }
+
+
+    //-----------------------------------------------------------------
+    //Static Effect Stuff
+    //-----------------------------------------------------------------
+
+    public static void loadAllStaticEffects(){
+        try {
+            for(Player player : Bukkit.getOnlinePlayers()){
+                NPC_Manager.unloadAllNPC(player);
+            }
+
+            ResultSet rs = mysql.query("SELECT * FROM `eps_regions`.`static_effects`");
+
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+
+                String tmp = rs.getString("POS");
+                String[] _tmp = tmp.split(">>");
+
+                Vec3f pos = new Vec3f(Float.parseFloat(_tmp[0]),
+                        Float.parseFloat(_tmp[1]),
+                        Float.parseFloat(_tmp[2]));
+
+                Particle_Effect effect = null;
+                ParticleConfig config = null;
+                Particle particle = null;
+                D_RGB color = null;
+
+                String data = rs.getString("DATA");
+                String[] _data = data.split(">>");
+
+                switch (_data[0]){
+                    case "circle":
+                        particle = Particle.valueOf(_data[1]);
+                        color = null;
+
+                        double radius = Double.parseDouble(_data[2]);
+                        int points = Integer.parseInt(_data[3]);
+
+                        if(_data.length > 4){
+                            int r = Integer.parseInt(_data[4]);
+                            int g = Integer.parseInt(_data[5]);
+                            int b = Integer.parseInt(_data[6]);
+
+                            color = new D_RGB(r, g, b);
+                        }
+
+                        config = new ParticleConfig(particle, color);
+                        effect = new EF_Particle_Ring(config, radius, points);
+
+                        break;
+                    case "single":
+                        particle = Particle.valueOf(_data[1]);
+                        color = null;
+
+                        if(_data.length > 2){
+                            int r = Integer.parseInt(_data[2]);
+                            int g = Integer.parseInt(_data[3]);
+                            int b = Integer.parseInt(_data[4]);
+
+                            color = new D_RGB(r, g, b);
+                        }
+
+                        config = new ParticleConfig(particle, color);
+                        effect = new EF_Single_Particle(config);
+
+                        break;
+                }
+
+                new eNpc(id, effect, pos, data);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }
