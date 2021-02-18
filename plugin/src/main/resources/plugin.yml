@@ -55,3 +55,7 @@ commands:
 
   createhouse:
     description: Start the house creation process.
+
+  togglestatic:
+    description: Toggle the static effect armor stands.
+    aliases: [ ts, toggles ]

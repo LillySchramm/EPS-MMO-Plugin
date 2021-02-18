@@ -5,6 +5,7 @@ import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
+import de.epsdev.plugins.MMO.schedulers.Static_Effect_Scheduler;
 import de.epsdev.plugins.MMO.tools.Vec3i;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -12,11 +13,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.Door;
 
@@ -44,9 +49,7 @@ public class e_PlayerInteract implements Listener {
         if(e.getAction() == Action.RIGHT_CLICK_BLOCK){
 
             if(user.onRightObj == null){
-
                 if(block.getType().toString().contains("DOOR")) {
-
                     if (!(player.getGameMode() == GameMode.CREATIVE && user.rank.canManageHouses)) {
                         e.setCancelled(true);
 
@@ -97,6 +100,14 @@ public class e_PlayerInteract implements Listener {
                 user.onRightObj.interact(e);
             }
         }
+    }
+
+    @EventHandler
+    void onEntityInteract(PlayerInteractAtEntityEvent e){
+        Player player = e.getPlayer();
+        Entity entity = e.getRightClicked();
+
+        Static_Effect_Scheduler.showArmorStandConfig(player, entity.getEntityId());
     }
 
     @EventHandler

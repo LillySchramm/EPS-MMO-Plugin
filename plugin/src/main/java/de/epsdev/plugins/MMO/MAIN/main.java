@@ -45,6 +45,8 @@ public final class main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        Static_Effect_Scheduler.destroyAllArmorStands();
+
         DataManager.saveAllHouses();
         DataManager.server_session.unload();
         for(Player p : Bukkit.getOnlinePlayers()) {
@@ -113,6 +115,7 @@ public final class main extends JavaPlugin {
         getCommand("houses").setExecutor(new c_houses());
 
         getCommand("npc").setExecutor(new c_npc());
+        getCommand("togglestatic").setExecutor(new c_toggletatic());
 
     }
 
