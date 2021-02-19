@@ -20,6 +20,8 @@ public class e_ClickEvent implements Listener {
     void playerClick(InventoryClickEvent e) {
 
         Inventory inventory = e.getClickedInventory();
+        if(inventory == null) return;
+
         Player player = (Player) e.getWhoClicked();
 
         if (inventory.getName().contains("[MMO]")) {
