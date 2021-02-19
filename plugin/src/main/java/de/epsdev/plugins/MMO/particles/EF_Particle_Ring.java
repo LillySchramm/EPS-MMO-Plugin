@@ -18,6 +18,7 @@ public class EF_Particle_Ring extends Particle_Effect{
 
         this.radius = radius;
         this.ringPoints = points;
+        super.name = "circle";
     }
 
     private List<Vec2d> calcOffsets(){
@@ -43,5 +44,19 @@ public class EF_Particle_Ring extends Particle_Effect{
             super.renderParticle(l);
         }
 
+    }
+
+    @Override
+    public String genData() {
+
+        String ret = super.name + ">>" + super.config.particle.name() + ">>" + this.radius + ">>" + this.ringPoints;
+
+        if(super.config.color != null){
+            ret += ">>" + super.config.color.o_r;
+            ret += ">>" + super.config.color.o_g;
+            ret += ">>" + super.config.color.o_b;
+        }
+
+        return ret;
     }
 }

@@ -59,3 +59,7 @@ commands:
   togglestatic:
     description: Toggle the static effect armor stands.
     aliases: [ ts, toggles ]
+
+  staticeffect:
+    description: Create a static effect on player position.
+    aliases: [ ste, steff ]

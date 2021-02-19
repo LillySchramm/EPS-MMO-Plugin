@@ -116,6 +116,7 @@ public final class main extends JavaPlugin {
 
         getCommand("npc").setExecutor(new c_npc());
         getCommand("togglestatic").setExecutor(new c_toggletatic());
+        getCommand("staticeffect").setExecutor(new c_staticeffect());
 
     }
 

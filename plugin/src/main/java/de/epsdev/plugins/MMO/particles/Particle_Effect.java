@@ -5,9 +5,10 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
-public class Particle_Effect {
+public abstract class Particle_Effect {
 
     public ParticleConfig config;
+    public String name;
 
     public Particle_Effect(ParticleConfig config){
         this.config = config;
@@ -19,4 +20,6 @@ public class Particle_Effect {
 
     public void display(Location location){
     }
+
+    public abstract String genData();
 }

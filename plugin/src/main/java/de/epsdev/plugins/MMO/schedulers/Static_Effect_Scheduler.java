@@ -3,6 +3,7 @@ package de.epsdev.plugins.MMO.schedulers;
 import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.npc.eNpc.eNpc;
 import org.bukkit.entity.Player;
@@ -19,7 +20,8 @@ public class Static_Effect_Scheduler {
     public static void showArmorStandConfig(Player player, int id){
         for (eNpc e : effects.values()){
             if(e.getArmorStandID() == id){
-                e.showManageGUI(player);
+                User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+                if(user.rank.canManageStaticEffects) e.showManageGUI(player);
             }
         }
     }
