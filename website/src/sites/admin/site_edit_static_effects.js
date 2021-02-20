@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import particleTypes from '../../tools/particleNameDir';
 import Skin_Obj from '../general/Skin_Obj'
 
 const coockie = require('../../tools/coockies');
@@ -61,11 +62,30 @@ class Effect_edit extends React.Component {
     
 
     render() {
+        
+        let options = [];
+
+        Object.entries(particleTypes).forEach(([key, value]) => {
+            options.push(<option value={key}>{value}</option>);
+        });
+         
+
         return (
             <div class="Site_Edit_Effects"> 
                 <h2>Currently selected: {this.state.npc_name} [ID:{this.state.npc_id}]</h2>
                 
                 <form>
+
+                    <select name="pets" id="pet-select">
+                        {                    
+                            options                    
+                        }
+                    </select>
+
+
+              
+                    <br/>
+
                     <label><h3>Name</h3></label>                
                     <input e_id={0} type='text' value={this.state.data[0]} onChange={this.handleChange}/>
 
