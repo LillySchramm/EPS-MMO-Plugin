@@ -27,13 +27,13 @@ h1{
   text-decoration: inherit; 
 }
 
-.NPC_Table{
+.NPC_Table, .Effects_Table{
   margin: 2% auto;
   border: 1px solid black;
   border-collapse: collapse;
 }
 
-.NPC_Table th,.NPC_Table td{
+.NPC_Table th,.NPC_Table td, .Effects_Table th,.Effects_Table td{
   border: 2px solid black;
   padding: 5px;
 }
@@ -54,19 +54,19 @@ h1{
   color: rgb(122, 10, 10);
 }
 
-.Site_Edit_NPC, .Site_Edit_NPC form{
+.Site_Edit_NPC, .Site_Edit_NPC form, .Site_Edit_Effects, .Site_Edit_Effects form{
   margin-top: 2%;
 }
 
-.Site_Edit_NPC h2{
+.Site_Edit_NPC h2, .Site_Edit_Effects h2{
   font-size: 3em;
 }
 
-.Site_Edit_NPC form h3{
+.Site_Edit_NPC form h3, .Site_Edit_Effects h3{
   margin-top: 2%;
 }
 
-.Site_Edit_NPC form input{
+.Site_Edit_NPC form input, .Site_Edit_Effects form input{
   margin-top: 1%;
   margin-bottom: 1%;
 }

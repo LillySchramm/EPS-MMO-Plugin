@@ -15,9 +15,47 @@ router.get('/:session', (req,res,next) => {
             res.status(200).json({
                 verified: false
             });   
-        }
+        }        
+    })    
+});
 
-        
+router.get('/:session/staticeffects/getall', (req,res,next) => {
+    let session = req.params.session;
+    
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){      
+            sql.query("SELECT * FROM `eps_regions`.`static_effects` LIMIT 50;").then((npcs => {
+                res.status(200).json({
+                    npc: npcs,
+                    verified: true
+                });      
+            }))                  
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }        
+    })    
+});
+
+router.get('/:session/staticeffects/get/:id', (req,res,next) => {
+    let session = req.params.session;
+    let id = req.params.id;
+    
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){      
+            sql.query("SELECT * FROM `eps_regions`.`static_effects` WHERE ID = " + id).then((effect => {
+                res.status(200).json({
+                    effect: effect[0],
+                    verified: true
+                });      
+            }))
+                  
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }        
     })    
 });
 
@@ -61,7 +99,6 @@ router.get('/:session/npc/get/:id', (req,res,next) => {
         }        
     })    
 });
-
 
 router.get('/:session/server/instances/reload/all', (req,res,next) => {
     let session = req.params.session;  

@@ -3,15 +3,17 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import LoginForm from './loginForm'
-import Site_NPC from './site_npc';
+import Site_NPC from './site_npc'
+import Site_Effects from './site_static_effects'
 import Admin_Header from './admin_header';
 import NPC_edit from './site_edit_npc';
+import Effect_edit from './site_edit_static_effects';
 
 const coockie = require('../../tools/coockies');
 
 class AdminPage extends React.Component {
     constructor(probs){
-      super(probs);    
+      super(probs);     
     }   
 
     componentDidMount(){
@@ -29,6 +31,14 @@ class AdminPage extends React.Component {
                     <Router>
                         <Route path='/admin/npc/:id' exact component={NPC_edit} />      
                     </Router>    
+
+                    <Router>
+                        <Route path='/admin/staticeffects' exact component={Site_Effects} />      
+                    </Router>    
+                    <Router>
+                        <Route path='/admin/staticeffects/:id' exact component={Effect_edit} />      
+                    </Router>  
+
                 </div>
             ];
         }else{
