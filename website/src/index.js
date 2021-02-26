@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import './tools/coockies';
+import effectTypes from './tools/effectTypeDir';
 import { setCookie } from './tools/coockies';
 
 ReactDOM.render(  

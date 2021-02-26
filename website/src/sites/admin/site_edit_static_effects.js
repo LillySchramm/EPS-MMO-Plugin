@@ -1,27 +1,43 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import particleTypes from '../../tools/particleNameDir';
-import Skin_Obj from '../general/Skin_Obj'
+import effectTypes from '../../tools/effectTypeDir';
+import particleTypeDefaults from "../../tools/particleEffectDefaults";
 
 const coockie = require('../../tools/coockies');
 const api = require('../../tools/api/api');
+const formater = require('../../tools/formater');
+const rgbHex = require('rgb-hex');
 
 class Effect_type_select extends React.Component{
     render(){
 
         let options = [];
+        let id = 0;
 
-        Object.entries(particleTypes).forEach(([key, value]) => {
-            if(key == this.props.cur){
-                options.push(<option value={key} selected="selected">{value}</option>);
-            }else{
-                options.push(<option value={key}>{value}</option>);
-            }
-            
-        });         
+        if(this.props.type == "display"){            
+            Object.entries(particleTypes).forEach(([key, value]) => {
+                if(key == this.props.cur){
+                    options.push(<option value={key} selected="selected">{value}</option>);
+                }else{
+                    options.push(<option value={key}>{value}</option>);
+                }                
+            });
+        }else if(this.props.type == "effects"){
+            id = 1;
+            Object.entries(effectTypes).forEach(([key, value]) => {
+                if(value != "null"){
+                    if(key == this.props.cur){
+                        options.push(<option value={key} selected="selected">{value}</option>);
+                    }else{
+                        options.push(<option value={key}>{value}</option>);
+                    }
+                }         
+            });
+        }
 
         return(
-            <select name="type_option" id="type_option" e_id={0} onChange={this.props.handler}>
+            <select name="type_option" id="type_option" e_id={id} onChange={this.props.handler}>
                 {                    
                     options                
                 }
@@ -32,16 +48,54 @@ class Effect_type_select extends React.Component{
 
 class Effect_type_form extends React.Component{
     render(){
+        let color_selector = <span></span>;        
+
+        let r = this.props.data[this.props.data.length - 3];
+        let g = this.props.data[this.props.data.length - 2];
+        let b = this.props.data[this.props.data.length - 1];
+
+        console.log(r);
+
+        r = parseInt(r);
+        g = parseInt(g);
+        b = parseInt(b);
+
+        console.log("R" + r);
+        console.log(g);
+        console.log(b);
+
+        if(this.props.data[1] == "REDSTONE") color_selector = <input e_id={-1} type="color" value={"#" + rgbHex(r,g,b)} onChange={this.props.handler}/>    
+
         switch(this.props.data[0]){
             case "single":
                 return(
-                    <input e_id={0} type='text' value={"this.state.data[0]"} onChange={this.handleChange}/>
+                    <div>                        
+                        <label>Effect: </label>
+                        <input e_id={2} type="number" value={this.props.data[2]} onChange={this.props.handler}/>    
+                        <br/>
+                        
+                        {color_selector}
+                    </div>                    
                 );
                 break;
            
             case "circle":
                 return(
-                    <h3>2</h3>
+                    <div>
+                        <label>Effect: </label>
+                        <Effect_type_select type="effects" cur={this.props.data[1]} handler={this.props.handler} />   
+                        <br/>
+                        {color_selector}
+                        <br/>
+                        <h3>Properties</h3>
+                        <br/>
+                        <label>Radius: </label>
+                        <input e_id={2} type="number" value={this.props.data[2]} onChange={this.props.handler}/> 
+                        <br/>
+                        <label>Ring Points: </label>
+                        <input e_id={3} type="number" value={this.props.data[3]} onChange={this.props.handler}/> 
+                        <br/>
+                    </div>                        
                 );
                 break;
         }
@@ -60,7 +114,7 @@ class Effect_edit extends React.Component {
         let url = window.location.href
         let unslashed = url.split('/');
         
-        this.state = {effect_id: unslashed[unslashed.length - 1], data: ["s"]}      
+        this.state = {effect_id: unslashed[unslashed.length - 1], data: undefined}      
         
         this.onSubmit = this.onSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this)
@@ -73,8 +127,23 @@ class Effect_edit extends React.Component {
         let ele = e.target;
         let id = ele.getAttribute("e_id");
         let _data = this.state.data;
+        
+        if(id != 0){
+            _data[id] = e.target.value;
+        }else{
+            _data = particleTypeDefaults[e.target.value];
+            
+        }
 
-        _data[id] = e.target.value;
+        if(id == -1){
+            let hex = formater.hexToRgb(e.target.value);
+            
+            _data[_data.length - 3] = hex.r;
+            _data[_data.length - 2] = hex.g;
+            _data[_data.length - 1] = hex.b;
+
+            return;
+        }
 
         this.setState(
             {
@@ -106,16 +175,26 @@ class Effect_edit extends React.Component {
         this.forceUpdate()
     }
 
-    render() {         
+    render() {  
+        
+        if(this.state.data == undefined){return <h3>Loading.........</h3>}
+
         return (
             <div class="Site_Edit_Effects"> 
-                <h2>Currently selected: {particleTypes[this.state.data[0]]} [ID:{this.state.effect_id}]</h2>                
+                <h2>Currently selected: {particleTypes[this.state.data[0]]} [ID: {this.state.effect_id}; EFFECT: {effectTypes[this.state.data[1]]}]</h2>                
                 <form>
-                    <Effect_type_select cur={this.state.data[0]} handler={this.handleChange}/>                
+                    <br/>
+                    <h3>General</h3>
+                    <br/>
+                    <label>Display: </label>
+                    <Effect_type_select type="display" cur={this.state.data[0]} handler={this.handleChange}/>                
+                    <br/>
                     <br/>
                     <Effect_type_form data={this.state.data} handler={this.handleChange} />
                     <br/>
+                    <br/>
                     <input type="button" value="Submit" onClick={this.onSubmit}/>
+                    <br/>
                 </form>
             </div>
         );        

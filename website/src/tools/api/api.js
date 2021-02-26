@@ -20,7 +20,13 @@ const request = (req) => {
 const editNPC = (id, attr, value) => {
     return new Promise((resolve, reject) => {    
         request("npc/set/" + id +"/" + attr + "/" + value.hexEncode()).then(() => {
+        })
+    });
+}
 
+const editEffect = (id, attr, value) => {
+    return new Promise((resolve, reject) => {    
+        request("npc/set/" + id +"/" + attr + "/" + value.hexEncode()).then(() => {
         })
     });
 }

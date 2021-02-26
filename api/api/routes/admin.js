@@ -145,5 +145,30 @@ router.get('/:session/npc/set/:npc_id/:attr/:value', (req,res,next) => {
     })    
 });
 
+router.get('/:session/staticeffects/set/:e_id/:attr/:value', (req,res,next) => {
+    let session = req.params.session;
+    let e_id = req.params.e_id;
+    let attr = req.params.attr;
+    let value = req.params.value;
+    
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){      
+            sql.query("UPDATE `eps_regions`.`static_effects` SET " + attr + " = '" + value.hexDecode() + "' WHERE ID = " + e_id + ";").then(() => {
+                db_manager.sendCommadToAllInstances("effect reload " + e_id).then((() => {
+                    res.status(200).json({
+                        verified: true
+                    });      
+                }))
+            })          
+                              
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }       
+    })    
+});
+
+
 
 module.exports = router;
