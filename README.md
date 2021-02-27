@@ -43,6 +43,11 @@ also works if the player is offline.
 
 NPC are probably the most important thing in MMORPGs. Currently, they are just static player characters you can interact with.
 But I'm planing to make them way more complex and featurerich in the future.
+The skin of the NPC an be changed via the web-interface.
+
+### Static Effects
+
+You want to decorate your world with watersprinkles or you want to draw attention to an important point? Static effects are the thing for you! Once placed, they can be modified in many ways via the web-interface. 
 
 ### Ranks
 
