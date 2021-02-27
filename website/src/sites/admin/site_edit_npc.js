@@ -23,28 +23,19 @@ class NPC_edit extends React.Component {
     }
 
     async onSubmit(){
-
-        let rl = false;
-
         if(this.state._npc_name != ''){
             api.editNPC(this.state.npc_id, 'NAME', this.state.npc_name);
             this.setState({_npc_name: ''});
         }
-
 
         if(this.state._npc_skin != ''){
             api.editNPC(this.state.npc_id, 'SKIN', this.state.npc_skin);
             this.setState({_npc_skin: ''});
         }
 
-
         if(this.state._npc_script != ''){
             api.editNPC(this.state.npc_id, 'SCRIPT', this.state.npc_script);
             this.setState({_npc_script: ''});
-        }
-
-        if(rl){
-
         }
     }
 

@@ -22,9 +22,7 @@ function componentToHex(c) {
     return hex.length == 1 ? "0" + hex : hex;
   }
   
-  function rgbToHex(r,g,b) {
-    console.log(r);
-
+function rgbToHex(r,g,b) {
     r = r.toString(16);
     g = g.toString(16);
     b = b.toString(16);

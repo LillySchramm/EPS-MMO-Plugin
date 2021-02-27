@@ -54,15 +54,9 @@ class Effect_type_form extends React.Component{
         let g = this.props.data[this.props.data.length - 2];
         let b = this.props.data[this.props.data.length - 1];
 
-        console.log(r);
-
         r = parseInt(r);
         g = parseInt(g);
         b = parseInt(b);
-
-        console.log("R" + r);
-        console.log(g);
-        console.log(b);
 
         if(this.props.data[1] == "REDSTONE") color_selector = <input e_id={-1} type="color" value={"#" + rgbHex(r,g,b)} onChange={this.props.handler}/>    
 
@@ -71,7 +65,7 @@ class Effect_type_form extends React.Component{
                 return(
                     <div>                        
                         <label>Effect: </label>
-                        <input e_id={2} type="number" value={this.props.data[2]} onChange={this.props.handler}/>    
+                        <Effect_type_select type="effects" cur={this.props.data[1]} handler={this.props.handler} />   
                         <br/>
                         
                         {color_selector}
@@ -98,6 +92,31 @@ class Effect_type_form extends React.Component{
                     </div>                        
                 );
                 break;
+                case "pillar":
+                    return(
+                        <div>
+                            <label>Effect: </label>
+                            <Effect_type_select type="effects" cur={this.props.data[1]} handler={this.props.handler} />   
+                            <br/>
+                            {color_selector}
+                            <br/>
+                            <h3>Properties</h3>
+                            <br/>
+                            <label>Radius: </label>
+                            <input e_id={2} type="number" value={this.props.data[2]} onChange={this.props.handler}/> 
+                            <br/>
+                            <label>Ring Points: </label>
+                            <input e_id={3} type="number" value={this.props.data[3]} onChange={this.props.handler}/> 
+                            <br/>
+                            <label>Height: </label>
+                            <input e_id={4} type="number" value={this.props.data[4]} onChange={this.props.handler}/> 
+                            <br/>
+                            <label>Rings: </label>
+                            <input e_id={5} type="number" value={this.props.data[5]} onChange={this.props.handler}/> 
+                            <br/>
+                        </div>                        
+                    );
+                    break;
         }
         return(
             <h3>ERROR: Type Not Found</h3>
@@ -121,6 +140,14 @@ class Effect_edit extends React.Component {
     }
 
     async onSubmit(){
+        let value = "";
+
+        this.state.data.forEach((k) => {
+            value += k + ">>";
+        });
+
+        console.log(value);
+        api.editEffect(this.state.effect_id, "DATA", value);
     }
 
     handleChange(e){
@@ -131,8 +158,7 @@ class Effect_edit extends React.Component {
         if(id != 0){
             _data[id] = e.target.value;
         }else{
-            _data = particleTypeDefaults[e.target.value];
-            
+            _data = particleTypeDefaults[e.target.value];            
         }
 
         if(id == -1){
@@ -156,7 +182,7 @@ class Effect_edit extends React.Component {
         this.getEffect_Data()
     }    
 
-    async getEffect_Data(id){
+    async getEffect_Data(){
         const session = coockie.readCookie('login');
         let url = "http://0.0.0.0:10100/admin/" + session + "/staticeffects/get/" + this.state.effect_id;
         let response = await fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } });

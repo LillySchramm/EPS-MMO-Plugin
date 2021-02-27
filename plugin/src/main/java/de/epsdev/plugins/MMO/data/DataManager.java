@@ -544,50 +544,8 @@ public class DataManager {
                         Float.parseFloat(_tmp[2]));
 
                 Particle_Effect effect = null;
-                ParticleConfig config = null;
-                Particle particle = null;
-                D_RGB color = null;
-
                 String data = rs.getString("DATA");
-                String[] _data = data.split(">>");
-
-                switch (_data[0]){
-                    case "circle":
-                        particle = Particle.valueOf(_data[1]);
-                        color = null;
-
-                        double radius = Double.parseDouble(_data[2]);
-                        int points = Integer.parseInt(_data[3]);
-
-                        if(_data.length > 4){
-                            int r = Integer.parseInt(_data[4]);
-                            int g = Integer.parseInt(_data[5]);
-                            int b = Integer.parseInt(_data[6]);
-
-                            color = new D_RGB(r, g, b);
-                        }
-
-                        config = new ParticleConfig(particle, color);
-                        effect = new EF_Particle_Ring(config, radius, points);
-
-                        break;
-                    case "single":
-                        particle = Particle.valueOf(_data[1]);
-                        color = null;
-
-                        if(_data.length > 2){
-                            int r = Integer.parseInt(_data[2]);
-                            int g = Integer.parseInt(_data[3]);
-                            int b = Integer.parseInt(_data[4]);
-
-                            color = new D_RGB(r, g, b);
-                        }
-
-                        config = new ParticleConfig(particle, color);
-                        effect = new EF_Single_Particle(config);
-
-                        break;
-                }
+                effect = Particle_Effect.genFromData(data);
 
                 new eNpc(id, effect, pos);
             }

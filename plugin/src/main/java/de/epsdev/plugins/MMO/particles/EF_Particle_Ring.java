@@ -12,12 +12,14 @@ public class EF_Particle_Ring extends Particle_Effect{
 
     public double radius;
     public int ringPoints;
+    public List<Vec2d> offsets;
 
     public EF_Particle_Ring(ParticleConfig config, double radius, int points){
         super(config);
 
         this.radius = radius;
         this.ringPoints = points;
+        this.offsets = this.calcOffsets();
         super.name = "circle";
     }
 
@@ -36,14 +38,10 @@ public class EF_Particle_Ring extends Particle_Effect{
 
     @Override
     public void display(Location location) {
-
-        List<Vec2d> offsets = this.calcOffsets();
-
-        for (Vec2d offset : offsets){
+        for (Vec2d offset : this.offsets){
             Location l = new Location(location.getWorld(), location.getX() + offset.x, location.getY(), location.getZ() + offset.y);
             super.renderParticle(l);
         }
-
     }
 
     @Override

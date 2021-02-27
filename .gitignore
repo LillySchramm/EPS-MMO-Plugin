@@ -115,5 +115,6 @@ run/
 */node_modules
 website/package-lock.json
 website/.eslintcache
-website/.eslintcache
-website/.eslintcache
+*/.eslintcache
+.eslintcache
+

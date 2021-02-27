@@ -43,11 +43,18 @@ public class DEV_eNpc_GUI {
         user.next = next_position;
     };
 
+    private final OnClick click_delete = (player, item, inventory) -> {
+        player.closeInventory();
+        Out.printToPlayer(player, ChatColor.RED + "Deleted the effect with ID "  + this.id);
+        Static_Effect_Scheduler.deleteArmorStand(this.id);
+    };
+
     public DEV_eNpc_GUI(eNpc enpc){
         this.gui = new Base_Gui("ID: " + enpc.eNpc_id);
         this.id = enpc.eNpc_id;
 
         gui.addItem(Material.COMPASS, 1, enpc.pos.toString(), TooltipLore.tt_clickToUpdate(), click_location_change, 0,0);
+        gui.addItem(Material.BARRIER, 1,   ChatColor.RED + "" + ChatColor.BOLD + "DELETE", TooltipLore.tt_clickToDelete(), click_delete, 8,0);
 
     }
 

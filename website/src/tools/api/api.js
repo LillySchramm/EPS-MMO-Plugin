@@ -26,7 +26,7 @@ const editNPC = (id, attr, value) => {
 
 const editEffect = (id, attr, value) => {
     return new Promise((resolve, reject) => {    
-        request("npc/set/" + id +"/" + attr + "/" + value.hexEncode()).then(() => {
+        request("staticeffects/set/" + id +"/" + attr + "/" + value.hexEncode()).then(() => {
         })
     });
 }
@@ -54,4 +54,4 @@ String.prototype.hexDecode = function(){
     return back;
 }
 
-module.exports = {editNPC}
+module.exports = {editNPC, editEffect}

@@ -77,9 +77,6 @@ public class eNpc {
                 e.printStackTrace();
             }
         }
-
-
-
         this.gui = new DEV_eNpc_GUI(this);
 
         spawnArmorStand();
@@ -92,6 +89,14 @@ public class eNpc {
     }
 
     public void fullReload(){
+        try {
+            ResultSet rs = mysql.query("SELECT * FROM `eps_regions`.`static_effects` WHERE ID=" + this.eNpc_id);
+            rs.next();
+            String data = rs.getString("DATA");
+            this.particle_effect = Particle_Effect.genFromData(data);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public int getArmorStandID(){

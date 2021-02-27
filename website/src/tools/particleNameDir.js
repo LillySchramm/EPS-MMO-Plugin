@@ -1,6 +1,7 @@
 const particleTypes = {
     "single"            :"Single Point",
-    "circle"            :"Circle"
+    "circle"            :"Circle",
+    "pillar"            :"Pillar"
 }
 
 module.exports = particleTypes;

@@ -5,6 +5,7 @@ import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.npc.NPC;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
+import de.epsdev.plugins.MMO.schedulers.Static_Effect_Scheduler;
 import de.epsdev.plugins.MMO.tools.Math;
 import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.tools.WhatIsMyIP;
@@ -55,7 +56,6 @@ public class Server_Session {
                         break;
                     case "npc":
                         if(_cmd[1].equalsIgnoreCase("reload")){
-                            Out.printToConsole(Integer.parseInt(_cmd[2]));
                             for (NPC npc : NPC_Manager.NPCs){
                                 if(npc.npc_id == Integer.parseInt(_cmd[2])){
                                     NPC_Manager.fullReloadNPC(npc);
@@ -63,6 +63,14 @@ public class Server_Session {
                                 }
                             }
                         }
+                        break;
+                    case "effect":
+                        if(_cmd[1].equalsIgnoreCase("reload")){
+                            Static_Effect_Scheduler.hardReloadArmorStand(Integer.parseInt(_cmd[2]));
+                        }
+                        break;
+                    default:
+                        Out.printToConsole("REMOTE COMMAND NOT VALID: " + cmd);
                         break;
                 }
 

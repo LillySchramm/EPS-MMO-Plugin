@@ -61,4 +61,12 @@ public class Static_Effect_Scheduler {
             eNpc.removeArmorStand();
         }));
     }
+
+    public static void hardReloadArmorStand(int id){
+        effects.get(id).fullReload();
+    }
+
+    public static void deleteArmorStand(int id){
+        effects.get(id).delete();
+    }
 }
