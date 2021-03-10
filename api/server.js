@@ -8,4 +8,3 @@ db_manager.init()
 
 const server = http.createServer(app);
 server.listen(port);
-

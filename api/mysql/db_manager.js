@@ -3,7 +3,7 @@ const encrypt = require('../tools/encryption')
 const crypto = require('crypto');
 
 
-const databases = ["eps_sessions", "eps_users", "eps_regions"];
+const databases = ["eps_sessions", "eps_users", "eps_regions", "eps_items"];
 const tables = 
 [
     {db_name: "eps_users", table_name: "players", constructor: "`ID` INT NOT NULL AUTO_INCREMENT , `UUID` TEXT NOT NULL , `RANK` TEXT NOT NULL , `MONEY` INT NOT NULL , PRIMARY KEY (`ID`)"},
@@ -16,7 +16,8 @@ const tables =
     {db_name: "eps_regions", table_name: "static_effects", constructor: "`ID` INT NOT NULL AUTO_INCREMENT , `DATA` TEXT NOT NULL , `POS` TEXT NOT NULL, PRIMARY KEY (`ID`)"},
     {db_name: "eps_sessions", table_name: "sessions", constructor: "`ID` INT NOT NULL AUTO_INCREMENT , `SESSION_ID` TEXT NOT NULL, `UUID` TEXT NOT NULL, `ACTIVE` INT NOT NULL, PRIMARY KEY (`ID`)"},
     {db_name: "eps_sessions", table_name: "web_sessions", constructor: "`ID` INT NOT NULL AUTO_INCREMENT , `SESSION_ID` TEXT NOT NULL, `USERNAME` TEXT NOT NULL,  `EXP_DATE` DATE NOT NULL, PRIMARY KEY (`ID`)"},
-    {db_name: "eps_sessions", table_name: "server_commands", constructor: "`ID` INT NOT NULL AUTO_INCREMENT , `FOR` TEXT NOT NULL, `CMD` TEXT NOT NULL, PRIMARY KEY (`ID`)"}
+    {db_name: "eps_sessions", table_name: "server_commands", constructor: "`ID` INT NOT NULL AUTO_INCREMENT , `FOR` TEXT NOT NULL, `CMD` TEXT NOT NULL, PRIMARY KEY (`ID`)"},
+    {db_name: "eps_items", table_name:"items", constructor:"`ID` INT NOT NULL AUTO_INCREMENT , `DATA` TEXT NOT NULL, `ICON` TEXT NOT NULL, PRIMARY KEY (`ID`)"},
 ]
 
 function init(){
