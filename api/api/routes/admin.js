@@ -169,6 +169,95 @@ router.get('/:session/staticeffects/set/:e_id/:attr/:value', (req,res,next) => {
     })    
 });
 
+router.get('/:session/item/new/:name', (req,res,next) => {
+    let session = req.params.session;
+    let name = req.params.name;
+
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){    
+            db_manager.isItemNameTaken(name).then((r) => {
+                if(r){
+                    res.status(200).json({
+                        verified: true,
+                        success: false
+                    });   
+                }else{
+                    sql.query("INSERT INTO `eps_items`.`items` (`ID`, `NAME`, `DATA`) VALUES (NULL, '" + name +"', '')").then(() => {
+                        res.status(200).json({
+                            verified: true,
+                            success: true
+                        });   
+                    })      
+                }
+            })                           
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }       
+    })    
+});
+
+router.get('/:session/item/getall', (req,res,next) => {
+    let session = req.params.session;
+
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){                       
+            sql.query("SELECT * FROM `eps_items`.`items` LIMIT 50;").then((items => {
+                res.status(200).json({
+                    items: items,
+                    verified: true
+                });      
+            }))
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }       
+    })    
+});
+
+router.get('/:session/item/get/:id', (req,res,next) => {
+    let session = req.params.session;
+    let id = req.params.id;
+
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){                    
+            sql.query("SELECT * FROM `eps_items`.`items` WHERE ID = " + id).then((items => {
+                res.status(200).json({
+                    item: items[0],
+                    verified: true
+                });      
+            }))           
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }       
+    })    
+});
+
+router.get('/:session/item/set/:e_id/:attr/:value', (req,res,next) => {
+    let session = req.params.session;
+    let e_id = req.params.e_id;
+    let attr = req.params.attr;
+    let value = req.params.value;
+    
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){      
+            sql.query("UPDATE `eps_items`.`items` SET " + attr + " = '" + value.hexDecode() + "' WHERE ID = " + e_id + ";").then(() => {
+                res.status(200).json({
+                    verified: true
+                });      
+            })                                        
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }       
+    })    
+});
+
 
 
 module.exports = router;

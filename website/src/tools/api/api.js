@@ -31,6 +31,14 @@ const editEffect = (id, attr, value) => {
     });
 }
 
+const editItem = (id, attr, value) => {
+    return new Promise((resolve, reject) => {    
+        request("item/set/" + id +"/" + attr + "/" + value.hexEncode()).then(() => {
+        })
+    });
+}
+
+
 String.prototype.hexEncode = function(){
     var hex, i;
   
@@ -54,4 +62,4 @@ String.prototype.hexDecode = function(){
     return back;
 }
 
-module.exports = {editNPC, editEffect}
+module.exports = {editNPC, editEffect, editItem}
