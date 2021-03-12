@@ -114,9 +114,7 @@ router.get('/:session/server/instances/reload/all', (req,res,next) => {
             res.status(200).json({
                 verified: false
             });   
-        }
-
-        
+        }        
     })    
 });
 
