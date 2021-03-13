@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Coord_Span from "../general/Coord_Span";
 import Skin_Obj from "../general/Skin_Obj"
+import itemTypes from '../../tools/itemTypeDir';
 
+const api = require("../../tools/api/api")
 const formater = require('../../tools/formater');
 const coockie = require('../../tools/coockies');
 
@@ -48,10 +50,11 @@ class Item_table extends React.Component {
         super(probs);
 
         this.state = {items: <span></span>}
+        this.createTable()
     }
 
     componentDidMount(){
-        this.ticker = setInterval(() => {this.createTable()}, 500);        
+        this.ticker = setInterval(() => {this.createTable()}, 5000);        
     }    
 
     async createTable() {
@@ -68,7 +71,7 @@ class Item_table extends React.Component {
 
             let table = [];
             data.items.forEach(element => {
-                table.push(<Item_row id={element.ID} name={element.NAME} type={'element.type'} icon={element.ICON}/>);
+                table.push(<Item_row id={element.ID} name={element.NAME} type={itemTypes[element.DATA.split(">>")[0]]} icon={element.ICON}/>);
             });         
             this.setState({items: table});
                 
@@ -96,16 +99,39 @@ class Item_table extends React.Component {
         );
     }
 }
+ 
 
 class Site_Items extends React.Component {
     constructor(probs) {
         super(probs);
+
+        this.state = {
+            name:""
+        }
+
+        this.onSubmit = this.onSubmit.bind(this)
+        this.onChange = this.onChange.bind(this)
+    }
+
+    onSubmit(){
+        api.newItem(this.state.name)
+    }
+
+    onChange(e){
+        this.setState({
+            name: e.target.value
+        })
     }
 
     render() {
         return (
             <div class='Site_Items'>
                 <Item_table />
+                <h2>Add item:</h2>
+                <form>
+                    <input type='text' value={this.state.name} placeholder="Enter name here" onChange={this.onChange}/>
+                    <input type="button" value="Submit" onClick={this.onSubmit}/>
+                </form>
             </div>
         );
     }

@@ -47,10 +47,11 @@ class NPC_table extends React.Component {
         super(probs);
 
         this.state = {npcs: <span></span>}
+        this.createTable()
     }
 
     componentDidMount(){
-        this.ticker = setInterval(() => {this.createTable()}, 500);        
+        this.ticker = setInterval(() => {this.createTable()}, 5000);        
     }    
 
     async createTable() {

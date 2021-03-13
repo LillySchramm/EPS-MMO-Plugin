@@ -50,7 +50,7 @@ async function genResourcePack(){
                 }                
             });       
             
-            fs.writeFile(img_base_dir + item.ID + ".properties", item_default_property.replace("$$$$", item.ID), function(err) {
+            fs.writeFile(img_base_dir + item.ID + ".properties", item_default_property.replace("$$$$", item.NAME), function(err) {
                 if(err){
                     console.log(err);
                 }                
@@ -62,16 +62,12 @@ async function genResourcePack(){
             child_process.execSync(`zip -r ` + path.resolve(__dirname, '..') + "/data/" + `pack.zip *`, {
                 cwd: base + ""
             });  
-        });
-             
+        });             
  
         //Clear temp
         new Promise(resolve => setTimeout(resolve, 100)).then(() =>{
             rimraf(path.resolve(__dirname, '..') + "/data/temp/", ()=>{})
-        })
-
-
-        
+        })        
    })
 }
 module.exports = {genResourcePack}

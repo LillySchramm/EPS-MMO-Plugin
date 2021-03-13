@@ -3,6 +3,8 @@ const router = express.Router();
 const db_manager = require('../../mysql/db_manager');
 const sql = require('../../mysql/mysql');
 
+const resourcePack = require('../../tools/resourcepack')
+
 router.get('/:session', (req,res,next) => {
     let session = req.params.session;
     
@@ -180,7 +182,7 @@ router.get('/:session/item/new/:name', (req,res,next) => {
                         success: false
                     });   
                 }else{
-                    sql.query("INSERT INTO `eps_items`.`items` (`ID`, `NAME`, `DATA`) VALUES (NULL, '" + name +"', '')").then(() => {
+                    sql.query("INSERT INTO `eps_items`.`items` (`ID`, `NAME`, `DATA`) VALUES (NULL, '" + name +"', 'general')").then(() => {
                         res.status(200).json({
                             verified: true,
                             success: true
@@ -256,6 +258,44 @@ router.get('/:session/item/set/:e_id/:attr/:value', (req,res,next) => {
     })    
 });
 
+router.get('/:session/item/delete/:id', (req,res,next) => {
+    let session = req.params.session;
+    let id = req.params.id;
+
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){                    
+            sql.query("DELETE FROM `eps_items`.`items` WHERE ID = " + id).then((() => {
+                res.status(200).json({
+                    verified: true
+                });      
+            }))           
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }       
+    })    
+});
+
+router.post('/:session/item/icon/:id', (req,res,next) => {
+    let session = req.params.session;
+    let id = req.params.id;
+    let value = req.body.base
+
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){                    
+            sql.query("UPDATE `eps_items`.`items` SET ICON = '" + value + "' WHERE ID = " + id + ";").then((items => {
+                res.status(200).json({
+                    verified: true
+                });      
+            }))           
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }        
+    })    
+});
 
 
 module.exports = router;

@@ -17,8 +17,7 @@ router.get('/:id', (req,res,next) => {
                 res.status(408).json({
                     message: "session inactive"
                 });   
-            }
-             
+            }             
         }else{
             res.status(401).json({
                 message: "session key invalid"

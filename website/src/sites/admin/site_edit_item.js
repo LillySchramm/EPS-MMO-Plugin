@@ -1,14 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import particleTypes from '../../tools/particleNameDir';
-import effectTypes from '../../tools/effectTypeDir';
-import particleTypeDefaults from "../../tools/particleEffectDefaults";
+import itemTypes from '../../tools/itemTypeDir';
+import itemTypeDefaults from "../../tools/itemTypeDefaults";
+import axios from 'axios';
 
 const coockie = require('../../tools/coockies');
 const api = require('../../tools/api/api');
 const formater = require('../../tools/formater');
 const rgbHex = require('rgb-hex');
 
+class Item_type_select extends React.Component{
+    render(){
+
+        let options = [];
+        let id = 0;
+        
+        Object.entries(itemTypes).forEach(([key, value]) => {
+            if(key == this.props.cur){
+                options.push(<option value={key} selected="selected">{value}</option>);
+            }else{
+                options.push(<option value={key}>{value}</option>);
+            }                
+        });        
+
+        return(
+            <select name="type_option" id="type_option" e_id={id} onChange={this.props.handler}>
+                {                    
+                    options                
+                }
+            </select>
+        );
+    }
+}
 
 class Item_edit extends React.Component {
 
@@ -26,7 +49,8 @@ class Item_edit extends React.Component {
 
     async onSubmit(){        
         //console.log(value);
-        api.editItem(this.state.item_id, "ICON", this.state.icon)
+        api.setItemIcon(this.state.item_id, this.state.icon)
+        //api.editItem(this.state.item_id, "ICON", this.state.icon)
         //api.editEffect(this.state.effect_id, "DATA", value);
     }
 
@@ -34,11 +58,15 @@ class Item_edit extends React.Component {
         let ele = e.target;
         let id = ele.getAttribute("id");
 
-        if(id === "icon"){
+        switch(id){
+            case "icon":
+                this.getBase64(ele.files[0]);
+                break
 
-            console.log(this.getBase64(ele.files[0]));
-
+            default:
+                break
         }
+
     }
 
     componentDidMount(){    
@@ -69,7 +97,8 @@ class Item_edit extends React.Component {
            let _data = data.item;
            this.setState({
                name:_data.NAME,
-               icon: _data.ICON
+               icon: _data.ICON,
+               data: _data.DATA
            })
         } else {
             this.forceUpdate()
@@ -84,15 +113,21 @@ class Item_edit extends React.Component {
         if(this.state.icon == ""){return <h3>Loading.........</h3>}
 
         return (
-            <div class="s"> 
+            <div class="Site_Edit_Item"> 
                 <h2>Currently selected:  [ID: {this.state.item_id}; NAME: {this.state.name}]</h2>                
                 <form>
+                <br/>
+                    <h3>General</h3>
+                    <br/>
+                    <label>Type: </label>
+                    <Item_type_select cur={this.state.data.split(">>")[0]} handler={this.handleChange}/>                
+                    <br/>
                     <br/>
                     <img src={'data:image/jpeg;base64,' + this.state.icon} width='172px' height='172px' />
                     <br />
                     <input type="file"
                         id="icon" name="icon"
-                        accept="image/png, image/jpeg" onChange={this.handleChange}></input>
+                        accept="image/png" onChange={this.handleChange}></input>
                     <br />
                     <input type="button" value="Submit" onClick={this.onSubmit}/>
                     <br/>

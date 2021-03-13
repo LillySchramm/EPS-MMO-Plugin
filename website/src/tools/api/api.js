@@ -1,3 +1,4 @@
+const axios = require('axios')
 const coockie = require('../coockies');
 
 const request = (req) => {
@@ -14,6 +15,18 @@ const request = (req) => {
                 }
             })            
         });        
+    });
+}
+
+const post_request = (req, data) => {
+    return new Promise((resolve, reject) => {    
+        const session = coockie.readCookie('login');
+        let url = "http://0.0.0.0:10100/admin/" + session + "/" + req;
+        
+        axios.post(url, data).then(r => {
+            console.log(r)
+            resolve(r)
+        })
     });
 }
 
@@ -34,6 +47,22 @@ const editEffect = (id, attr, value) => {
 const editItem = (id, attr, value) => {
     return new Promise((resolve, reject) => {    
         request("item/set/" + id +"/" + attr + "/" + value.hexEncode()).then(() => {
+        })
+    });
+}
+
+const newItem = (name) => {
+    return new Promise((resolve, reject) => {    
+        request("item/new/" + name).then((d) => {
+            resolve(d)
+        })
+    });
+}
+
+const setItemIcon = (id,b) => {
+    return new Promise((resolve, reject) => {    
+        post_request("item/icon/" + id, {base: b}).then((r) => {
+            resolve(r)
         })
     });
 }
@@ -62,4 +91,4 @@ String.prototype.hexDecode = function(){
     return back;
 }
 
-module.exports = {editNPC, editEffect, editItem}
+module.exports = {editNPC, editEffect, editItem, newItem, setItemIcon}

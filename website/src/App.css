@@ -5,6 +5,7 @@
   padding: 0;
   text-align: center;
   font-family: 'Poppins';
+  image-rendering: optimizeSpeed; 
 }
 
 h1{
@@ -54,19 +55,19 @@ h1{
   color: rgb(122, 10, 10);
 }
 
-.Site_Edit_NPC, .Site_Edit_NPC form, .Site_Edit_Effects, .Site_Edit_Effects form{
+.Site_Edit_NPC, .Site_Edit_NPC form, .Site_Edit_Effects, .Site_Edit_Effects form,  .Site_Edit_Item, .Site_Edit_Item form{
   margin-top: 2%;
 }
 
-.Site_Edit_NPC h2, .Site_Edit_Effects h2{
+.Site_Edit_NPC h2, .Site_Edit_Effects h2, .Site_Edit_Item h2{
   font-size: 3em;
 }
 
-.Site_Edit_NPC form h3, .Site_Edit_Effects h3{
+.Site_Edit_NPC form h3, .Site_Edit_Effects h3, .Site_Edit_Item h3{
   margin-top: 2%;
 }
 
-.Site_Edit_NPC form input, .Site_Edit_Effects form input{
+.Site_Edit_NPC form input, .Site_Edit_Effects form input,  .Site_Edit_Item form input{
   margin-top: 1%;
   margin-bottom: 1%;
 }

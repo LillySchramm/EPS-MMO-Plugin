@@ -1,5 +1,6 @@
 const express = require('express');
 const fileupload = require('express-fileupload')
+const bodyParser = require("body-parser");
 const app = express();
 
 const sessionRoutes = require('./api/routes/session')
@@ -12,6 +13,8 @@ const cors = require('cors')
 
 app.use(cors());
 app.use(fileupload())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use('/session', sessionRoutes);
 app.use('/login', loginRoutes);
