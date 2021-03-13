@@ -13,8 +13,7 @@ class NPC_row extends React.Component {
     }
 
     render() {
-        return (
-            
+        return (            
             <tr>
                 <td>
                     <a href={'http://0.0.0.0:3000/admin/npc/' + this.props.id}>
@@ -35,8 +34,7 @@ class NPC_row extends React.Component {
                 <td>                    
                     <Skin_Obj skin={this.props.skin} size={100} type={"avatar"} />
                 </td>
-            </tr>
-            
+            </tr>            
         );
     }
 }
@@ -59,7 +57,6 @@ class NPC_table extends React.Component {
         let url = "http://0.0.0.0:10100/admin/" + session;
         let response = await fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } });
         let data = await response.json();       
-
 
         if (data.verified) {
             url = "http://0.0.0.0:10100/admin/" + session + "/npc/getall";

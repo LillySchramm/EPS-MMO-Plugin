@@ -50,7 +50,7 @@ class Item_edit extends React.Component {
     async onSubmit(){        
         //console.log(value);
         api.setItemIcon(this.state.item_id, this.state.icon)
-        //api.editItem(this.state.item_id, "ICON", this.state.icon)
+        api.editItem(this.state.item_id, "NAME", this.state.name)
         //api.editEffect(this.state.effect_id, "DATA", value);
     }
 
@@ -62,7 +62,10 @@ class Item_edit extends React.Component {
             case "icon":
                 this.getBase64(ele.files[0]);
                 break
-
+            case "name":
+                this.setState({
+                    name: ele.value
+                })
             default:
                 break
         }
@@ -123,6 +126,9 @@ class Item_edit extends React.Component {
                     <Item_type_select cur={this.state.data.split(">>")[0]} handler={this.handleChange}/>                
                     <br/>
                     <br/>
+                    <input type='text' id='name' value={this.state.name}  onChange={this.handleChange}/> 
+                    <br />
+                    <br />
                     <img src={'data:image/jpeg;base64,' + this.state.icon} width='172px' height='172px' />
                     <br />
                     <input type="file"
