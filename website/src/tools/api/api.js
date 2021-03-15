@@ -67,6 +67,13 @@ const setItemIcon = (id,b) => {
     });
 }
 
+const regenResourcePack = () => {
+    return new Promise((resolve, reject) => {    
+        request("genResourcePack/").then((d) => {
+            resolve(d);
+        }) 
+    })
+}
 
 String.prototype.hexEncode = function(){
     var hex, i;
@@ -91,4 +98,4 @@ String.prototype.hexDecode = function(){
     return back;
 }
 
-module.exports = {editNPC, editEffect, editItem, newItem, setItemIcon}
+module.exports = {editNPC, editEffect, editItem, newItem, setItemIcon, regenResourcePack}

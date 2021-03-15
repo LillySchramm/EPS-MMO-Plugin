@@ -277,6 +277,28 @@ router.get('/:session/item/delete/:id', (req,res,next) => {
     })    
 });
 
+router.get('/:session/genResourcePack', (req,res,next) => {
+    let session = req.params.session;
+    let id = req.params.id;
+
+    db_manager.verifyWebSession(session).then((ret) => {
+        if(ret){       
+            resourcePack.genResourcePack().then(() => {
+                sql.query("UPDATE `eps_vars`.`vars` SET `INT_VAL` = `INT_VAL` + 1 WHERE NAME = 'resource_pack_ver'; ").then(() => {
+                    res.status(200).json({
+                        verified: true
+                    }); 
+                })
+            });
+          
+        }else{
+            res.status(200).json({
+                verified: false
+            });   
+        }       
+    })    
+});
+
 router.post('/:session/item/icon/:id', (req,res,next) => {
     let session = req.params.session;
     let id = req.params.id;

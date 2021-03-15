@@ -51,6 +51,7 @@ class Item_edit extends React.Component {
         //console.log(value);
         api.setItemIcon(this.state.item_id, this.state.icon)
         api.editItem(this.state.item_id, "NAME", this.state.name)
+        api.regenResourcePack()
         //api.editEffect(this.state.effect_id, "DATA", value);
     }
 

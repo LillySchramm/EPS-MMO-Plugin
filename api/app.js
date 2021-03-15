@@ -6,7 +6,6 @@ const app = express();
 const sessionRoutes = require('./api/routes/session')
 const loginRoutes = require('./api/routes/login')
 const adminRoutes = require('./api/routes/admin')
-const uploadRoutes = require('./api/routes/upload');
 const packRoutes = require('./api/routes/resourcepack');
 
 const cors = require('cors')
@@ -19,7 +18,6 @@ app.use(bodyParser.json());
 app.use('/session', sessionRoutes);
 app.use('/login', loginRoutes);
 app.use('/admin', adminRoutes);
-app.use('/upload', uploadRoutes);
 app.use('/resourcepack', packRoutes);
 
 module.exports = app;

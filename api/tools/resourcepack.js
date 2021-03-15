@@ -67,7 +67,9 @@ async function genResourcePack(){
         //Clear temp
         new Promise(resolve => setTimeout(resolve, 100)).then(() =>{
             rimraf(path.resolve(__dirname, '..') + "/data/temp/", ()=>{})
-        })        
+        })       
+        
+
    })
 }
 module.exports = {genResourcePack}
