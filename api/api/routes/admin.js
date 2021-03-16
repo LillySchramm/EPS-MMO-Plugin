@@ -281,10 +281,13 @@ router.get('/:session/genResourcePack', (req,res,next) => {
     let session = req.params.session;
     let id = req.params.id;
 
+    var date = new Date().today() + " @ " + new Date().timeNow();
+
     db_manager.verifyWebSession(session).then((ret) => {
         if(ret){       
             resourcePack.genResourcePack().then(() => {
                 sql.query("UPDATE `eps_vars`.`vars` SET `INT_VAL` = `INT_VAL` + 1 WHERE NAME = 'resource_pack_ver'; ").then(() => {
+                    sql.query("UPDATE `eps_vars`.`vars` SET TEXT_VAL='" + date + "' WHERE NAME = 'resource_pack_last_edit';")
                     res.status(200).json({
                         verified: true
                     }); 
@@ -318,6 +321,16 @@ router.post('/:session/item/icon/:id', (req,res,next) => {
         }        
     })    
 });
+
+// For todays date;
+Date.prototype.today = function () { 
+    return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
+}
+
+// For the time now
+Date.prototype.timeNow = function () {
+     return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
+}
 
 
 module.exports = router;

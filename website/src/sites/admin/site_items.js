@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { version } from 'react';
 import ReactDOM from 'react-dom';
 import Coord_Span from "../general/Coord_Span";
 import Skin_Obj from "../general/Skin_Obj"
@@ -7,6 +7,44 @@ import itemTypes from '../../tools/itemTypeDir';
 const api = require("../../tools/api/api")
 const formater = require('../../tools/formater');
 const coockie = require('../../tools/coockies');
+
+class RP_VER extends React.Component {
+    constructor(probs){
+        super(probs)
+
+        this.state = {
+            last_edit:"",
+            version:0
+        }
+        this.reGen = this.reGen.bind(this)
+
+        this.fetchVersion()
+    }
+
+    fetchVersion(){
+        api.getResourcePackVersion().then((r) => {
+            this.setState({
+                last_edit:r.last_changed,
+                version:r.ver
+            })
+        })
+    }
+
+    reGen(){
+        api.regenResourcePack().then(() => {
+            this.fetchVersion();
+        })
+    }
+
+    render() {
+        //I know that I am using some Bootstrap stuff down there. Bootstrap will be the base of the website design once finished.
+        return(
+        <span>
+            <h3>The resource pack was regenerated last at: <br/> {this.state.last_edit} | VER[{this.state.version}]</h3><br/>
+            <button type="button" class="btn btn-primary btn-lg" onClick={this.reGen}>Regenerate</button> 
+        </span>)
+    }
+}
 
 class Item_row extends React.Component {
 
@@ -126,6 +164,9 @@ class Site_Items extends React.Component {
     render() {
         return (
             <div class='Site_Items'>
+                <br/>
+                <RP_VER/>                
+
                 <Item_table />
                 <h2>Add item:</h2>
                 <form>

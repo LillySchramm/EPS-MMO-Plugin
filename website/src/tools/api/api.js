@@ -18,6 +18,17 @@ const request = (req) => {
     });
 }
 
+const request_wo_admin = (req) => {
+    return new Promise((resolve, reject) => {    
+        let url = "http://0.0.0.0:10100/" + req;
+        fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } }).then((response) => {
+            response.json().then((data) => {
+                resolve(data)
+            })            
+        });        
+    });
+}
+
 const post_request = (req, data) => {
     return new Promise((resolve, reject) => {    
         const session = coockie.readCookie('login');
@@ -75,6 +86,14 @@ const regenResourcePack = () => {
     })
 }
 
+const getResourcePackVersion = () => {
+    return new Promise((resolve, reject) =>  {
+        request_wo_admin("resourcepack/version/").then(r => {
+            resolve(r);
+        })
+    })
+}
+
 String.prototype.hexEncode = function(){
     var hex, i;
   
@@ -98,4 +117,4 @@ String.prototype.hexDecode = function(){
     return back;
 }
 
-module.exports = {editNPC, editEffect, editItem, newItem, setItemIcon, regenResourcePack}
+module.exports = {editNPC, editEffect, editItem, newItem, setItemIcon, regenResourcePack, getResourcePackVersion}

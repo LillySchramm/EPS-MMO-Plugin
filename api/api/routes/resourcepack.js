@@ -8,10 +8,14 @@ router.get('/download/:bump', (req,res,next) => {
     res.download(file);
 });
 
-router.get('/version', (req,res,next) => {
+router.get('/version', (req,res,next) => {    
     sql.query('SELECT INT_VAL FROM `eps_vars`.`vars` WHERE NAME = "resource_pack_ver"').then(rs => {
-        res.status(200).json({
-            ver:rs[0].INT_VAL
+        let ver = rs[0].INT_VAL;
+        sql.query('SELECT TEXT_VAL FROM `eps_vars`.`vars` WHERE NAME = "resource_pack_last_edit"').then(rs1 => {
+            res.status(200).json({
+                ver:ver,
+                last_changed:rs1[0].TEXT_VAL
+            })
         })
     })
 })

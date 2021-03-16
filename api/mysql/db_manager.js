@@ -3,7 +3,7 @@ const encrypt = require('../tools/encryption')
 const crypto = require('crypto');
 
 const databases = ["eps_sessions", "eps_users", "eps_regions", "eps_items", "eps_vars"];
-const vars = ["resource_pack_ver"];
+const vars = ["resource_pack_ver", "resource_pack_last_edit"];
 
 const tables = 
 [
@@ -157,7 +157,7 @@ const addVarIfNotExists = (name) => {
     return new Promise((resolve, reject) => {        
         sql.query("SELECT * FROM `eps_vars`.`vars` WHERE NAME='" + name + "';").then((rs) => {
             if(sql.isRSempty(rs)){
-                sql.query("INSERT INTO `eps_vars`.`vars` (`ID`, `NAME`, `INT_VAL`, `FLOAT_VAL`, `TEXT_VAL`) VALUES (NULL, '" + name +"', '0', '0', 'text') ").then(() => {
+                sql.query("INSERT INTO `eps_vars`.`vars` (`ID`, `NAME`, `INT_VAL`, `FLOAT_VAL`, `TEXT_VAL`) VALUES (NULL, '" + name +"', '0', '0', '') ").then(() => {
                     console.log("VAR '" + name + "' created.");
                 })
             }

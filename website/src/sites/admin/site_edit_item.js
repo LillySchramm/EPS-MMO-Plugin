@@ -47,12 +47,9 @@ class Item_edit extends React.Component {
         this.handleChange = this.handleChange.bind(this)
     }
 
-    async onSubmit(){        
-        //console.log(value);
+    async onSubmit(){
         api.setItemIcon(this.state.item_id, this.state.icon)
         api.editItem(this.state.item_id, "NAME", this.state.name)
-        api.regenResourcePack()
-        //api.editEffect(this.state.effect_id, "DATA", value);
     }
 
     handleChange(e){      
@@ -143,5 +140,7 @@ class Item_edit extends React.Component {
         );        
     }
 }
+
+
 
 export default Item_edit
