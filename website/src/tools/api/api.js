@@ -55,25 +55,26 @@ const editEffect = (id, attr, value) => {
     });
 }
 
-const editItem = (id, attr, value) => {
+const editItem = (state) => {
     return new Promise((resolve, reject) => {    
-        request("item/set/" + id +"/" + attr + "/" + value.hexEncode()).then(() => {
+        post_request("item/icon/" + state.item_id, {base: state.icon, name:state.name, data:state.data}).then((r) => {
+            resolve(r)
         })
     });
 }
 
-const newItem = (name) => {
+const newItem = (name, type) => {
     return new Promise((resolve, reject) => {    
-        request("item/new/" + name).then((d) => {
+        request("item/new/" + name + "/" + type).then((d) => {
             resolve(d)
         })
     });
 }
 
-const setItemIcon = (id,b) => {
+const deleteItem = (id) => {
     return new Promise((resolve, reject) => {    
-        post_request("item/icon/" + id, {base: b}).then((r) => {
-            resolve(r)
+        request("item/delete/" + id).then((d) => {
+            resolve(d)
         })
     });
 }
@@ -117,4 +118,4 @@ String.prototype.hexDecode = function(){
     return back;
 }
 
-module.exports = {editNPC, editEffect, editItem, newItem, setItemIcon, regenResourcePack, getResourcePackVersion}
+module.exports = {editNPC, editEffect, editItem, deleteItem,newItem, regenResourcePack, getResourcePackVersion}

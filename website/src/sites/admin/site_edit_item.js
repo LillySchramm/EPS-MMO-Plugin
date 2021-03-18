@@ -3,35 +3,12 @@ import ReactDOM from 'react-dom';
 import itemTypes from '../../tools/itemTypeDir';
 import itemTypeDefaults from "../../tools/itemTypeDefaults";
 import axios from 'axios';
+import ItemTypeSelect from '../general/Item_Type_Select';
 
 const coockie = require('../../tools/coockies');
 const api = require('../../tools/api/api');
 const formater = require('../../tools/formater');
 const rgbHex = require('rgb-hex');
-
-class Item_type_select extends React.Component{
-    render(){
-
-        let options = [];
-        let id = 0;
-        
-        Object.entries(itemTypes).forEach(([key, value]) => {
-            if(key == this.props.cur){
-                options.push(<option value={key} selected="selected">{value}</option>);
-            }else{
-                options.push(<option value={key}>{value}</option>);
-            }                
-        });        
-
-        return(
-            <select name="type_option" id="type_option" e_id={id} onChange={this.props.handler}>
-                {                    
-                    options                
-                }
-            </select>
-        );
-    }
-}
 
 class Item_edit extends React.Component {
 
@@ -41,15 +18,14 @@ class Item_edit extends React.Component {
         let url = window.location.href
         let unslashed = url.split('/');
         
-        this.state = {item_id: unslashed[unslashed.length - 1], name:"" , icon:""}      
+        this.state = {item_id: unslashed[unslashed.length - 1], name:"" , icon:"", data:""}      
         
         this.onSubmit = this.onSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this)
     }
 
     async onSubmit(){
-        api.setItemIcon(this.state.item_id, this.state.icon)
-        api.editItem(this.state.item_id, "NAME", this.state.name)
+        api.editItem(this.state)
     }
 
     handleChange(e){      
@@ -64,6 +40,12 @@ class Item_edit extends React.Component {
                 this.setState({
                     name: ele.value
                 })
+                break
+            case "type_option":
+                this.setState({
+                    data:ele.value
+                })
+                break
             default:
                 break
         }
@@ -121,7 +103,7 @@ class Item_edit extends React.Component {
                     <h3>General</h3>
                     <br/>
                     <label>Type: </label>
-                    <Item_type_select cur={this.state.data.split(">>")[0]} handler={this.handleChange}/>                
+                    <ItemTypeSelect cur={this.state.data.split(">>")[0]} handler={this.handleChange}/>                
                     <br/>
                     <br/>
                     <input type='text' id='name' value={this.state.name}  onChange={this.handleChange}/> 

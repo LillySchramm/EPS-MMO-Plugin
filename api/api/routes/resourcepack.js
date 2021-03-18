@@ -20,5 +20,14 @@ router.get('/version', (req,res,next) => {
     })
 })
 
+router.get('/version/blank', (req,res,next) => {    
+    sql.query('SELECT INT_VAL FROM `eps_vars`.`vars` WHERE NAME = "resource_pack_ver"').then(rs => {
+        let ver = rs[0].INT_VAL;       
+        res.status(200).json({
+            ver:ver,
+        })
+    })
+})
+
 
 module.exports = router

@@ -169,9 +169,10 @@ router.get('/:session/staticeffects/set/:e_id/:attr/:value', (req,res,next) => {
     })    
 });
 
-router.get('/:session/item/new/:name', (req,res,next) => {
+router.get('/:session/item/new/:name/:type', (req,res,next) => {
     let session = req.params.session;
     let name = req.params.name;
+    let type = req.params.type
 
     db_manager.verifyWebSession(session).then((ret) => {
         if(ret){    
@@ -182,7 +183,7 @@ router.get('/:session/item/new/:name', (req,res,next) => {
                         success: false
                     });   
                 }else{
-                    sql.query("INSERT INTO `eps_items`.`items` (`ID`, `NAME`, `DATA`) VALUES (NULL, '" + name +"', 'general')").then(() => {
+                    sql.query("INSERT INTO `eps_items`.`items` (`ID`, `NAME`, `DATA`) VALUES (NULL, '" + name +"', '" + type + "')").then(() => {
                         res.status(200).json({
                             verified: true,
                             success: true
@@ -198,12 +199,13 @@ router.get('/:session/item/new/:name', (req,res,next) => {
     })    
 });
 
-router.get('/:session/item/getall', (req,res,next) => {
+router.get('/:session/item/getall/:type', (req,res,next) => {
     let session = req.params.session;
+    let type = req.params.type;
 
     db_manager.verifyWebSession(session).then((ret) => {
         if(ret){                       
-            sql.query("SELECT * FROM `eps_items`.`items` LIMIT 50;").then((items => {
+            sql.query("SELECT * FROM `eps_items`.`items` WHERE DATA LIKE '%" + type + "%' LIMIT 50;").then((items => {
                 res.status(200).json({
                     items: items,
                     verified: true
@@ -229,27 +231,6 @@ router.get('/:session/item/get/:id', (req,res,next) => {
                     verified: true
                 });      
             }))           
-        }else{
-            res.status(200).json({
-                verified: false
-            });   
-        }       
-    })    
-});
-
-router.get('/:session/item/set/:e_id/:attr/:value', (req,res,next) => {
-    let session = req.params.session;
-    let e_id = req.params.e_id;
-    let attr = req.params.attr;
-    let value = req.params.value;
-    
-    db_manager.verifyWebSession(session).then((ret) => {
-        if(ret){      
-            sql.query("UPDATE `eps_items`.`items` SET " + attr + " = '" + value.hexDecode() + "' WHERE ID = " + e_id + ";").then(() => {
-                res.status(200).json({
-                    verified: true
-                });      
-            })                                        
         }else{
             res.status(200).json({
                 verified: false
@@ -305,11 +286,13 @@ router.get('/:session/genResourcePack', (req,res,next) => {
 router.post('/:session/item/icon/:id', (req,res,next) => {
     let session = req.params.session;
     let id = req.params.id;
-    let value = req.body.base
+    let icon = req.body.base
+    let name = req.body.name
+    let data = req.body.data
 
     db_manager.verifyWebSession(session).then((ret) => {
         if(ret){                    
-            sql.query("UPDATE `eps_items`.`items` SET ICON = '" + value + "' WHERE ID = " + id + ";").then((items => {
+            sql.query("UPDATE `eps_items`.`items` SET ICON = '" + icon + "', NAME = '" + name + "', DATA = '" + data + "' WHERE ID = " + id + ";").then((items => {
                 res.status(200).json({
                     verified: true
                 });      

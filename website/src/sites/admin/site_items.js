@@ -3,10 +3,30 @@ import ReactDOM from 'react-dom';
 import Coord_Span from "../general/Coord_Span";
 import Skin_Obj from "../general/Skin_Obj"
 import itemTypes from '../../tools/itemTypeDir';
+import ItemTypeSelect from '../general/Item_Type_Select';
 
 const api = require("../../tools/api/api")
 const formater = require('../../tools/formater');
 const coockie = require('../../tools/coockies');
+
+class DEL_Button extends React.Component {
+    constructor(props){
+        super(props)        
+        this.delete = this.delete.bind(this);
+    }
+
+    delete(){
+        api.deleteItem(this.props.item_id).then(() => {
+            this.props.reloadTable()
+        })
+    }
+
+    render() {
+        return (
+            <button type="button" class="btn btn-error btn-lg" onClick={this.delete}>DELETE ITEM</button> 
+        );
+    }
+}
 
 class RP_VER extends React.Component {
     constructor(probs){
@@ -76,6 +96,10 @@ class Item_row extends React.Component {
                 <td>                    
                     <img src={'data:image/jpeg;base64,' + this.props.icon} width='72px' height='72px' />
                 </td>
+
+                <td>
+                    <DEL_Button item_id={this.props.id} reloadTable={this.props.reloadTable}/>
+                </td>
             </tr>
             
         );
@@ -87,13 +111,31 @@ class Item_table extends React.Component {
     constructor(probs) {
         super(probs);
 
-        this.state = {items: <span></span>}
+        this.state = 
+        {
+            items: <span></span>,
+            type:"general",
+            name:""
+        }
+        this.handleTypeChange = this.handleTypeChange.bind(this)
+        this.e_createTable = this.e_createTable.bind(this)
+        this.onChange = this.onChange.bind(this)
+        this.onSubmit = this.onSubmit.bind(this)
+
         this.createTable()
     }
+    
+    onChange(e){
+        this.setState({
+            name: e.target.value
+        })
+    }
+    
+    componentDidMount(){}    
 
-    componentDidMount(){
-        this.ticker = setInterval(() => {this.createTable()}, 5000);        
-    }    
+    e_createTable(){
+        this.createTable();
+    }
 
     async createTable() {
         const session = coockie.readCookie('login');
@@ -103,13 +145,13 @@ class Item_table extends React.Component {
 
 
         if (data.verified) {
-            url = "http://0.0.0.0:10100/admin/" + session + "/item/getall";
+            url = "http://0.0.0.0:10100/admin/" + session + "/item/getall/" + this.state.type;
             response = await fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } });
             data = await response.json();  
 
             let table = [];
             data.items.forEach(element => {
-                table.push(<Item_row id={element.ID} name={element.NAME} type={itemTypes[element.DATA.split(">>")[0]]} icon={element.ICON}/>);
+                table.push(<Item_row id={element.ID} name={element.NAME} type={itemTypes[element.DATA.split(">>")[0]]} icon={element.ICON} reloadTable={this.e_createTable}/>);
             });         
             this.setState({items: table});
                 
@@ -123,56 +165,63 @@ class Item_table extends React.Component {
         this.forceUpdate()
     }
 
+    handleTypeChange(e){
+        this.setState({
+            type:e.target.value
+        })
+        this.createTable();
+    }
+
+    onSubmit(){
+        api.newItem(this.state.name, this.state.type)
+        this.createTable();
+    }
+
     render() {
         return (
-            <table class='NPC_Table'>                
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th> </th>
-                </tr>
-                {this.state.items}
-            </table>
+            <span>
+                <br/>
+                <br/>
+                <label>Type: </label>
+                <ItemTypeSelect cur={this.state.type} handler={this.handleTypeChange}/>
+                <br/>
+                <table class='NPC_Table'>                
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th> </th>
+                        <th> </th>
+                    </tr>
+                    {this.state.items}
+                </table>  
+
+                <h2>Add item:</h2>
+                <form>
+                    <input type='text' value={this.state.name} placeholder="Enter name here" onChange={this.onChange}/>
+                    <input type="button" value="Submit" onClick={this.onSubmit}/>
+                </form>              
+            </span>
         );
     }
-}
- 
+} 
 
 class Site_Items extends React.Component {
     constructor(probs) {
         super(probs);
-
         this.state = {
             name:""
         }
-
-        this.onSubmit = this.onSubmit.bind(this)
-        this.onChange = this.onChange.bind(this)
-    }
-
-    onSubmit(){
-        api.newItem(this.state.name)
-    }
-
-    onChange(e){
-        this.setState({
-            name: e.target.value
-        })
     }
 
     render() {
         return (
             <div class='Site_Items'>
                 <br/>
-                <RP_VER/>                
+                <RP_VER/>               
 
                 <Item_table />
-                <h2>Add item:</h2>
-                <form>
-                    <input type='text' value={this.state.name} placeholder="Enter name here" onChange={this.onChange}/>
-                    <input type="button" value="Submit" onClick={this.onSubmit}/>
-                </form>
+
             </div>
         );
     }
