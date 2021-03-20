@@ -19,7 +19,7 @@ const pack_mcmeta = `
 const item_default_property = `
 type=item
 items=minecraft:stained_glass_pane
-nbt.display.Name=ipattern:*$$$$*
+nbt.display.Name=$$$$
 `
 
 async function genResourcePack(){
