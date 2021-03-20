@@ -1,25 +1,19 @@
 package de.epsdev.plugins.MMO.npc;
 
-import de.epsdev.plugins.MMO.GUI.Base_Gui;
 import de.epsdev.plugins.MMO.GUI.dev.Dev_NPC_GUI;
 import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
-import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
-import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
-import de.epsdev.plugins.MMO.tools.PlayerHeads;
 import de.epsdev.plugins.MMO.tools.Vec2f;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import net.minecraft.server.v1_12_R1.*;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class NPC {
 

@@ -1,6 +1,6 @@
 package de.epsdev.plugins.MMO.GUI.player;
 
-import de.epsdev.plugins.MMO.GUI.Base_Gui;
+import de.epsdev.plugins.MMO.GUI.base.Base_Gui;
 import de.epsdev.plugins.MMO.GUI.dev.OnClick;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
@@ -11,8 +11,6 @@ import de.epsdev.plugins.MMO.tools.PlayerHeads;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import static de.epsdev.plugins.MMO.tools.TooltipLore.*;

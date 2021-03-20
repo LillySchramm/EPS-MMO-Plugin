@@ -1,9 +1,7 @@
 package de.epsdev.plugins.MMO.data;
 
-import de.epsdev.plugins.MMO.GUI.dev.City_GUI;
-import de.epsdev.plugins.MMO.GUI.dev.Dev_Houses_Gui;
-import de.epsdev.plugins.MMO.GUI.dev.OnClick;
-import de.epsdev.plugins.MMO.GUI.dev.Regions_GUI;
+import de.epsdev.plugins.MMO.GUI.base.Base_Collection_Category;
+import de.epsdev.plugins.MMO.GUI.dev.*;
 import de.epsdev.plugins.MMO.config.Config;
 import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
@@ -15,6 +13,8 @@ import de.epsdev.plugins.MMO.data.regions.Region;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.data.sessions.Server_Session;
+import de.epsdev.plugins.MMO.items.Base_Item;
+import de.epsdev.plugins.MMO.items.types.UI_Item;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import de.epsdev.plugins.MMO.npc.Skin;
 import de.epsdev.plugins.MMO.npc.eNpc.eNpc;
@@ -47,6 +47,8 @@ public class DataManager {
     public static Server_Session server_session = new Server_Session();
 
     public static Map<String,User> onlineUsers = new HashMap<String, User>();
+    public static Map<String, Base_Item> item_categories;
+    public static Map<Integer, OnClick> funs = new HashMap<>();
 
     public static List<Region> regions = new ArrayList<>();
 
@@ -55,12 +57,12 @@ public class DataManager {
     public static int max_id_cities = 0;
     public static int max_id_houses = 1;
 
+    public static Item_Overview_Collection_GUI item_overview_gui;
+
     public static Skin default_skin = new Skin(
             "ewogICJ0aW1lc3RhbXAiIDogMTU5MTU3NDcyMzc4MywKICAicHJvZmlsZUlkIiA6ICI4NjY3YmE3MWI4NWE0MDA0YWY1NDQ1N2E5NzM0ZWVkNyIsCiAgInByb2ZpbGVOYW1lIiA6ICJTdGV2ZSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS82ZDNiMDZjMzg1MDRmZmMwMjI5Yjk0OTIxNDdjNjlmY2Y1OWZkMmVkNzg4NWY3ODUwMjE1MmY3N2I0ZDUwZGUxIgogICAgfSwKICAgICJDQVBFIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS85NTNjYWM4Yjc3OWZlNDEzODNlNjc1ZWUyYjg2MDcxYTcxNjU4ZjIxODBmNTZmYmNlOGFhMzE1ZWE3MGUyZWQ2IgogICAgfQogIH0KfQ==",
             "kCbGa8IhGN8Y51+ZLMkytztjtfXHKi08lReu/07w25Iyre8zQ4U9aR8HpHi/FGcqFT10Ik1W3QjkUYQ2BmY1rWOhErnkb2nJQjsWIc7mHDjkIkKq7zx4xbP5yEz6BcM8n261QmHgx2jgueiF0EPx6PORKP4xI7YcJe92jTOjZaN1u9Lxm2pDj3hQ69SoE/QgrR7BvFXBgJWcCIJEwqYSvGkQCxlMKNrxofF4IpHer5Lv4ne6u+yqEyN973bUNoLmc+lnNQq4jz1Stf1Jm2TtlQeWwSJ/0tvYg1srOCrZ8/MBcbzFTm2f7NK6NkulL4IfmDLwnwl3dUpZJKfyRaXYSGWyWygAALQ/04caJyKkTseNueqGSRg1otz94GjDQvQ9P0lzAqGC1ROG9IGORhcVDWpn7+qwwJe724i27LESDR6E+vF0NZGKPbBXqE8WFsxrYVxB9iGkOL67YpiCvJDuQkleSXl84tGykt5r1+XB2yicAcIKKAGaH/WBHQIl60kxIcGxLT/g+pS5zTDdhFQtawWsQTxd0LYEC+NOkMGcfkjkqyU7aueCNHkmN4FLYTLBaY2IPru+4tcaEZGcKgL3Txgj03uici1dxjdkHFF8t3dc5vieTvArdfyG4YSKnByt6J3wuD2wqTUW9OlLaxJ2Q3ieCHXl62vmaEVWgr402f8="
     );
-
-    public static Map<Integer, OnClick> funs = new HashMap<>();
 
     public static void performClickFunction(Player player, int i, ItemStack item, Inventory inventory){
         if (funs.containsKey(i)){
@@ -555,4 +557,40 @@ public class DataManager {
         }
     }
 
+    //-----------------------------------------------------------------
+    //Static Effect Stuff
+    //-----------------------------------------------------------------
+
+    public static void loadAllItems(){
+        item_overview_gui = new Item_Overview_Collection_GUI();
+        item_categories = new LinkedHashMap<>();
+
+        Material m = GUI_FILLER.getType();
+
+        item_categories.put("General", new Base_Item("General",m));
+        item_categories.put("UI", new Base_Item("UI",m));
+        item_categories.put("Weapons", new Base_Item("Weapons",m));
+        item_categories.put("Armor", new Base_Item("Armor",m));
+        item_categories.put("Materials", new Base_Item("Materials",m));
+
+        item_categories.forEach((k,v) -> {
+           try {
+               List<Base_Item> items = new ArrayList<>();
+
+               ResultSet rs = mysql.query("SELECT * FROM `eps_items`.`items` WHERE DATA LIKE '%" + k +"%'");
+
+               while (rs.next()) {
+                   String name = rs.getString("NAME");
+                   items.add(new Base_Item(name,m));
+               }
+
+               Base_Collection_Category collection_category = new Base_Collection_Category(k, v, items);
+               item_overview_gui.addCollection(collection_category);
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+        });
+
+       item_overview_gui.create();
+    }
 }

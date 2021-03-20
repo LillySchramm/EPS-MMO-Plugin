@@ -63,3 +63,6 @@ commands:
   staticeffect:
     description: Create a static effect on player position.
     aliases: [ ste, steff ]
+
+  items:
+    desciption: Shows an overview of all items

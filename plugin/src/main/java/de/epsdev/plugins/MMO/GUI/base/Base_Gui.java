@@ -1,4 +1,4 @@
-package de.epsdev.plugins.MMO.GUI;
+package de.epsdev.plugins.MMO.GUI.base;
 
 import de.epsdev.plugins.MMO.GUI.dev.OnClick;
 import de.epsdev.plugins.MMO.data.DataManager;

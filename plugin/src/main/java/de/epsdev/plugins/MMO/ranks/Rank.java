@@ -13,6 +13,7 @@ public class Rank {
     public boolean canManageHouses = false;
     public boolean canManageNPC = false;
     public boolean canManageStaticEffects = false;
+    public boolean canManageItems = false;
 
     public String name;
     public String prefix;
@@ -33,6 +34,7 @@ public class Rank {
         canManageHouses = args[9];
         canManageNPC = args[10];
         canManageStaticEffects = args[11];
+        canManageItems = args[12];
 
         this.maxHousesForRent = int_args[0];
         this.maxCharacters = int_args[1];

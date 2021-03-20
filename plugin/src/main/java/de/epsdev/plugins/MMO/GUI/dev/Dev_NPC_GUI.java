@@ -1,7 +1,6 @@
 package de.epsdev.plugins.MMO.GUI.dev;
 
-import de.epsdev.plugins.MMO.GUI.Base_Gui;
-import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.GUI.base.Base_Gui;
 import de.epsdev.plugins.MMO.commands.Next;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
@@ -9,11 +8,7 @@ import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.events.OnChat;
 import de.epsdev.plugins.MMO.npc.NPC;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
-import de.epsdev.plugins.MMO.tools.PlayerHeads;
-import de.epsdev.plugins.MMO.tools.Vec3f;
 import de.epsdev.plugins.MMO.tools.Vec3i;
-import net.minecraft.server.v1_12_R1.EntityPlayer;
-import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

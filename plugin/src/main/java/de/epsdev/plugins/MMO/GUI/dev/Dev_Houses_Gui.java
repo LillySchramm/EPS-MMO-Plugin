@@ -1,6 +1,6 @@
 package de.epsdev.plugins.MMO.GUI.dev;
 
-import de.epsdev.plugins.MMO.GUI.Base_Gui;
+import de.epsdev.plugins.MMO.GUI.base.Base_Gui;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.regions.cites.City;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;

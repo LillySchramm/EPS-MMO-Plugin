@@ -1,6 +1,6 @@
 package de.epsdev.plugins.MMO.data.regions.cites.houses;
 
-import de.epsdev.plugins.MMO.GUI.Base_Gui;
+import de.epsdev.plugins.MMO.GUI.base.Base_Gui;
 import de.epsdev.plugins.MMO.GUI.dev.Dev_house_detail;
 import de.epsdev.plugins.MMO.GUI.dev.OnClick;
 import de.epsdev.plugins.MMO.data.DataManager;

@@ -1,8 +1,6 @@
 package de.epsdev.plugins.MMO.GUI.dev;
 
-import de.epsdev.plugins.MMO.GUI.Base_Gui;
-import de.epsdev.plugins.MMO.GUI.dev.OnClick;
-import de.epsdev.plugins.MMO.GUI.dev.Regions_GUI;
+import de.epsdev.plugins.MMO.GUI.base.Base_Gui;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.regions.Region;
 import de.epsdev.plugins.MMO.data.regions.cites.City;

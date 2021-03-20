@@ -1,9 +1,8 @@
 package de.epsdev.plugins.MMO.GUI.player;
 
-import de.epsdev.plugins.MMO.GUI.Base_Gui;
+import de.epsdev.plugins.MMO.GUI.base.Base_Gui;
 import de.epsdev.plugins.MMO.GUI.dev.OnClick;
 import de.epsdev.plugins.MMO.MAIN.main;
-import de.epsdev.plugins.MMO.commands.Next;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
@@ -12,17 +11,13 @@ import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.events.OnChat;
 import de.epsdev.plugins.MMO.tools.*;
 import de.epsdev.plugins.MMO.tools.Math;
-import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static de.epsdev.plugins.MMO.tools.TooltipLore.*;

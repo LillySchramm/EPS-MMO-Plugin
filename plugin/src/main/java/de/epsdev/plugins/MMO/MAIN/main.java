@@ -67,6 +67,7 @@ public final class main extends JavaPlugin {
         DataManager.loadAllHouses();
         DataManager.loadAllNPC();
         DataManager.loadAllStaticEffects();
+        DataManager.loadAllItems();
     }
 
     private void initGameRules(){
@@ -117,6 +118,8 @@ public final class main extends JavaPlugin {
         getCommand("npc").setExecutor(new c_npc());
         getCommand("togglestatic").setExecutor(new c_toggletatic());
         getCommand("staticeffect").setExecutor(new c_staticeffect());
+
+        getCommand("items").setExecutor(new c_items());
 
     }
 
