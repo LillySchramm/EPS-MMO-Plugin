@@ -5,8 +5,10 @@ import de.epsdev.plugins.MMO.data.output.Err;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
+import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
 import de.epsdev.plugins.MMO.schedulers.Static_Effect_Scheduler;
 import de.epsdev.plugins.MMO.tools.Vec3i;
+import net.minecraft.server.v1_12_R1.PacketPlayOutSpawnEntity;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -33,6 +35,8 @@ public class e_PlayerInteract implements Listener {
 
         Player player = e.getPlayer();
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+        new Base_Mob().display(player);
 
         Block block = e.getClickedBlock();
         BlockFace blockFace = e.getBlockFace();

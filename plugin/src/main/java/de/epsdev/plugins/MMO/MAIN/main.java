@@ -12,15 +12,25 @@ import de.epsdev.plugins.MMO.schedulers.Inventory_Check_Scheduler;
 import de.epsdev.plugins.MMO.schedulers.MAIN_UPDATE_SCHEDULER;
 
 import de.epsdev.plugins.MMO.schedulers.Static_Effect_Scheduler;
+import net.minecraft.server.v1_12_R1.World;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-public final class main extends JavaPlugin {
+public final class main extends JavaPlugin implements Listener {
 
     public static Plugin plugin;
     public static DatabaseManager databaseManager = new DatabaseManager();
@@ -120,7 +130,6 @@ public final class main extends JavaPlugin {
         getCommand("staticeffect").setExecutor(new c_staticeffect());
 
         getCommand("items").setExecutor(new c_items());
-
     }
 
     private void initGUIs(){

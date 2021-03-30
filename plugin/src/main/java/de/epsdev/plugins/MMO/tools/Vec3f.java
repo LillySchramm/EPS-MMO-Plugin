@@ -2,6 +2,8 @@ package de.epsdev.plugins.MMO.tools;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
+
 import java.lang.Math;
 
 public class Vec3f {
@@ -13,6 +15,12 @@ public class Vec3f {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public Vec3f(Vector v){
+        this.x = (float) v.getX();
+        this.y = (float) v.getY();
+        this.z = (float) v.getZ();
     }
 
     public Vec3f(){
@@ -36,6 +44,18 @@ public class Vec3f {
 
     public String toString(){
         return "X: " + x + " Y: " + y + " Z: " + z;
+    }
+
+    public void add(Vec3f v){
+        this.x += v.x * this.x;
+        this.y += v.y * this.y;
+        this.z += v.z * this.z;
+    }
+
+    public void add(Vec3f v, int n){
+            this.x += v.x * n;
+            this.y += v.y * n;
+            this.z += v.z * n;
     }
 
     public Location toLocation(){

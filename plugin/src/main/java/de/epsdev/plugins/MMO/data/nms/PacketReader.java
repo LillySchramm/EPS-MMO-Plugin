@@ -60,13 +60,13 @@ public class PacketReader {
 
         int id = (int) getValue(packet, "a");
 
-            for (NPC npc : NPC_Manager.NPCs){
-                if(npc.entityPlayer.getId() == id){
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(main.plugin, () -> Bukkit.getPluginManager().callEvent(new RightClickNPC(player, npc)), 0);
-                }
+        for (NPC npc : NPC_Manager.NPCs){
+            if(npc.entityPlayer.getId() == id){
+                Bukkit.getScheduler().scheduleSyncDelayedTask(main.plugin, () -> Bukkit.getPluginManager().callEvent(new RightClickNPC(player, npc)), 0);
             }
-
         }
+
+    }
 
     private Object getValue(Object instance, String name){
 

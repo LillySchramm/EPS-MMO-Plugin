@@ -26,6 +26,7 @@ public class NPC_Manager {
         public static List<NPC> NPCs = new ArrayList<>();
         public static Map<String, Skin> textureHash = new HashMap<>();
 
+
         public static EntityPlayer createNPC_ENTITY(String name ,Vec3f pos, Vec2f rotation, Skin skin){
             MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
             WorldServer world = ((CraftWorld) Bukkit.getServer().getWorld("world")).getHandle();

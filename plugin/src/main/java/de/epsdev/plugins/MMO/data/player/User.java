@@ -15,18 +15,22 @@ import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.events.OnPlace;
 import de.epsdev.plugins.MMO.events.OnRightObj;
+import de.epsdev.plugins.MMO.particles.EF_Single_Particle;
+import de.epsdev.plugins.MMO.particles.ParticleConfig;
 import de.epsdev.plugins.MMO.ranks.Rank;
 import de.epsdev.plugins.MMO.ranks.Ranks;
 import de.epsdev.plugins.MMO.scoreboards.DefaultScroreboard;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
+import de.epsdev.plugins.MMO.tools.D_RGB;
+import de.epsdev.plugins.MMO.tools.Vec2i;
+import de.epsdev.plugins.MMO.tools.Vec3f;
+import de.epsdev.plugins.MMO.tools.Vec3i;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import javax.sql.RowSet;
 import java.io.FileWriter;
@@ -38,6 +42,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class User {
     public String displayName;
@@ -179,6 +184,32 @@ public class User {
     public void showInGameMenu(Player player){
         PlayerInGameGUI ig_gui = new PlayerInGameGUI(this);
         ig_gui.show(player);
+    }
+
+    public Player getPlayer(){
+        return Bukkit.getPlayer(java.util.UUID.fromString(this.UUID));
+    }
+
+    public Location getLOS_Block(){
+        Player player = getPlayer();
+
+        Location loc = player.getEyeLocation();
+        Location last = null;
+        Vector dir = player.getEyeLocation().getDirection().toBlockVector();
+        for (double i = 0.1; i < DataManager.MAX_LOS_DISTANCE; i += 0.5) {
+            dir.multiply(i);
+            loc.add(dir);
+
+            if(loc.getBlock().getType().isSolid()){
+                break;
+            }
+
+            last = loc.clone();
+            loc.subtract(dir);
+            dir.normalize();
+        }
+
+        return last;
     }
 
 
