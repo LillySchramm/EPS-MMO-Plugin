@@ -71,14 +71,15 @@ public class Base_Mob {
             if(!curPos.equals(targetPos)){
 
                 float distance = curPos.distance3d(targetPos);
-                Out.printToConsole(distance);
                 float delta_distance = this.speed * DataManager.delta.d;
+
                 Vec3f dir = Vec3f.getDirectionVec(curPos, targetPos);
+                Vec3f newPos = Vec3f.add(curPos, Vec3f.multiply(dir, delta_distance));
 
                 if(distance <= delta_distance){
                     moveTo(targetPos);
                 }else {
-                    moveTo(Vec3f.add(curPos, Vec3f.multiply(dir, delta_distance)));
+                    moveTo(newPos);
                 }
 
             }
@@ -89,9 +90,9 @@ public class Base_Mob {
 
         sendPacketToAllPlayers(new PacketPlayOutEntity.PacketPlayOutRelEntityMove(
                 this.e.getId(),
-                (long) (newPos.x * 32 - e.locX * 32) * 128,
-                (long) (newPos.y * 32 - e.locY * 32) * 128,
-                (long) (newPos.z * 32 - e.locZ * 32) * 128,
+                (long) (newPos.x * 32 - curPos.x * 32) * 128,
+                (long) (newPos.y * 32 - curPos.y * 32) * 128,
+                (long) (newPos.z * 32 - curPos.z * 32) * 128,
                 true
         ));
 
