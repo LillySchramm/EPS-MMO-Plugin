@@ -18,7 +18,7 @@ import org.bukkit.entity.SkeletonHorse;
 
 import java.util.UUID;
 
-public class Base_Mob {
+public abstract class Base_Mob {
 
     private Entity e;
     private Mob_Types mobType;
@@ -26,16 +26,25 @@ public class Base_Mob {
     private Vec3f targetPos = null;
     private double angle;
     private float speed;
+    
+    private float max_live;
+    private float cur_live;
+
+    private String name;
 
     private boolean doesAdjustRotation = true;
 
-    public Base_Mob(Mob_Types type, Vec3f pos, float speed){
+    public Base_Mob(String name ,Mob_Types type, Vec3f pos, float speed, float max_live){
         this.mobType = type;
+        this.name = name;
         this.curPos = pos;
         this.speed = speed;
         //Random angle
         this.angle = Math.randomDoubleBetween(0,360);
-
+        
+        this.max_live = max_live;
+        this.cur_live = max_live;
+        
         this.e = createEntity(mobType, curPos);
     }
 
@@ -44,7 +53,7 @@ public class Base_Mob {
         Entity e = Mob_Types.get(type, world);
 
         e.setPosition(pos.x,pos.y,pos.z);
-        e.setCustomName(ChatColor.DARK_AQUA + "" + e.getId());
+        e.setCustomName(ChatColor.DARK_AQUA + name + ChatColor.RED + " " + this.cur_live + "/" + this.max_live);
         e.setCustomNameVisible(true);
         e.setPositionRotation(e.getChunkCoordinates(),0,0);
 
@@ -67,6 +76,17 @@ public class Base_Mob {
 
     public Vec3f getPos(){
         return this.curPos;
+    }
+
+    private void updateMetadata(){
+        sendPacketToAllPlayers(new PacketPlayOutEntityMetadata(e.getId(), e.getDataWatcher(), true));
+    }
+
+    private void updateName(){
+        String n = ChatColor.DARK_AQUA + name + ChatColor.RED + " " + this.cur_live + "/" + this.max_live;
+        e.setCustomName(n);
+
+        updateMetadata();
     }
 
     public void setTargetPos(Vec3f target){
@@ -105,6 +125,10 @@ public class Base_Mob {
 
     }
 
+    public void playHit(){
+        e.damageEntity(DamageSource.GENERIC, 1);
+    }
+
     private void moveTo(Vec3f newPos){
         setAngle(this.curPos.getAngleTowards(newPos));
 
@@ -120,5 +144,16 @@ public class Base_Mob {
 
         this.curPos = newPos;
     }
+
+    public void doDamage(float amount){
+        amount = calculateDamage(amount);
+
+        this.cur_live -= amount;
+
+        updateName();
+    }
+
+    public abstract float calculateDamage(float init_dmg);
+
 
 }

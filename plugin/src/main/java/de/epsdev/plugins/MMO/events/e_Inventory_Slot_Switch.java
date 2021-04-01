@@ -2,8 +2,10 @@ package de.epsdev.plugins.MMO.events;
 
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.player.User;
+import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
 import de.epsdev.plugins.MMO.particles.EF_Particle_Ring;
 import de.epsdev.plugins.MMO.particles.ParticleConfig;
+import de.epsdev.plugins.MMO.schedulers.Delta_Scheduler;
 import de.epsdev.plugins.MMO.tools.D_RGB;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -21,6 +23,10 @@ public class e_Inventory_Slot_Switch implements Listener {
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
 
         new EF_Particle_Ring(new ParticleConfig(Particle.REDSTONE, new D_RGB(200,100,100)), 1, 30).display(DataManager.onlineUsers.get(player.getUniqueId().toString()).getLOS_Block());
+
+        for(Base_Mob base_mob : Delta_Scheduler.mobs){
+            base_mob.doDamage(5.0f);
+        }
 
         if(player.getGameMode() == GameMode.SURVIVAL){
             if (user.currentCharacter != null){

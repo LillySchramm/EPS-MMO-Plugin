@@ -39,16 +39,8 @@ public class e_PlayerInteract implements Listener {
 
         Player player = e.getPlayer();
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
-
-        TestMob t = new TestMob(new Vec3f(player.getLocation()));
-        t.setTargetPos(new Vec3f(t.getPos().x + (float) Math.randomDoubleBetween(-15,15),t.getPos().y,t.getPos().z + (float) Math.randomDoubleBetween(-15,15)));
-        t.display();
-
-        Delta_Scheduler.mobs.add(t);
-
         Block block = e.getClickedBlock();
         BlockFace blockFace = e.getBlockFace();
-
 
         Vec3i blockPos = new Vec3i(0,0,0);
 

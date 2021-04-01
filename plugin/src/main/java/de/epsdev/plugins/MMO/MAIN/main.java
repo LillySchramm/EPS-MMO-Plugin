@@ -132,6 +132,9 @@ public final class main extends JavaPlugin implements Listener {
         getCommand("staticeffect").setExecutor(new c_staticeffect());
 
         getCommand("items").setExecutor(new c_items());
+
+        //------------------Debug/Test---------------------
+        getCommand("testmob").setExecutor(new c_testmob());
     }
 
     private void initGUIs(){

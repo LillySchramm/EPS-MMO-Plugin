@@ -66,3 +66,6 @@ commands:
 
   items:
     desciption: Shows an overview of all items
+
+  testmob:
+    description: Spawns an testmob

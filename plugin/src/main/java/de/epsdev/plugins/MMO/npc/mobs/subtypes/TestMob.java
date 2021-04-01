@@ -6,6 +6,11 @@ import de.epsdev.plugins.MMO.tools.Vec3f;
 
 public class TestMob extends Base_Mob {
     public TestMob(Vec3f pos) {
-        super(Mob_Types.ZOMBIE, pos, 2.5f);
+        super("Test Mob" ,Mob_Types.ZOMBIE, pos, 2.5f, 100.0f);
+    }
+
+    @Override
+    public float calculateDamage(float init_dmg) {
+        return init_dmg;
     }
 }
