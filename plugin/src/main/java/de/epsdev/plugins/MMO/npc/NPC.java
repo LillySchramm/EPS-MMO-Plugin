@@ -54,6 +54,7 @@ public class NPC {
 
             connection.sendPacket(new PacketPlayOutNamedEntitySpawn(this.entityPlayer));
             connection.sendPacket(new PacketPlayOutEntityHeadRotation(this.entityPlayer, (byte) (this.entityPlayer.yaw * 256 / 360)));
+            connection.sendPacket(new PacketPlayOutEntityMetadata(entityPlayer.getId(), entityPlayer.getDataWatcher(), true));
 
             scheduler.scheduleSyncDelayedTask(main.plugin, () -> {
                 connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER,

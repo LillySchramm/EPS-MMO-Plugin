@@ -33,15 +33,13 @@ public class NPC_Manager {
             GameProfile gameProfile = new GameProfile(UUID.randomUUID(), name);
 
             Location location = new Location(Bukkit.getServer().getWorld("world"), pos.x, pos.y, pos.z);
-
             EntityPlayer npc = new EntityPlayer(server, world, gameProfile, new PlayerInteractManager(world));
-
             npc.setPositionRotation(location.getX(),location.getY(),location.getZ(), rotation.yaw, rotation.pitch);
 
             npc.getBukkitEntity().setRemoveWhenFarAway(false);
 
             gameProfile.getProperties().put("textures", new Property("textures", skin.texture_data, skin.texture_signature));
-
+            npc.getDataWatcher().set(new DataWatcherObject<>(13, DataWatcherRegistry.a), (byte) 127);
 
             return npc;
         }
