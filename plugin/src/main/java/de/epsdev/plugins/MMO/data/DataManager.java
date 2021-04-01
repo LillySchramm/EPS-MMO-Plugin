@@ -45,7 +45,6 @@ public class DataManager {
     public static final Location spawnLocation = new Location(Bukkit.getWorld("world"), 75,72,166);
     public static final Particle_Effect DEFAULT_EFFECT = new EF_Single_Particle(new ParticleConfig(Particle.REDSTONE, new D_RGB(1,1,1)));
 
-
     public static Server_Session server_session = new Server_Session();
 
     public static Map<String,User> onlineUsers = new HashMap<String, User>();
@@ -60,6 +59,8 @@ public class DataManager {
     public static int max_id_houses = 1;
 
     public static Item_Overview_Collection_GUI item_overview_gui;
+
+    public static Delta delta = new Delta();
 
     public static Skin default_skin = new Skin(
             "ewogICJ0aW1lc3RhbXAiIDogMTU5MTU3NDcyMzc4MywKICAicHJvZmlsZUlkIiA6ICI4NjY3YmE3MWI4NWE0MDA0YWY1NDQ1N2E5NzM0ZWVkNyIsCiAgInByb2ZpbGVOYW1lIiA6ICJTdGV2ZSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS82ZDNiMDZjMzg1MDRmZmMwMjI5Yjk0OTIxNDdjNjlmY2Y1OWZkMmVkNzg4NWY3ODUwMjE1MmY3N2I0ZDUwZGUxIgogICAgfSwKICAgICJDQVBFIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS85NTNjYWM4Yjc3OWZlNDEzODNlNjc1ZWUyYjg2MDcxYTcxNjU4ZjIxODBmNTZmYmNlOGFhMzE1ZWE3MGUyZWQ2IgogICAgfQogIH0KfQ==",

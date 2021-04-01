@@ -8,6 +8,7 @@ import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.DatabaseManager;
 import de.epsdev.plugins.MMO.events.*;
 
+import de.epsdev.plugins.MMO.schedulers.Delta_Scheduler;
 import de.epsdev.plugins.MMO.schedulers.Inventory_Check_Scheduler;
 import de.epsdev.plugins.MMO.schedulers.MAIN_UPDATE_SCHEDULER;
 
@@ -69,6 +70,7 @@ public final class main extends JavaPlugin implements Listener {
         MAIN_UPDATE_SCHEDULER.run();
         Inventory_Check_Scheduler.run();
         Static_Effect_Scheduler.run();
+        Delta_Scheduler.run();
     }
 
     private void initRegions(){

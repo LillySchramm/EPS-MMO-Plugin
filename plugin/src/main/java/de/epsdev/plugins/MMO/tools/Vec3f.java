@@ -38,24 +38,72 @@ public class Vec3f {
         return distance;
     }
 
+    public float distance3d(Vec3f arg){
+        float _x = arg.x;
+        float _y = arg.y;
+        float _z = arg.z;
+        return (float) Math.sqrt((x-_x)*(x-_x)+(y-_y)*(y-_y)+(z-_z)*(z-_z));
+    }
+
+    public void normalize(){
+        float length = (float) Math.sqrt(x*x + y*y + z*z);
+        x = x/length;
+        y = y/length;
+        z = z/length;
+    }
+
+    public static Vec3f add(Vec3f v1, Vec3f v2){
+        Vec3f v = new Vec3f();
+
+        v.x = v1.x + v2.x;
+        v.y = v1.y + v2.y;
+        v.z = v1.z + v2.z;
+
+        return v;
+    }
+
+    public static Vec3f subtract(Vec3f v1, Vec3f v2){
+        Vec3f v = new Vec3f();
+
+        v.x = v1.x - v2.x;
+        v.y = v1.y - v2.y;
+        v.z = v1.z - v2.z;
+
+        return v;
+    }
+
+    public static Vec3f multiply(Vec3f v1, Vec3f v2){
+        Vec3f v = new Vec3f();
+
+        v.x = v1.x * v2.x;
+        v.y = v1.y * v2.y;
+        v.z = v1.z * v2.z;
+
+        return v;
+    }
+
+    public static Vec3f multiply(Vec3f v1, float v2){
+        Vec3f v = new Vec3f();
+
+        v.x = v1.x * v2;
+        v.y = v1.y * v2;
+        v.z = v1.z * v2;
+
+        return v;
+    }
+
+    public static Vec3f getDirectionVec(Vec3f startingPoint, Vec3f target){
+        Vec3f d = Vec3f.subtract(target, startingPoint);
+        d.normalize();
+        return d;
+    }
+
     public boolean equals(Vec3f pos){
         return this.x == pos.x && this.y == pos.y && this.z == pos.z;
     }
 
     public String toString(){
         return "X: " + x + " Y: " + y + " Z: " + z;
-    }
-
-    public void add(Vec3f v){
-        this.x += v.x * this.x;
-        this.y += v.y * this.y;
-        this.z += v.z * this.z;
-    }
-
-    public void add(Vec3f v, int n){
-            this.x += v.x * n;
-            this.y += v.y * n;
-            this.z += v.z * n;
     }
 
     public Location toLocation(){

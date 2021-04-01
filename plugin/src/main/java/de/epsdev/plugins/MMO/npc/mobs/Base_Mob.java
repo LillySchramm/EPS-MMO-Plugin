@@ -1,6 +1,8 @@
 package de.epsdev.plugins.MMO.npc.mobs;
 
 import com.mojang.authlib.GameProfile;
+import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
@@ -8,41 +10,92 @@ import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
-import org.bukkit.entity.Entity;
+
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.SkeletonHorse;
 
 import java.util.UUID;
 
 public class Base_Mob {
 
-    public EntityZombie createZombieEntity(Vec3f pos){
-        MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
-        WorldServer world = ((CraftWorld) Bukkit.getServer().getWorld("world")).getHandle();
-        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "Hollo");
+    private Entity e;
+    private Mob_Types mobType;
+    private Vec3f curPos;
+    private Vec3f targetPos = null;
+    private float speed;
 
-        EntityZombie e = new EntityZombie(world);
+    public Base_Mob(Mob_Types type, Vec3f pos, float speed){
+        this.mobType = type;
+        this.curPos = pos;
+        this.e = createEntity(mobType, curPos);
+        this.speed = speed;
+    }
+
+    private Entity createEntity(Mob_Types type, Vec3f pos){
+        WorldServer world = ((CraftWorld) Bukkit.getServer().getWorld("world")).getHandle();
+        Entity e = Mob_Types.get(type, world);
+
         e.setPosition(pos.x,pos.y,pos.z);
         e.setHeadRotation(90.0f);
-        e.setCustomName(ChatColor.DARK_AQUA + "Base_Mob");
+        e.setCustomName(ChatColor.DARK_AQUA + "" + e.getId());
         e.setCustomNameVisible(true);
-        e.setOnFire(1);
+
         return e;
     }
 
-    public void display(Player player){
-        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
+    /*
+    TODO: Highly inefficient due to the fact that it gets send on a global scale.
+     */
+    private void sendPacketToAllPlayers(Packet p){
+        for (Player player : Bukkit.getOnlinePlayers()){
+            PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
+            connection.sendPacket(p);
+        }
+    }
 
-        EntityZombie e = createZombieEntity(new Vec3f(player.getLocation()));
+    public void display(){
+        sendPacketToAllPlayers(new PacketPlayOutSpawnEntityLiving((EntityLiving) this.e));
+    }
 
-        //connection.sendPacket(new PacketPlayOutSpawnEntity( createZombieEntity(new Vec3f(player.getLocation())),1));
-        connection.sendPacket(new PacketPlayOutSpawnEntityLiving(e));
-        connection.sendPacket(new PacketPlayOutEntity.PacketPlayOutRelEntityMove(e.getId(),
-                (long) ((e.locX + 5)  * 32 - e.locX * 32) * 128,
-                (long) ((e.locY)  * 32 - e.locY * 32) * 128,
-                (long) ((e.locZ)  * 32 - e.locZ * 32) * 128,
-                true));
-        //connection.sendPacket(new PacketPlayOutEntityVelocity(e.getId(), 0.0,1.0,0.0));
+    public Vec3f getPos(){
+        return this.curPos;
+    }
 
+    public void setTargetPos(Vec3f target){
+        this.targetPos = target;
+    }
+
+    public void updatePos(){
+        if(targetPos != null){
+            if(!curPos.equals(targetPos)){
+
+                float distance = curPos.distance3d(targetPos);
+                Out.printToConsole(distance);
+                float delta_distance = this.speed * DataManager.delta.d;
+                Vec3f dir = Vec3f.getDirectionVec(curPos, targetPos);
+
+                if(distance <= delta_distance){
+                    moveTo(targetPos);
+                }else {
+                    moveTo(Vec3f.add(curPos, Vec3f.multiply(dir, delta_distance)));
+                }
+
+            }
+        }
+    }
+
+    private void moveTo(Vec3f newPos){
+
+        sendPacketToAllPlayers(new PacketPlayOutEntity.PacketPlayOutRelEntityMove(
+                this.e.getId(),
+                (long) (newPos.x * 32 - e.locX * 32) * 128,
+                (long) (newPos.y * 32 - e.locY * 32) * 128,
+                (long) (newPos.z * 32 - e.locZ * 32) * 128,
+                true
+        ));
+
+        this.curPos = newPos;
     }
 
 }
