@@ -9,6 +9,7 @@ import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
 import de.epsdev.plugins.MMO.npc.mobs.subtypes.TestMob;
 import de.epsdev.plugins.MMO.schedulers.Delta_Scheduler;
 import de.epsdev.plugins.MMO.schedulers.Static_Effect_Scheduler;
+import de.epsdev.plugins.MMO.tools.Math;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import de.epsdev.plugins.MMO.tools.Vec3i;
 import net.minecraft.server.v1_12_R1.PacketPlayOutSpawnEntity;
@@ -40,7 +41,7 @@ public class e_PlayerInteract implements Listener {
         User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
 
         TestMob t = new TestMob(new Vec3f(player.getLocation()));
-        t.setTargetPos(new Vec3f(t.getPos().x + 5,t.getPos().y,t.getPos().z));
+        t.setTargetPos(new Vec3f(t.getPos().x + (float) Math.randomDoubleBetween(-15,15),t.getPos().y,t.getPos().z + (float) Math.randomDoubleBetween(-15,15)));
         t.display();
 
         Delta_Scheduler.mobs.add(t);

@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.security.SecureRandom;
+import java.util.Random;
 
 
 public class Math {
@@ -72,6 +73,13 @@ public class Math {
         for(int i = 0; i < len; i++)
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
         return sb.toString();
+    }
+
+    public static double randomDoubleBetween(double min, double max){
+        Random r = new Random();
+        double randomValue = min + (max - min) * r.nextDouble();
+
+        return randomValue;
     }
 
 }

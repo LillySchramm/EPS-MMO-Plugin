@@ -39,10 +39,8 @@ public class Vec3f {
     }
 
     public float distance3d(Vec3f arg){
-        float _x = arg.x;
-        float _y = arg.y;
-        float _z = arg.z;
-        return (float) Math.sqrt((x-_x)*(x-_x)+(y-_y)*(y-_y)+(z-_z)*(z-_z));
+        float distance = (float) Math.sqrt((this.x-arg.x)*(this.x-arg.x) + (this.z-arg.z)*(this.z-arg.z) + (this.y-arg.y)*(this.y-arg.y));
+        return distance;
     }
 
     public void normalize(){
@@ -96,6 +94,14 @@ public class Vec3f {
         Vec3f d = Vec3f.subtract(target, startingPoint);
         d.normalize();
         return d;
+    }
+
+    public double getAngleTowards(Vec3f target){
+        double angle = Math.toDegrees(Math.atan2(target.x - x, target.z - z));
+        //NOTE: Not doing target.y - y due to the way minecrafts coords work. Y is the height.
+
+        angle = angle + Math.ceil( -angle / 360 ) * 360;
+        return -angle;
     }
 
     public boolean equals(Vec3f pos){
