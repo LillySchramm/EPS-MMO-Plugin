@@ -8,8 +8,6 @@ import org.bukkit.scoreboard.*;
 
 public class DefaultScroreboard {
     public static void refresh(User user){
-
-
         if(user.currentCharacter != null) {
             ScoreboardManager manager = Bukkit.getScoreboardManager();
             Scoreboard scoreboard = manager.getNewScoreboard();

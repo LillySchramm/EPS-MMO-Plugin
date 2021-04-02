@@ -5,6 +5,8 @@ import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
+import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
+import de.epsdev.plugins.MMO.schedulers.Delta_Scheduler;
 import de.epsdev.plugins.MMO.tools.Colors;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerInfo;
@@ -167,6 +169,11 @@ public class Character {
 
     public void handleSkill(Player player, int slot){
         if(slot <= 4){
+            for(Base_Mob base_mob : Delta_Scheduler.mobs){
+                base_mob.doDamage(1.0f + 1.0f * slot);
+                User u = DataManager.onlineUsers.get(this.OwnerUUID);
+                u.giveMana(-1.0f + -5 * slot);
+            }
             Out.printToPlayer(player, ChatColor.RED + "Offensive Skill NR." + slot + " activated." );
         }else {
             Out.printToPlayer(player, ChatColor.BLUE + "Support Skill NR." + (slot - 4) + " activated." );

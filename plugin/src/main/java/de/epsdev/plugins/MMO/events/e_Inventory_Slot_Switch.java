@@ -24,10 +24,6 @@ public class e_Inventory_Slot_Switch implements Listener {
 
         new EF_Particle_Ring(new ParticleConfig(Particle.REDSTONE, new D_RGB(200,100,100)), 1, 30).display(DataManager.onlineUsers.get(player.getUniqueId().toString()).getLOS_Block());
 
-        for(Base_Mob base_mob : Delta_Scheduler.mobs){
-            base_mob.doDamage(5.0f);
-        }
-
         if(player.getGameMode() == GameMode.SURVIVAL){
             if (user.currentCharacter != null){
                 int slot = e.getNewSlot();

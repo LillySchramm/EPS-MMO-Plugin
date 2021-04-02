@@ -82,4 +82,9 @@ public class Math {
         return randomValue;
     }
 
+    public static int min(int min, int f) {
+        return f < min ? min : f;
+    }
+
+
 }

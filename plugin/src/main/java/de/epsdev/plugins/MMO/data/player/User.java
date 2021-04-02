@@ -20,6 +20,7 @@ import de.epsdev.plugins.MMO.particles.ParticleConfig;
 import de.epsdev.plugins.MMO.ranks.Rank;
 import de.epsdev.plugins.MMO.ranks.Ranks;
 import de.epsdev.plugins.MMO.scoreboards.DefaultScroreboard;
+import de.epsdev.plugins.MMO.scoreboards.Healthbar;
 import de.epsdev.plugins.MMO.tools.D_RGB;
 import de.epsdev.plugins.MMO.tools.Vec2i;
 import de.epsdev.plugins.MMO.tools.Vec3f;
@@ -50,6 +51,12 @@ public class User {
     public Rank rank;
     public Money money;
 
+    public float max_health = 100.0f;
+    public float cur_health = 70.0f;
+
+    public float max_mana = 100.0f;
+    public float cur_mana = 10.0f;
+
     public List<Character> characters = new ArrayList<>();
     public Character currentCharacter = null;
 
@@ -69,6 +76,8 @@ public class User {
     public Chunk lastChunk = null;
 
     public ArrayList<Integer> loadedNPC = new ArrayList<>();
+
+    private int status_bar_scheduler = 0;
 
     public User(String uuid) throws SQLException {
         ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`players` WHERE UUID = '" + uuid + "'");
@@ -113,6 +122,8 @@ public class User {
     }
 
     public static void saveUser(User user){
+        Bukkit.getScheduler().cancelTask(user.status_bar_scheduler);
+
         user.save();
     }
 
@@ -145,13 +156,33 @@ public class User {
         return ret;
     }
 
+    public void giveMana(float amount){
+        this.cur_mana = this.cur_mana + amount < this.max_mana ? this.cur_mana + amount : this.max_mana;
+        this.cur_mana = this.cur_mana >= 0 ? this.cur_mana : 0.0f;
+    }
+
+    public void giveHealth(float amount){
+        this.cur_health = this.cur_health + amount < this.max_health ? this.cur_health + amount : this.max_health;
+        this.cur_health = this.cur_health >= 0 ? this.cur_health : 0.0f;
+    }
+
     public void refreshScoreboard(){
         DefaultScroreboard.refresh(this);
+
+        if(this.status_bar_scheduler == 0){
+            this.status_bar_scheduler = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, () -> {
+                this.giveMana(2.0f);
+                Healthbar.refresh(this);
+            }, 0L, 8L);
+        }
+
+        Healthbar.refresh(this);
     }
 
     public void save() {
         mysql.query("UPDATE `eps_users`.`players` SET `RANK` = '" + this.rank.name + "', `MONEY` = '"+ this.money.amount +"' WHERE `players`.`UUID` = '" + this.UUID + "' ");
     }
+
     public void print(){
         Out.printToConsole("Display Name: " + displayName);
         Out.printToConsole("UUID: " + UUID);
@@ -211,6 +242,4 @@ public class User {
 
         return last;
     }
-
-
 }
