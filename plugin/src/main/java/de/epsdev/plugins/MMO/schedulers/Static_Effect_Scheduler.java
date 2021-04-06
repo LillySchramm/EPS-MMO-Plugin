@@ -10,6 +10,7 @@ import de.epsdev.plugins.MMO.particles.EF_Particle_Ring;
 import de.epsdev.plugins.MMO.particles.EF_Single_Particle;
 import de.epsdev.plugins.MMO.particles.ParticleConfig;
 import de.epsdev.plugins.MMO.tools.D_RGB;
+import de.epsdev.plugins.MMO.tools.Vec3f;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -49,6 +50,7 @@ public class Static_Effect_Scheduler {
             effects.forEach((integer, eNpc) -> {
                 eNpc.display();
             });
+
 
         }, 0L, 8L);
     }

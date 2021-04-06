@@ -23,6 +23,12 @@ public class Vec3f {
         this.z = (float) v.getZ();
     }
 
+    public Vec3f(Vec3f v){
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+    }
+
     public Vec3f(){
 
     }
@@ -41,6 +47,28 @@ public class Vec3f {
     public float distance3d(Vec3f arg){
         float distance = (float) Math.sqrt((this.x-arg.x)*(this.x-arg.x) + (this.z-arg.z)*(this.z-arg.z) + (this.y-arg.y)*(this.y-arg.y));
         return distance;
+    }
+
+    public void rotateAroundPointX(Vec3f origin, float amount) {
+        double z1 = z - origin.z;
+        double y1 = y - origin.y;
+
+        double z2 = z1 * Math.cos(Math.toRadians(amount)) - y1 * Math.sin(Math.toRadians(amount));
+        double y2 = z1 * Math.sin(Math.toRadians(amount)) + y1 * Math.cos(Math.toRadians(amount));
+
+        y = (float) y2 + origin.y;
+        z = (float) z2 + origin.z;
+    }
+
+    public void rotateAroundPointY(Vec3f origin, float amount) {
+        double x1 = x - origin.x;
+        double z1 = z - origin.z;
+
+        double x2 = x1 * Math.cos(Math.toRadians(amount)) - z1 * Math.sin(Math.toRadians(amount));
+        double z2 = x1 * Math.sin(Math.toRadians(amount)) + z1 * Math.cos(Math.toRadians(amount));
+
+        x = (float) x2 + origin.x;
+        z = (float) z2 + origin.z;
     }
 
     public void normalize(){
@@ -89,6 +117,7 @@ public class Vec3f {
 
         return v;
     }
+
 
     public static Vec3f getDirectionVec(Vec3f startingPoint, Vec3f target){
         Vec3f d = Vec3f.subtract(target, startingPoint);
