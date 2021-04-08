@@ -1,15 +1,23 @@
 package de.epsdev.plugins.MMO.particles;
 
 import de.epsdev.plugins.MMO.tools.D_RGB;
+import de.epsdev.plugins.MMO.tools.Vec2f;
+import de.epsdev.plugins.MMO.tools.Vec3f;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 public abstract class Particle_Effect {
 
     public ParticleConfig config;
     public String name;
+    public Map<String, TreeMap<Integer, List<List<ParticleConfig>>>> cache = new HashMap<>(); // I don't think that that is good practice.
 
     public Particle_Effect(ParticleConfig config){
         this.config = config;

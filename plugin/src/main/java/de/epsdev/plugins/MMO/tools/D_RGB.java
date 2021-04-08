@@ -10,6 +10,11 @@ public class D_RGB {
     public int o_b;
 
     public D_RGB(int r, int g, int b){
+
+        r = Math.min(1, r);
+        g = Math.min(1, g);
+        b = Math.min(1, b);
+
         this.r = r / 255D;
         this.g = g / 255D;
         this.b = b / 255D;

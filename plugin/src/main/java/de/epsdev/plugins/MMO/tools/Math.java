@@ -6,6 +6,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -80,6 +84,19 @@ public class Math {
         double randomValue = min + (max - min) * r.nextDouble();
 
         return randomValue;
+    }
+
+    public static BufferedImage base64_toImage(String base64){
+        BufferedImage img = null;
+
+        try {
+            byte[] imageBytes = DatatypeConverter.parseBase64Binary(base64);
+            img = ImageIO.read(new ByteArrayInputStream(imageBytes));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return img;
     }
 
     public static int min(int min, int f) {

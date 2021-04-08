@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.particles;
 
 import de.epsdev.plugins.MMO.tools.D_RGB;
+import de.epsdev.plugins.MMO.tools.Vec3f;
 import de.epsdev.plugins.MMO.tools.Vec3i;
 import org.bukkit.Particle;
 
@@ -8,6 +9,8 @@ public class ParticleConfig {
     public Particle particle;
     public D_RGB color;
     public int density = 0;
+
+    public Vec3f offset = new Vec3f();
 
     public ParticleConfig(Particle particle){
         this.particle = particle;

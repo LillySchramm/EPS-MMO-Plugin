@@ -8,6 +8,8 @@ import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.DatabaseManager;
 import de.epsdev.plugins.MMO.events.*;
 
+import de.epsdev.plugins.MMO.particles.EF_Image;
+import de.epsdev.plugins.MMO.particles.ParticleConfig;
 import de.epsdev.plugins.MMO.schedulers.Delta_Scheduler;
 import de.epsdev.plugins.MMO.schedulers.Inventory_Check_Scheduler;
 import de.epsdev.plugins.MMO.schedulers.MAIN_UPDATE_SCHEDULER;

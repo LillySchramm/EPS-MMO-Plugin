@@ -129,9 +129,6 @@ public class House {
         shield.lines[3] = costs.formatString();
 
         shield.run();
-
-
-
     }
 
     public void delete(){
