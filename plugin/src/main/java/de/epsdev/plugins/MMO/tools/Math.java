@@ -103,5 +103,16 @@ public class Math {
         return f < min ? min : f;
     }
 
+    public static int max(int max, int f){
+        return f > max ? max : f;
+    }
+
+    public static int minmax(int min, int max, int f){
+        f = min(min, f);
+        f = max(max, f);
+
+        return f;
+    }
+
 
 }

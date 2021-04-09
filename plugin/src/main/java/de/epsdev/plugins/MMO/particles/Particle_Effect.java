@@ -24,7 +24,10 @@ public abstract class Particle_Effect {
     }
 
     public void renderParticle(Location location){
-        location.getWorld().spawnParticle(config.particle,location, config.density,config.getArg(0),config.getArg(1),config.getArg(2));
+        Vec3f pos = new Vec3f(location);
+        pos = Vec3f.add(config.offset, pos);
+
+        location.getWorld().spawnParticle(config.particle,pos.toLocation(), config.density,config.getArg(0),config.getArg(1),config.getArg(2));
     }
 
     public abstract void display(Location location);

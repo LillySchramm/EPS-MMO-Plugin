@@ -2,6 +2,7 @@ package de.epsdev.plugins.MMO.schedulers;
 
 import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
 import de.epsdev.plugins.MMO.particles.EF_Single_Particle;
 import de.epsdev.plugins.MMO.particles.ParticleConfig;
@@ -26,6 +27,10 @@ public class Delta_Scheduler {
 
             for (Base_Mob m : mobs){
                 m.updatePos();
+            }
+
+            for(User user : DataManager.onlineUsers.values()){
+                if(user.currentCharacter != null) user.currentCharacter.updateAnimation();
             }
 
             tmp_pos.rotateAroundPointX(new Vec3f(-648, 80, 724), 5);

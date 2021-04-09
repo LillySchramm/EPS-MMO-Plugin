@@ -52,7 +52,6 @@ public class EF_Image extends Particle_Effect{
     }
 
     private void genCache(){
-        //Gen Position
         Vec3f rot_point = new Vec3f();
         Out.printToConsole(rot_point.toString());
         this.cache.put("rot_self", new TreeMap<>());
@@ -96,7 +95,7 @@ public class EF_Image extends Particle_Effect{
             offset = 360 + offset;
         }
 
-        this.rot_offset = offset;
+        this.rot_offset = Math.minmax(0,360,offset);
     }
 
     @Override
