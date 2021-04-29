@@ -6,7 +6,7 @@
 
     <groupId>de.epsdev.plugins</groupId>
     <artifactId>EPS-MMO</artifactId>
-    <version>0.1</version>
+    <version>0.3</version>
     <packaging>jar</packaging>
 
     <name>EPS MMO</name>
@@ -48,6 +48,25 @@
                     <doUpdate>false</doUpdate>
                     <revisionOnScmFailure>unknownbuild</revisionOnScmFailure>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <executions>
+                    <execution><!-- Run our version calculation script -->
+                        <id>Renaming build artifacts</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>bash</executable>
+                            <commandlineArgs>handlePackage.sh</commandlineArgs>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
