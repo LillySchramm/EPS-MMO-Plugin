@@ -96,7 +96,6 @@ public abstract class Base_Mob {
     public void updatePos(){
         if(targetPos != null){
             if(!curPos.equals(targetPos)){
-
                 float distance = curPos.distance3d(targetPos);
                 float delta_distance = this.speed * DataManager.delta.d;
 
@@ -108,7 +107,6 @@ public abstract class Base_Mob {
                 }else {
                     moveTo(newPos);
                 }
-
             }
         }
     }

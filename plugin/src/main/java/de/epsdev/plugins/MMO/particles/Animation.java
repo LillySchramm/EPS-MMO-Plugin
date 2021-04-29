@@ -66,7 +66,6 @@ public abstract class Animation {
 
             }
         };
-
         return c;
     }
 }

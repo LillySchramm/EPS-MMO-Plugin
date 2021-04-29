@@ -6,10 +6,7 @@ import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.data.regions.cites.houses.House;
 import de.epsdev.plugins.MMO.npc.eNpc.eNpc;
-import de.epsdev.plugins.MMO.particles.EF_Image;
-import de.epsdev.plugins.MMO.particles.EF_Particle_Ring;
-import de.epsdev.plugins.MMO.particles.EF_Single_Particle;
-import de.epsdev.plugins.MMO.particles.ParticleConfig;
+import de.epsdev.plugins.MMO.particles.*;
 import de.epsdev.plugins.MMO.particles.animations.ANIM_TestRotImg;
 import de.epsdev.plugins.MMO.tools.D_RGB;
 import de.epsdev.plugins.MMO.tools.Vec3f;
@@ -55,10 +52,6 @@ public class Static_Effect_Scheduler {
             effects.forEach((integer, eNpc) -> {
                 eNpc.display();
             });
-
-            for(User user : DataManager.onlineUsers.values()){
-                if(user.currentCharacter != null) user.currentCharacter.playAnimationFrame();
-            }
         }, 0L, 8L);
     }
 
