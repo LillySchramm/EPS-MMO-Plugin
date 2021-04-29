@@ -1,10 +1,14 @@
 package de.epsdev.plugins.MMO.tools;
 
+import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.output.Out;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 import java.lang.Math;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Vec3f {
     public float x = 0;
@@ -71,6 +75,25 @@ public class Vec3f {
         z = (float) z2 + origin.z;
     }
 
+    public static List<Vec3f> generatePointsBetween(Vec3f from, Vec3f to, float amountPerBlock){
+        List<Vec3f> points = new ArrayList<>();
+
+        Vec3f dir = Vec3f.getDirectionVec(from, to);
+        Vec3f loc = new Vec3f(from);
+        for (float i = 0.1f; i < from.distance3d(to) && i < DataManager.MAX_LOS_DISTANCE; i += 1f/amountPerBlock) {
+            dir = Vec3f.multiply(dir, i);
+            loc = Vec3f.add(dir, loc);
+
+            points.add(loc);
+
+            loc = Vec3f.subtract(loc, dir);
+            dir.normalize();
+        }
+
+        return points;
+    }
+
+
     public void normalize(){
         float length = (float) Math.sqrt(x*x + y*y + z*z);
         x = x/length;
@@ -117,6 +140,7 @@ public class Vec3f {
 
         return v;
     }
+
 
 
     public static Vec3f getDirectionVec(Vec3f startingPoint, Vec3f target){
