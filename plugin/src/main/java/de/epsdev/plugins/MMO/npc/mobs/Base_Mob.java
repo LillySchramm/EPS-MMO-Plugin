@@ -1,8 +1,10 @@
 package de.epsdev.plugins.MMO.npc.mobs;
 
 import com.mojang.authlib.GameProfile;
+import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.npc.Path;
 import de.epsdev.plugins.MMO.tools.Math;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import net.minecraft.server.v1_12_R1.*;
@@ -23,13 +25,13 @@ public abstract class Base_Mob {
     private Entity e;
     private Mob_Types mobType;
     private Vec3f curPos;
-    private Vec3f targetPos = null;
     private double angle;
     private float speed;
     
     private float max_live;
     private float cur_live;
 
+    private Path path;
     private String name;
 
     private boolean doesAdjustRotation = true;
@@ -56,6 +58,8 @@ public abstract class Base_Mob {
         e.setCustomName(ChatColor.DARK_AQUA + name + ChatColor.RED + " " + this.cur_live + "/" + this.max_live);
         e.setCustomNameVisible(true);
         e.setPositionRotation(e.getChunkCoordinates(),0,0);
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::updateTarget, 0L, 20L);
 
         return e;
     }
@@ -89,24 +93,37 @@ public abstract class Base_Mob {
         updateMetadata();
     }
 
-    public void setTargetPos(Vec3f target){
-        this.targetPos = target;
+    private void updateTarget(){
+        Vec3f nextTarget = getNextTarget();
+        if(nextTarget != null){
+            this.path = new Path(curPos, getNextTarget(), this.e);
+        }else {
+            this.path = null;
+        }
     }
 
     public void updatePos(){
-        if(targetPos != null){
-            if(!curPos.equals(targetPos)){
-                float distance = curPos.distance3d(targetPos);
-                float delta_distance = this.speed * DataManager.delta.d;
+        if(path != null){
+            if(path.getCurrentWayPoint() != null){
+                if(!curPos.equals(path.getCurrentWayPoint())){
+                    float distance = curPos.distance3d(path.getCurrentWayPoint());
+                    float delta_distance = this.speed * DataManager.delta.d;
 
-                Vec3f dir = Vec3f.getDirectionVec(curPos, targetPos);
-                Vec3f newPos = Vec3f.add(curPos, Vec3f.multiply(dir, delta_distance));
+                    Vec3f dir = Vec3f.getDirectionVec(curPos, path.getCurrentWayPoint());
+                    Vec3f newPos = Vec3f.add(curPos, Vec3f.multiply(dir, delta_distance));
 
-                if(distance <= delta_distance){
-                    moveTo(targetPos);
-                }else {
-                    moveTo(newPos);
+                    if(distance <= delta_distance){
+                        moveTo(path.getCurrentWayPoint());
+                    }else {
+                        moveTo(newPos);
+                    }
+                }else{
+                    if(!path.next()){
+                        this.path = null;
+                    }
                 }
+            }else {
+                this.path = null;
             }
         }
     }
@@ -140,7 +157,12 @@ public abstract class Base_Mob {
                 true
         ));
 
+        e.setPosition(newPos.x, newPos.y, newPos.z);
         this.curPos = newPos;
+    }
+
+    public Entity getEntity(){
+        return this.e;
     }
 
     public void doDamage(float amount){
@@ -152,6 +174,8 @@ public abstract class Base_Mob {
     }
 
     public abstract float calculateDamage(float init_dmg);
+
+    public abstract Vec3f getNextTarget();
 
 
 }

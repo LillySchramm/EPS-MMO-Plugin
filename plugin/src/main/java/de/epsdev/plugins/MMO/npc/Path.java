@@ -1,12 +1,15 @@
 package de.epsdev.plugins.MMO.npc;
 
+import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.particles.EF_Line;
 import de.epsdev.plugins.MMO.particles.ParticleConfig;
 import de.epsdev.plugins.MMO.tools.D_RGB;
 import de.epsdev.plugins.MMO.tools.Vec3f;
-import de.epsdev.plugins.MMO.tools.Vec3i;
+import net.minecraft.server.v1_12_R1.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Particle;
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,35 +17,49 @@ import java.util.List;
 public class Path {
     private Vec3f start;
     private Vec3f goal;
+    private Entity entity;
 
     private List<Vec3f> waypoints;
 
-    private final int maxJumpHeight = 1;
-
-    public Path(Vec3f start, Vec3f goal){
+    public Path(Vec3f start, Vec3f goal, Entity entity){
         this.start = start;
         this.goal = goal;
+        this.entity = entity;
 
         recalculate();
     }
 
     public void recalculate(){
         this.waypoints = new ArrayList<>();
-        List<Vec3f> line = Vec3f.generatePointsBetween(start, goal, 2);
 
-        this.waypoints.add(start);
+        PathfinderNormal normal = new PathfinderNormal();
+        normal.a(true);
+        Pathfinder pathfinder = new Pathfinder(normal);
 
-        Vec3f last_point = start;
-        for (Vec3f point : line){
-            if(point.toLocation().getBlock().getType().isSolid()){
-                this.waypoints.add(last_point);
+        int k = (int) (DataManager.MAX_DETECTION_RANGE + 8.0);
+        ChunkCache chunkCache = new ChunkCache(((CraftWorld) Bukkit.getWorld("world")).getHandle() , this.start.toBlockposition().a(-k, -k, -k),  this.goal.toBlockposition().a(k, k, k), 0);
+
+        PathEntity path = pathfinder.a(chunkCache, (EntityInsentient) entity, goal.toBlockposition(), (float) DataManager.MAX_DETECTION_RANGE);
+
+        if(path != null){
+            for (int i = 0; i < path.d(); i++) {
+                PathPoint p = path.a(i);
+                this.waypoints.add(new Vec3f(p));
             }
-
-            last_point = point;
         }
+    }
 
-        this.waypoints.add(goal);
+    public Vec3f getCurrentWayPoint(){
+        if(this.waypoints.isEmpty()) return null;
+        return this.waypoints.get(0);
+    }
 
+    public boolean next(){
+        if(this.waypoints.isEmpty()){
+            return false;
+        }
+        this.waypoints.remove(0);
+        return true;
     }
 
     public void draw(){

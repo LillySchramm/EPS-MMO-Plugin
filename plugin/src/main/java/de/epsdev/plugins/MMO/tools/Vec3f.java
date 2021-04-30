@@ -2,6 +2,8 @@ package de.epsdev.plugins.MMO.tools;
 
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
+import net.minecraft.server.v1_12_R1.BlockPosition;
+import net.minecraft.server.v1_12_R1.PathPoint;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
@@ -32,6 +34,13 @@ public class Vec3f {
         this.y = v.y;
         this.z = v.z;
     }
+
+    public Vec3f(PathPoint v){
+        this.x = (float) v.a;
+        this.y = (float) v.b;
+        this.z = (float) v.c;
+    }
+
 
     public Vec3f(){
 
@@ -167,5 +176,9 @@ public class Vec3f {
 
     public Location toLocation(){
         return new Location(Bukkit.getWorld("world"), this.x, this.y, this.z);
+    }
+
+    public BlockPosition toBlockposition(){
+        return new BlockPosition(this.x,this.y, this.z);
     }
 }

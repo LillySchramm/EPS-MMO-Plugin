@@ -42,6 +42,7 @@ public class DataManager {
     public static final ItemStack GUI_FILLER = new ItemStack(Material.STAINED_GLASS_PANE, 1, Colors.LIGHT_GREY);
     public static final int SECS_PER_RENT = 60 * 60;
     public static final double MAX_LOS_DISTANCE = 50;
+    public static final double MAX_DETECTION_RANGE = 50;
     public static final Location spawnLocation = new Location(Bukkit.getWorld("world"), 75,72,166);
     public static final Particle_Effect DEFAULT_EFFECT = new EF_Single_Particle(new ParticleConfig(Particle.REDSTONE, new D_RGB(1,1,1)));
 
