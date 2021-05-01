@@ -32,7 +32,7 @@ public abstract class Base_Mob {
     private float cur_live;
 
     private Path path;
-    private String name;
+    private final String name;
 
     private boolean doesAdjustRotation = true;
 
@@ -58,8 +58,11 @@ public abstract class Base_Mob {
         e.setCustomName(ChatColor.DARK_AQUA + name + ChatColor.RED + " " + this.cur_live + "/" + this.max_live);
         e.setCustomNameVisible(true);
         e.setPositionRotation(e.getChunkCoordinates(),0,0);
+        e.setNoGravity(true);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::updateTarget, 0L, 20L);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::updatePos, 0L, 1L);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::syncPosition, 0L, 40L);
 
         return e;
     }
@@ -96,7 +99,10 @@ public abstract class Base_Mob {
     private void updateTarget(){
         Vec3f nextTarget = getNextTarget();
         if(nextTarget != null){
-            this.path = new Path(curPos, getNextTarget(), this.e);
+            this.e.setPosition(curPos.x,curPos.y,curPos.z);
+
+            this.path = new Path(curPos, getNextTarget(), this.e.world, true);
+            this.path.draw();
         }else {
             this.path = null;
         }
@@ -120,6 +126,7 @@ public abstract class Base_Mob {
                 }else{
                     if(!path.next()){
                         this.path = null;
+                        moveTo(curPos);
                     }
                 }
             }else {
@@ -144,8 +151,13 @@ public abstract class Base_Mob {
         e.damageEntity(DamageSource.GENERIC, 1);
     }
 
+    private void syncPosition(){
+        sendPacketToAllPlayers(new PacketPlayOutEntityTeleport(this.e));
+    }
+
     private void moveTo(Vec3f newPos){
         setAngle(this.curPos.getAngleTowards(newPos));
+        e.setPosition(newPos.x, newPos.y, newPos.z);
 
         sendPacketToAllPlayers(new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(
                 this.e.getId(),
@@ -154,10 +166,9 @@ public abstract class Base_Mob {
                 (long) (newPos.z * 32 - curPos.z * 32) * 128,
                 (byte) ((int) (angle * 256.0F / 360.0F)),
                 (byte) 0, //TODO: What is this arg? Why do I need it? What is its reason to live?
-                true
+                e.onGround
         ));
 
-        e.setPosition(newPos.x, newPos.y, newPos.z);
         this.curPos = newPos;
     }
 

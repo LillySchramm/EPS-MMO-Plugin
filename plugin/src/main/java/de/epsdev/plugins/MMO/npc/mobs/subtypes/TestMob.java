@@ -15,7 +15,7 @@ public class TestMob extends Base_Mob {
     private Path path;
 
     public TestMob(Vec3f pos) {
-        super("Test Mob" ,Mob_Types.ZOMBIE, pos, 2.5f, 100.0f);
+        super("Test Mob" ,Mob_Types.ZOMBIE, pos, 10f, 100.0f);
     }
 
     @Override

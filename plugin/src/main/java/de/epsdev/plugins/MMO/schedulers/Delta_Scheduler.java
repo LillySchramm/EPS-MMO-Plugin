@@ -25,10 +25,6 @@ public class Delta_Scheduler {
         scheduler.scheduleSyncRepeatingTask(main.plugin, () -> {
             DataManager.delta.update();
 
-            for (Base_Mob m : mobs){
-                m.updatePos();
-            }
-
             for(User user : DataManager.onlineUsers.values()){
                 if(user.currentCharacter != null) user.currentCharacter.updateAnimation();
             }
