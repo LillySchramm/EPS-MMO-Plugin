@@ -1,4 +1,4 @@
-[![](https://tokei.rs/b1/github/EliasSchramm/EPS-MMO-Plugin)](https://github.com/EliasSchramm/EPS-MMO-Plugin)
+[![](https://tokei.rs/b1/github/EliasSchramm/EPS-MMO-Plugin?category=code)](https://github.com/EliasSchramm/EPS-MMO-Plugin)
 # Unstable
 In this branch I am storing the code im currently working on. NOT save to use.
 
