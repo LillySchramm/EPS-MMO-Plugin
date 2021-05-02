@@ -96,6 +96,10 @@ public class User {
 
     }
 
+    public void disableSchedulers(){
+        Bukkit.getScheduler().cancelTask(status_bar_scheduler);
+    }
+
     public User(Player player, boolean online) throws SQLException {
         displayName = player.getDisplayName();
         UUID = player.getUniqueId().toString();

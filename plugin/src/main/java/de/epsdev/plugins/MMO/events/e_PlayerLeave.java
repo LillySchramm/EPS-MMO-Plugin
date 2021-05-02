@@ -30,6 +30,7 @@ public class e_PlayerLeave implements Listener {
             user.currentCharacter.save();
         }
         user.session.unload();
+        user.disableSchedulers();
         DataManager.onlineUsers.remove(player.getUniqueId().toString());
     }
 }
