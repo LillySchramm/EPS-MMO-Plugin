@@ -3,9 +3,14 @@ package de.epsdev.plugins.MMO.commands;
 import de.epsdev.plugins.MMO.GUI.dev.Regions_GUI;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Err;
+import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
+import de.epsdev.plugins.MMO.npc.mobs.Mob_Types;
+import de.epsdev.plugins.MMO.npc.mobs.subtypes.DisplayMob;
 import de.epsdev.plugins.MMO.npc.mobs.subtypes.TestMob;
 import de.epsdev.plugins.MMO.schedulers.Delta_Scheduler;
+import de.epsdev.plugins.MMO.tools.Vec2f;
+import de.epsdev.plugins.MMO.tools.Vec2i;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,17 +21,31 @@ public class c_testmob implements CommandExecutor {
 
     // TODO: REMOVE ONCE TESTING IS OVER
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if(sender instanceof Player){
+
             Player player = (Player) sender;
+            if(args.length == 0){
 
-            TestMob t = new TestMob(new Vec3f(player.getLocation()));
-            //t.setTargetPos(new Vec3f(t.getPos().x + (float) Math.randomDoubleBetween(-15,15),t.getPos().y,t.getPos().z + (float) Math.randomDoubleBetween(-15,15)));
-            t.display();
-            //t.playHit();
+                Vec3f playerPosition = new Vec3f(player.getLocation());
+                TestMob t = new TestMob(playerPosition, Mob_Types.ZOMBIE);
+                t.display();
+            }else {
+                //Displays Every Mob Type
+                Vec2i cursor = new Vec2i();
+                Vec3f playerPosition = new Vec3f(player.getLocation());
+                for(Mob_Types mob_type : Mob_Types.values()){
+                    DisplayMob t = new DisplayMob(new Vec3f(
+                            playerPosition.x + 7 * cursor.x,
+                            playerPosition.y,
+                            playerPosition.z + 7 * cursor.y
+                    ), mob_type);
+                    t.display();
 
-            // TODO: This needs to be in the base_mob constructor. Not doing it now for testing reasons.
-            Delta_Scheduler.mobs.add(t);
+                    cursor.increase2D(7);
+                }
+            }
+
         }
 
         return true;
