@@ -2,7 +2,6 @@ package de.epsdev.plugins.MMO.npc.mobs.subtypes;
 
 import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
 import de.epsdev.plugins.MMO.npc.mobs.Mob_Types;
-import de.epsdev.plugins.MMO.tools.Math;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 
 public class DisplayMob extends Base_Mob {

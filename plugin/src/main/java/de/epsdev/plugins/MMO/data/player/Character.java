@@ -175,13 +175,10 @@ public class Character {
         if(slot <= 4){
 
             setAnimation(Static_Effect_Scheduler.a);
-
-            for(Base_Mob base_mob : Delta_Scheduler.mobs){
-                base_mob.doDamage(1.0f + 1.0f * slot);
-                User u = DataManager.onlineUsers.get(this.OwnerUUID);
-                u.giveMana(-1.0f + -5 * slot);
-            }
+            User u = DataManager.onlineUsers.get(this.OwnerUUID);
+            u.giveMana(-1.0f + -5 * slot);
             Out.printToPlayer(player, ChatColor.RED + "Offensive Skill NR." + slot + " activated." );
+
         }else {
             Out.printToPlayer(player, ChatColor.BLUE + "Support Skill NR." + (slot - 4) + " activated." );
         }

@@ -37,6 +37,17 @@ public class Healthbar {
             msg += genBar(user.max_mana, user.cur_mana, COLOR_MANA_EMPTY, COLOR_MANA_FULL) + ChatColor.RESET;
 
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(msg));
+
+            //Set Heart bar
+
+            int amount_hearts = (int) (20 * (user.cur_health / user.max_health));
+            amount_hearts = Math.min(1, amount_hearts);
+
+            int amount_bubbles = (int) (20 * (user.cur_mana / user.max_mana));
+            amount_bubbles = Math.min(0, amount_bubbles);
+
+            player.setFoodLevel(amount_bubbles);
+            player.setHealth(amount_hearts);
         }
     }
 

@@ -106,6 +106,8 @@ public final class main extends JavaPlugin implements Listener {
         pm.registerEvents(new e_PlayerKick(), this);
         pm.registerEvents(new e_Inventory_Slot_Switch(), this);
         pm.registerEvents(new e_PlayerItemDrop(), this);
+        pm.registerEvents(new e_PlayerHealthRegen(), this);
+        pm.registerEvents(new e_PlayerHealthDecrease(), this);
     }
 
     private void registerCommands(){

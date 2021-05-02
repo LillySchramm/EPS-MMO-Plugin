@@ -165,9 +165,16 @@ public class User {
         this.cur_mana = this.cur_mana >= 0 ? this.cur_mana : 0.0f;
     }
 
+    public void kill(){
+        Player player = getPlayer();
+        player.setHealth(0);
+    }
+
     public void giveHealth(float amount){
         this.cur_health = this.cur_health + amount < this.max_health ? this.cur_health + amount : this.max_health;
         this.cur_health = this.cur_health >= 0 ? this.cur_health : 0.0f;
+
+        if(this.cur_health == 0)  kill();
     }
 
     public void refreshScoreboard(){
@@ -175,9 +182,10 @@ public class User {
 
         if(this.status_bar_scheduler == 0){
             this.status_bar_scheduler = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, () -> {
-                this.giveMana(2.0f);
+                this.giveMana(1.0f);
+                this.giveHealth(2.5f);
                 Healthbar.refresh(this);
-            }, 0L, 8L);
+            }, 0L, 4L);
         }
 
         Healthbar.refresh(this);
