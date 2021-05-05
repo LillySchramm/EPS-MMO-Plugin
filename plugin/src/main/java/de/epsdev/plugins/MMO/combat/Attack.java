@@ -1,6 +1,8 @@
 package de.epsdev.plugins.MMO.combat;
 
 import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.data.DataManager;
+import de.epsdev.plugins.MMO.data.mysql.DatabaseManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
@@ -23,7 +25,7 @@ public abstract class Attack {
     public final float LiveCastCost;
     public final String description;
 
-    public boolean onCooldown= false;
+    public boolean onCooldown = false;
     public long currentCooldown = 0L;
 
     private int cooldownScheduler = 0;
@@ -41,18 +43,23 @@ public abstract class Attack {
         this.baseHeal = baseHeal;
     }
 
-    public void executeAttack(User user){
+    public void executeAttack(User u){
+        User user = DataManager.onlineUsers.get(u.UUID);
+
         if(!onCooldown){
+
             if(user.cur_mana >= ManaCastCost){
                 if(user.cur_health >= LiveCastCost){
                     List<Base_Mob> targets = getTargets();
-
-                    if(targets == null) return;
-
-                    for (Base_Mob base_mob : targets) {
-                        float damage = calculateDamage(user,base_mob);
-                        base_mob.doDamage(damage);
+                    if(targets != null) {
+                        for (Base_Mob base_mob : targets) {
+                            float damage = calculateDamage(user, base_mob);
+                            base_mob.doDamage(damage);
+                        }
                     }
+
+                    user.giveHealth(-this.LiveCastCost);
+                    user.giveMana(-this.ManaCastCost);
 
                     cooldown();
                 }else {
@@ -97,7 +104,7 @@ public abstract class Attack {
         ItemStack stack = new ItemStack(Material.STAINED_GLASS_PANE, 1, Colors.GREEN);
 
         ItemMeta meta = stack.getItemMeta();
-        meta.setDisplayName(this.name);
+        meta.setDisplayName("[SKILL] "  + this.name);
         List<String> lore = new ArrayList<>();
         lore.add(description);
         meta.setLore(lore);

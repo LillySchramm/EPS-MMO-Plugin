@@ -5,13 +5,13 @@ import org.bukkit.ChatColor;
 
 public class Test_Attack extends Base_Self_Attack {
 
-    public Test_Attack(String name, long reloadTime, float baseDmg, float baseHeal, float manaCastCost, float liveCastCost, String description) {
+    public Test_Attack() {
         super(ChatColor.DARK_GREEN + "Test_Self_Attack",
-                40L,
+                400L,
                 1,
                 1,
-                20,
-                2,
+                30,
+                10,
                 "An extremely powerful attack. Just as good as lorem ipsum");
     }
 }

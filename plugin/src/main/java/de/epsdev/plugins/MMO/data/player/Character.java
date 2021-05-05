@@ -1,6 +1,8 @@
 package de.epsdev.plugins.MMO.data.player;
 
 import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.combat.Attack;
+import de.epsdev.plugins.MMO.combat.basetypes.attacks.Test_Attack;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
@@ -26,6 +28,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -39,6 +42,7 @@ public class Character {
     public String OwnerUUID;
 
     private Animation animation;
+    private List<Attack> attacks;
 
     public Vec3f pos;
 
@@ -49,6 +53,12 @@ public class Character {
         this.id = id;
         this.OwnerUUID = OwnerUUID;
         this.pos = pos;
+
+        this.attacks = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            this.attacks.add(new Test_Attack());
+        }
     }
 
     public void save() {
@@ -127,20 +137,14 @@ public class Character {
             ItemStack stack = null;
 
             if(i < 4){
-                stack = new ItemStack(Material.STAINED_GLASS_PANE,1 , Colors.RED);
+                stack = this.attacks.get(i).getItem();
             }else if(i > 4){
-                stack = new ItemStack(Material.STAINED_GLASS_PANE,1 , Colors.BLUE);
+                stack = this.attacks.get(i).getItem();
             }
 
-            if (stack != null){
-                ItemMeta meta = stack.getItemMeta();
-                meta.setDisplayName("[SKILL] " + i);
-                stack.setItemMeta(meta);
-            }
+            if (this.attacks.get(i) == null) stack = new ItemStack(Material.BARRIER);
 
             player.getInventory().setItem(i, stack);
-
-
         }
 
         user.playerInventory = player.getInventory().getStorageContents();
@@ -176,7 +180,7 @@ public class Character {
 
             setAnimation(Static_Effect_Scheduler.a);
             User u = DataManager.onlineUsers.get(this.OwnerUUID);
-            u.giveMana(-1.0f + -5 * slot);
+            this.attacks.get(slot).executeAttack(u);
             Out.printToPlayer(player, ChatColor.RED + "Offensive Skill NR." + slot + " activated." );
 
         }else {
