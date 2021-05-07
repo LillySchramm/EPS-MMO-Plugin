@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.schedulers;
 
 import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.combat.Attack;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
@@ -30,7 +31,7 @@ public class Inventory_Check_Scheduler {
 
                 if (player.getGameMode() != GameMode.CREATIVE){
                     User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
-
+                    if(user.currentCharacter != null) user.currentCharacter.updateCooldown();
                     if(user.playerInventory != null){
                         if(!Math.compareInventory(user.playerInventory, player.getInventory())){
                             player.getInventory().clear();
@@ -41,6 +42,6 @@ public class Inventory_Check_Scheduler {
 
             }
 
-        }, 0L, 10L);
+        }, 0L, 2L);
     }
 }

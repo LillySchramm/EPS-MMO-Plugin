@@ -233,6 +233,11 @@ public class User {
         return Bukkit.getPlayer(java.util.UUID.fromString(this.UUID));
     }
 
+    public void setSlot(ItemStack item, int slot){
+        this.playerInventory[slot] = item;
+        this.getPlayer().getInventory().setItem(slot, item);
+    }
+
     public Location getLOS_Block(){
         Player player = getPlayer();
 

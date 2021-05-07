@@ -7,6 +7,7 @@ import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
 import de.epsdev.plugins.MMO.tools.Colors;
+import de.epsdev.plugins.MMO.tools.ItemDescription;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -81,6 +82,21 @@ public abstract class Attack {
         if(targets == null) return;
     }
 
+    public ItemStack genCooldownItem(){
+        ItemStack itemStack = new ItemStack(Material.BARRIER);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        float cooldown = (float) (reloadTime - currentCooldown) / 20;
+        itemMeta.setDisplayName(ChatColor.DARK_RED + "" + ChatColor.BOLD + cooldown + "s");
+        List<String> lore = new ArrayList<>();
+        lore.add("");
+        itemMeta.setLore(lore);
+
+        itemStack.setItemMeta(itemMeta);
+
+        return itemStack;
+    }
+
     public void cooldown(){
         this.onCooldown = true;
 
@@ -105,8 +121,7 @@ public abstract class Attack {
 
         ItemMeta meta = stack.getItemMeta();
         meta.setDisplayName("[SKILL] "  + this.name);
-        List<String> lore = new ArrayList<>();
-        lore.add(description);
+        List<String> lore = ItemDescription.toItemDescription(description);
         meta.setLore(lore);
 
         stack.setItemMeta(meta);

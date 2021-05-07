@@ -42,7 +42,8 @@ public class Character {
     public String OwnerUUID;
 
     private Animation animation;
-    private List<Attack> attacks;
+    public List<Attack> attacks;
+    private List<Integer> slotsOnCooldown = new ArrayList<>();
 
     public Vec3f pos;
 
@@ -177,14 +178,32 @@ public class Character {
 
     public void handleSkill(Player player, int slot){
         if(slot <= 4){
-
             setAnimation(Static_Effect_Scheduler.a);
+
             User u = DataManager.onlineUsers.get(this.OwnerUUID);
-            this.attacks.get(slot).executeAttack(u);
-            Out.printToPlayer(player, ChatColor.RED + "Offensive Skill NR." + slot + " activated." );
+            this.attacks.get(slot - 1).executeAttack(u);
+            u.setSlot(this.attacks.get(slot - 1).genCooldownItem(), slot - 1);
+            slotsOnCooldown.add(slot - 1);
 
         }else {
             Out.printToPlayer(player, ChatColor.BLUE + "Support Skill NR." + (slot - 4) + " activated." );
+        }
+    }
+
+    public void updateCooldown(){
+        User u = DataManager.onlineUsers.get(this.OwnerUUID);
+        List<Integer> toBeRemoved = new ArrayList<>();
+        for (int i : this.slotsOnCooldown){
+            if(this.attacks.get(i).onCooldown){
+                u.setSlot(this.attacks.get(i).genCooldownItem(), i);
+            }else {
+                u.setSlot(this.attacks.get(i).getItem(), i);
+                toBeRemoved.add(i);
+            }
+        }
+
+        for(Object o : toBeRemoved){
+            this.slotsOnCooldown.remove(o);
         }
     }
 
