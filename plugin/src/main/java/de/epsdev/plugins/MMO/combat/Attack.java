@@ -11,6 +11,7 @@ import de.epsdev.plugins.MMO.tools.ItemDescription;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -56,8 +57,11 @@ public abstract class Attack {
                         for (Base_Mob base_mob : targets) {
                             float damage = calculateDamage(user, base_mob);
                             base_mob.doDamage(damage);
+                            playHitAnimation(base_mob.getEntity().getBukkitEntity());
                         }
                     }
+
+                    playAnimation(user.getPlayer());
 
                     user.giveHealth(-this.LiveCastCost);
                     user.giveMana(-this.ManaCastCost);
@@ -130,6 +134,17 @@ public abstract class Attack {
 
     public abstract List<Base_Mob> getTargets();
     public abstract List<User> getHealTargets();
-    public abstract void playAnimation();
+
+    /**
+     * @apiNote Only for animations related to the user of the attack. Recommended to use an scheduler
+     * @see this.playHitAnimation for hit animations
+     */
+    public abstract void playAnimation(Entity e);
+
+    /**
+     * @apiNote Only for animations related to the entity hit by the attack. Recommended to use an scheduler
+     */
+    public abstract void playHitAnimation(Entity e);
+
     public abstract float calculateDamage(User user, Base_Mob mob);
 }
