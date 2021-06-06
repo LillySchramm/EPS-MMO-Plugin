@@ -2,31 +2,25 @@ package de.epsdev.plugins.MMO.data.player;
 
 import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.combat.Attack;
-import de.epsdev.plugins.MMO.combat.basetypes.attacks.Test_Attack;
+import de.epsdev.plugins.MMO.combat.basetypes.attacks.Test_Melee_Attack;
+import de.epsdev.plugins.MMO.combat.basetypes.attacks.Test_Self_Attack;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
-import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
 import de.epsdev.plugins.MMO.particles.Animation;
-import de.epsdev.plugins.MMO.schedulers.Delta_Scheduler;
 import de.epsdev.plugins.MMO.schedulers.Static_Effect_Scheduler;
-import de.epsdev.plugins.MMO.tools.Colors;
 import de.epsdev.plugins.MMO.tools.Vec3f;
-import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -58,7 +52,7 @@ public class Character {
         this.attacks = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            this.attacks.add(new Test_Attack());
+            this.attacks.add(new Test_Melee_Attack());
         }
     }
 

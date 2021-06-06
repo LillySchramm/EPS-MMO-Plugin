@@ -4,6 +4,7 @@ import de.epsdev.plugins.MMO.combat.Attack;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -14,12 +15,12 @@ public abstract class Base_AOE extends Attack {
     }
 
     @Override
-    public List<Base_Mob> getTargets() {
+    public List<Base_Mob> getTargets(Player p) {
         return null;
     }
 
     @Override
-    public List<User> getHealTargets() {
+    public List<User> getHealTargets(Player p) {
         return null;
     }
 

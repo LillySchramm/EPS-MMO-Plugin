@@ -18,6 +18,7 @@ import de.epsdev.plugins.MMO.items.types.UI_Item;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
 import de.epsdev.plugins.MMO.npc.Skin;
 import de.epsdev.plugins.MMO.npc.eNpc.eNpc;
+import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
 import de.epsdev.plugins.MMO.particles.EF_Particle_Ring;
 import de.epsdev.plugins.MMO.particles.EF_Single_Particle;
 import de.epsdev.plugins.MMO.particles.ParticleConfig;

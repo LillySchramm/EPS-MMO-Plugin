@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -52,7 +53,7 @@ public abstract class Attack {
 
             if(user.cur_mana >= ManaCastCost){
                 if(user.cur_health >= LiveCastCost){
-                    List<Base_Mob> targets = getTargets();
+                    List<Base_Mob> targets = getTargets(u.getPlayer());
                     if(targets != null) {
                         for (Base_Mob base_mob : targets) {
                             float damage = calculateDamage(user, base_mob);
@@ -81,7 +82,7 @@ public abstract class Attack {
     }
 
     public void executeHeal(User user){
-        List<User> targets = getHealTargets();
+        List<User> targets = getHealTargets(user.getPlayer());
 
         if(targets == null) return;
     }
@@ -132,8 +133,8 @@ public abstract class Attack {
         return stack;
     }
 
-    public abstract List<Base_Mob> getTargets();
-    public abstract List<User> getHealTargets();
+    public abstract List<Base_Mob> getTargets(Player p);
+    public abstract List<User> getHealTargets(Player p);
 
     /**
      * @apiNote Only for animations related to the user of the attack. Recommended to use an scheduler

@@ -3,7 +3,9 @@ package de.epsdev.plugins.MMO.combat.basetypes;
 import de.epsdev.plugins.MMO.combat.Attack;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
+import de.epsdev.plugins.MMO.npc.mobs.Mob_Manager;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -13,12 +15,15 @@ public abstract class Base_Self_Attack extends Attack {
     }
 
     @Override
-    public List<Base_Mob> getTargets() {
+    public List<Base_Mob> getTargets(Player p) {
+        for(Base_Mob m : Mob_Manager.enemies.values()){
+            m.playHit();
+        }
         return null;
     }
 
     @Override
-    public List<User> getHealTargets() {
+    public List<User> getHealTargets(Player p) {
         return null;
     }
 

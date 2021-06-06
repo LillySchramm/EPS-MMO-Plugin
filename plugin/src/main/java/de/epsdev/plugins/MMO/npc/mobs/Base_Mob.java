@@ -10,6 +10,8 @@ import de.epsdev.plugins.MMO.tools.Vec3f;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
@@ -36,6 +38,8 @@ public abstract class Base_Mob {
 
     private boolean doesAdjustRotation = true;
 
+    private int[] schedulers = new int[3];
+
     public Base_Mob(String name ,Mob_Types type, Vec3f pos, float speed, float max_live){
         this.mobType = type;
         this.name = name;
@@ -48,6 +52,8 @@ public abstract class Base_Mob {
         this.cur_live = max_live;
         
         this.e = createEntity(mobType, curPos);
+
+        Mob_Manager.enemies.put(this.e.getId(), this);
     }
 
     private Entity createEntity(Mob_Types type, Vec3f pos){
@@ -60,9 +66,9 @@ public abstract class Base_Mob {
         e.setPositionRotation(e.getChunkCoordinates(),0,0);
         e.setNoGravity(true);
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::updateTarget, 0L, 20L);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::updatePos, 0L, 1L);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::syncPosition, 0L, 40L);
+        this.schedulers[0] = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::updateTarget, 0L, 20L);
+        this.schedulers[1] = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::updatePos, 0L, 1L);
+        this.schedulers[2] = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::syncPosition, 0L, 40L);
 
         return e;
     }
@@ -148,7 +154,15 @@ public abstract class Base_Mob {
     }
 
     public void playHit(){
-        e.damageEntity(DamageSource.GENERIC, 1);
+        sendPacketToAllPlayers(
+            new PacketPlayOutAnimation(
+                    this.e,1
+            )
+        );
+
+        for(Player p : Bukkit.getOnlinePlayers()){
+            p.playSound(this.curPos.toLocation(), Sound.valueOf("entity_zombie_hurt".toUpperCase()), SoundCategory.HOSTILE, 1.0f, 1.0f);
+        }
     }
 
     private void syncPosition(){
@@ -176,12 +190,34 @@ public abstract class Base_Mob {
         return this.e;
     }
 
+    public void kill(){
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(main.plugin, () -> {
+            sendPacketToAllPlayers(
+                    new PacketPlayOutEntityDestroy(this.e.getId())
+            );
+        }, 20L);
+
+        sendPacketToAllPlayers(
+            new PacketPlayOutAnimation(e,3)
+        );
+
+        Mob_Manager.enemies.remove(this.e.getId());
+
+        Bukkit.getScheduler().cancelTask(this.schedulers[0]);
+        Bukkit.getScheduler().cancelTask(this.schedulers[1]);
+        Bukkit.getScheduler().cancelTask(this.schedulers[2]);
+    }
+
     public void doDamage(float amount){
-        amount = calculateDamage(amount);
+        this.cur_live -= calculateDamage(amount);;
 
-        this.cur_live -= amount;
+        if(this.cur_live > 0){
+            updateName();
+        }else kill();
 
-        updateName();
+        playHit();
+
     }
 
     public abstract float calculateDamage(float init_dmg);
