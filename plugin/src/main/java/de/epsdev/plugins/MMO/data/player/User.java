@@ -78,6 +78,7 @@ public class User {
     public Chunk lastChunk = null;
 
     public ArrayList<Integer> loadedNPC = new ArrayList<>();
+    public ArrayList<Integer> loadedMOB = new ArrayList<>();
 
     private int status_bar_scheduler = 0;
 
@@ -219,7 +220,6 @@ public class User {
                 player.setGameMode(GameMode.SURVIVAL);
                 Location location = new Location(player.getWorld(), 1000.0f,200.0f,1000.0f);
                 player.teleport(location);
-                Mob_Manager.showAllMobs(player);
             });
         }catch (Exception e){
             e.printStackTrace();

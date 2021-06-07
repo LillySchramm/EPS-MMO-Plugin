@@ -1,6 +1,9 @@
 package de.epsdev.plugins.MMO.npc.mobs;
 
+import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
+import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -14,7 +17,9 @@ import java.util.Map;
 public class Mob_Manager {
 
     public static Map<Integer, Base_Mob> enemies = new HashMap<>();
-    
+
+    public static final float MAX_DISPLAY_DISTANCE = 50f;
+
     public static List<Base_Mob> getAllEnemiesInRange(Vec3f center, float range, int max){
         List<Base_Mob> mobs = new ArrayList<>();
 
@@ -67,5 +72,26 @@ public class Mob_Manager {
         for(Base_Mob m : enemies.values()){
             m.display(p);
         }
+    }
+
+    public static void updateDisplay(){
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, () -> {
+            for(Player player : Bukkit.getOnlinePlayers()){
+                User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
+
+                for (Base_Mob mob : enemies.values()){
+                    float distance = mob.getPos().distance3d(new Vec3f(player.getLocation()));
+
+                    if(distance <= MAX_DISPLAY_DISTANCE && !user.loadedMOB.contains(mob.getEntity().getId())){
+                        user.loadedMOB.add(mob.getEntity().getId());
+                        mob.display(player);
+                    }else if (distance > MAX_DISPLAY_DISTANCE && user.loadedMOB.contains(mob.getEntity().getId())){
+                        user.loadedMOB.remove((Object) mob.getEntity().getId());
+                        mob.remove(player);
+                    }
+                }
+
+            }
+        }, 0L,5L);
     }
 }

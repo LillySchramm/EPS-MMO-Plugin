@@ -59,7 +59,6 @@ public abstract class Base_Mob {
         this.targetAI.spawn = pos;
 
         Mob_Manager.enemies.put(this.e.getId(), this);
-        globalDisplay();
     }
 
     private Entity createEntity(Mob_Types type, Vec3f pos){
@@ -79,6 +78,12 @@ public abstract class Base_Mob {
         return e;
     }
 
+    public void remove(Player player){
+        sendToPlayer(player,
+                new PacketPlayOutEntityDestroy(this.e.getId())
+        );
+    }
+
     private void sendToPlayer(Player p, Packet pp){
         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
         connection.sendPacket(pp);
@@ -94,7 +99,6 @@ public abstract class Base_Mob {
     }
 
     public void display(Player player){
-        System.out.println(player.getDisplayName());
         sendToPlayer(player, new PacketPlayOutSpawnEntityLiving((EntityLiving) this.e));
     }
 

@@ -8,6 +8,7 @@ import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.DatabaseManager;
 import de.epsdev.plugins.MMO.events.*;
 
+import de.epsdev.plugins.MMO.npc.mobs.Mob_Manager;
 import de.epsdev.plugins.MMO.particles.EF_Image;
 import de.epsdev.plugins.MMO.particles.ParticleConfig;
 import de.epsdev.plugins.MMO.schedulers.Delta_Scheduler;
@@ -73,6 +74,7 @@ public final class main extends JavaPlugin implements Listener {
         Inventory_Check_Scheduler.run();
         Static_Effect_Scheduler.run();
         Delta_Scheduler.run();
+        Mob_Manager.updateDisplay();
     }
 
     private void initRegions(){
@@ -88,7 +90,6 @@ public final class main extends JavaPlugin implements Listener {
         Bukkit.getWorld("world").setDifficulty(Difficulty.EASY);
         Bukkit.getWorld("world").setMonsterSpawnLimit(0);
         Bukkit.getWorld("world").setAnimalSpawnLimit(0);
-
     }
 
     private void registerEvents(){
