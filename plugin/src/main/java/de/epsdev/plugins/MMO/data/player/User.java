@@ -15,6 +15,7 @@ import de.epsdev.plugins.MMO.data.money.Money;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.events.OnPlace;
 import de.epsdev.plugins.MMO.events.OnRightObj;
+import de.epsdev.plugins.MMO.npc.mobs.Mob_Manager;
 import de.epsdev.plugins.MMO.particles.EF_Single_Particle;
 import de.epsdev.plugins.MMO.particles.ParticleConfig;
 import de.epsdev.plugins.MMO.ranks.Rank;
@@ -218,6 +219,7 @@ public class User {
                 player.setGameMode(GameMode.SURVIVAL);
                 Location location = new Location(player.getWorld(), 1000.0f,200.0f,1000.0f);
                 player.teleport(location);
+                Mob_Manager.showAllMobs(player);
             });
         }catch (Exception e){
             e.printStackTrace();

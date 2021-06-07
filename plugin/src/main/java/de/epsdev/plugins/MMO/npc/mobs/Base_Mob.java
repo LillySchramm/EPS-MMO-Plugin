@@ -38,9 +38,11 @@ public abstract class Base_Mob {
 
     private boolean doesAdjustRotation = true;
 
+    private MobTargetAI targetAI;
+
     private int[] schedulers = new int[3];
 
-    public Base_Mob(String name ,Mob_Types type, Vec3f pos, float speed, float max_live){
+    public Base_Mob(String name ,Mob_Types type, Vec3f pos, float speed, float max_live, MobTargetAI ai){
         this.mobType = type;
         this.name = name;
         this.curPos = pos;
@@ -53,7 +55,11 @@ public abstract class Base_Mob {
         
         this.e = createEntity(mobType, curPos);
 
+        this.targetAI = ai;
+        this.targetAI.spawn = pos;
+
         Mob_Manager.enemies.put(this.e.getId(), this);
+        globalDisplay();
     }
 
     private Entity createEntity(Mob_Types type, Vec3f pos){
@@ -73,17 +79,26 @@ public abstract class Base_Mob {
         return e;
     }
 
+    private void sendToPlayer(Player p, Packet pp){
+        PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
+        connection.sendPacket(pp);
+    }
+
     /*
     TODO: Highly inefficient due to the fact that it gets send on a global scale.
      */
     private void sendPacketToAllPlayers(Packet p){
         for (Player player : Bukkit.getOnlinePlayers()){
-            PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-            connection.sendPacket(p);
+            sendToPlayer(player,p);
         }
     }
 
-    public void display(){
+    public void display(Player player){
+        System.out.println(player.getDisplayName());
+        sendToPlayer(player, new PacketPlayOutSpawnEntityLiving((EntityLiving) this.e));
+    }
+
+    public void globalDisplay(){
         sendPacketToAllPlayers(new PacketPlayOutSpawnEntityLiving((EntityLiving) this.e));
     }
 
@@ -222,7 +237,8 @@ public abstract class Base_Mob {
 
     public abstract float calculateDamage(float init_dmg);
 
-    public abstract Vec3f getNextTarget();
-
-
+    private Vec3f getNextTarget(){
+        targetAI.update(curPos);
+        return targetAI.getTarget();
+    }
 }

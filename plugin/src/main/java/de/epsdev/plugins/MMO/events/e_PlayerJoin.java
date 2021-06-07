@@ -4,6 +4,7 @@ import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.nms.PacketReader;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.npc.NPC_Manager;
+import de.epsdev.plugins.MMO.npc.mobs.Mob_Manager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -31,8 +32,6 @@ public class e_PlayerJoin implements Listener {
 
         DataManager.onlineUsers.put(user.UUID,user);
         user.showCharacterSelectionMenu(e.getPlayer());
-
-
     }
 
 }

@@ -29,7 +29,7 @@ public class c_testmob implements CommandExecutor {
 
                 Vec3f playerPosition = new Vec3f(player.getLocation());
                 TestMob t = new TestMob(playerPosition, Mob_Types.ZOMBIE);
-                t.display();
+
             }else {
                 //Displays Every Mob Type
                 Vec2i cursor = new Vec2i();
@@ -40,7 +40,6 @@ public class c_testmob implements CommandExecutor {
                             playerPosition.y,
                             playerPosition.z + 7 * cursor.y
                     ), mob_type);
-                    t.display();
 
                     cursor.increase2D(7);
                 }
