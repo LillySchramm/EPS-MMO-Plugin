@@ -2,6 +2,7 @@ package de.epsdev.plugins.MMO.data.player;
 
 import de.epsdev.plugins.MMO.MAIN.main;
 import de.epsdev.plugins.MMO.combat.Attack;
+import de.epsdev.plugins.MMO.combat.AttackCollection;
 import de.epsdev.plugins.MMO.combat.basetypes.attacks.Test_Melee_Attack;
 import de.epsdev.plugins.MMO.combat.basetypes.attacks.Test_Self_Attack;
 import de.epsdev.plugins.MMO.data.DataManager;
@@ -36,8 +37,10 @@ public class Character {
     public String OwnerUUID;
 
     private Animation animation;
-    public List<Attack> attacks;
-    private List<Integer> slotsOnCooldown = new ArrayList<>();
+    private List<Integer> a_slotsOnCooldown = new ArrayList<>();
+    private List<Integer> s_slotsOnCooldown = new ArrayList<>();
+
+    private AttackCollection attackCollection;
 
     public Vec3f pos;
 
@@ -49,11 +52,8 @@ public class Character {
         this.OwnerUUID = OwnerUUID;
         this.pos = pos;
 
-        this.attacks = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            this.attacks.add(new Test_Melee_Attack());
-        }
+        this.attackCollection = new AttackCollection(new Attack[]{new Test_Melee_Attack(),new Test_Self_Attack(),new Test_Melee_Attack(),new Test_Self_Attack()}
+                ,new Attack[]{new Test_Self_Attack(), new Test_Melee_Attack()});
     }
 
     public void save() {
@@ -131,14 +131,13 @@ public class Character {
         for (int i = 0; i < 9; i++){
             ItemStack stack = null;
 
-            if(i < 4){
-                stack = this.attacks.get(i).getItem();
-            }else if(i > 4){
-                stack = this.attacks.get(i).getItem();
+            if(i < 4 && this.attackCollection.attacks.length >= i+1){
+                stack = this.attackCollection.attacks[i].getItem();
+            }else if(i > 4 && this.attackCollection.support.length >= i-4){
+                stack = this.attackCollection.support[i-5].getItem();
+            }else if(i != 4){
+                stack = new ItemStack(Material.BARRIER);
             }
-
-            if (this.attacks.get(i) == null) stack = new ItemStack(Material.BARRIER);
-
             player.getInventory().setItem(i, stack);
         }
 
@@ -171,33 +170,57 @@ public class Character {
     }
 
     public void handleSkill(Player player, int slot){
-        if(slot <= 4){
-            setAnimation(Static_Effect_Scheduler.a);
+        User u = DataManager.onlineUsers.get(this.OwnerUUID);
 
-            User u = DataManager.onlineUsers.get(this.OwnerUUID);
-            this.attacks.get(slot - 1).executeAttack(u);
-            u.setSlot(this.attacks.get(slot - 1).genCooldownItem(), slot - 1);
-            slotsOnCooldown.add(slot - 1);
+        if(slot <= 4){
+
+            if(slot - 1 >= this.attackCollection.attacks.length) return;
+
+            this.attackCollection.attacks[slot - 1].executeAttack(u);
+            u.setSlot(this.attackCollection.attacks[slot - 1].genCooldownItem(), slot - 1);
+            a_slotsOnCooldown.add(slot - 1);
 
         }else {
-            Out.printToPlayer(player, ChatColor.BLUE + "Support Skill NR." + (slot - 4) + " activated." );
+            slot -= 4;
+
+            if(slot - 1 >= this.attackCollection.support.length) return;
+
+            this.attackCollection.support[slot - 1].executeAttack(u);
+            u.setSlot(this.attackCollection.support[slot - 1].genCooldownItem(), slot + 4);
+            s_slotsOnCooldown.add(slot - 1);
+
         }
     }
 
     public void updateCooldown(){
         User u = DataManager.onlineUsers.get(this.OwnerUUID);
         List<Integer> toBeRemoved = new ArrayList<>();
-        for (int i : this.slotsOnCooldown){
-            if(this.attacks.get(i).onCooldown){
-                u.setSlot(this.attacks.get(i).genCooldownItem(), i);
+        for (int i : this.a_slotsOnCooldown){
+            if(this.attackCollection.attacks[i].onCooldown){
+                u.setSlot(this.attackCollection.attacks[i].genCooldownItem(), i);
             }else {
-                u.setSlot(this.attacks.get(i).getItem(), i);
+                u.setSlot(this.attackCollection.attacks[i].getItem(), i);
                 toBeRemoved.add(i);
             }
         }
 
         for(Object o : toBeRemoved){
-            this.slotsOnCooldown.remove(o);
+            this.a_slotsOnCooldown.remove(o);
+        }
+
+        toBeRemoved = new ArrayList<>();
+
+        for (int i : this.s_slotsOnCooldown){
+            if(this.attackCollection.support[i].onCooldown){
+                u.setSlot(this.attackCollection.support[i].genCooldownItem(), i + 5);
+            }else {
+                u.setSlot(this.attackCollection.support[i].getItem(), i + 5);
+                toBeRemoved.add(i);
+            }
+        }
+
+        for(Object o : toBeRemoved){
+            this.s_slotsOnCooldown.remove(o);
         }
     }
 

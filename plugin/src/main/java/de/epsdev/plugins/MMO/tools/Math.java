@@ -63,9 +63,10 @@ public class Math {
             ItemMeta itemMeta1 = itemStack1.getItemMeta();
             ItemMeta itemMeta2 = itemStack2.getItemMeta();
 
-            if(itemMeta1.getDisplayName() != itemMeta2.getDisplayName() ||
-                itemMeta1.getLore().get(0) != itemMeta2.getLore().get(0)) return false;
-
+            if(itemMeta1.getDisplayName() != itemMeta2.getDisplayName()) return false;
+            if(!(itemMeta1.getLore() == null || itemMeta2.getLore() == null)){
+                if(!itemMeta1.getLore().equals(itemMeta2.getLore())) return false;
+            }
         }
 
 
