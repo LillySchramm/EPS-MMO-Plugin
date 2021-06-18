@@ -4,6 +4,11 @@ import de.epsdev.plugins.MMO.GUI.player.PlayerCharacterSelectionGUI;
 import de.epsdev.plugins.MMO.GUI.player.PlayerHouses_GUI;
 import de.epsdev.plugins.MMO.GUI.player.PlayerInGameGUI;
 import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.combat.Attack;
+import de.epsdev.plugins.MMO.combat.AttackCollection;
+import de.epsdev.plugins.MMO.combat.Attackable;
+import de.epsdev.plugins.MMO.combat.basetypes.attacks.Test_Melee_Attack;
+import de.epsdev.plugins.MMO.combat.basetypes.attacks.Test_Self_Attack;
 import de.epsdev.plugins.MMO.commands.Next;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.mysql.mysql;
@@ -47,17 +52,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class User {
+public class User extends Attackable {
     public String displayName;
     public String UUID;
     public Rank rank;
     public Money money;
-
-    public float max_health = 100.0f;
-    public float cur_health = 70.0f;
-
-    public float max_mana = 100.0f;
-    public float cur_mana = 10.0f;
 
     public List<Character> characters = new ArrayList<>();
     public Character currentCharacter = null;
@@ -83,6 +82,10 @@ public class User {
     private int status_bar_scheduler = 0;
 
     public User(String uuid) throws SQLException {
+
+        super(100.0f,200.0f, new AttackCollection(new Attack[]{new Test_Melee_Attack(),new Test_Self_Attack(),new Test_Melee_Attack(),new Test_Self_Attack()}
+                ,new Attack[]{new Test_Self_Attack(), new Test_Melee_Attack()}),SIDE.PLAYER);
+
         ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`players` WHERE UUID = '" + uuid + "'");
 
         this.UUID = uuid;
@@ -104,6 +107,9 @@ public class User {
     }
 
     public User(Player player, boolean online) throws SQLException {
+        super(100.0f,200.0f, new AttackCollection(new Attack[]{new Test_Melee_Attack(),new Test_Self_Attack(),new Test_Melee_Attack(),new Test_Self_Attack()}
+                ,new Attack[]{new Test_Self_Attack(), new Test_Melee_Attack()}),SIDE.PLAYER);
+
         displayName = player.getDisplayName();
         UUID = player.getUniqueId().toString();
 
@@ -163,22 +169,37 @@ public class User {
         return ret;
     }
 
-    public void giveMana(float amount){
-        this.cur_mana = this.cur_mana + amount < this.max_mana ? this.cur_mana + amount : this.max_mana;
-        this.cur_mana = this.cur_mana >= 0 ? this.cur_mana : 0.0f;
+    @Override
+    public Vec3f getPosition() {
+        return new Vec3f(this.getPlayer().getLocation());
     }
 
+    @Override
+    public float calculateDamage(float org_damage) {
+        return org_damage;
+    }
+
+    @Override
+    public float calculateHeal(float org_heal) {
+        return org_heal;
+    }
+
+    @Override
+    public float calculateManaLoss(float org_loss) {
+        return org_loss;
+    }
+
+    @Override
+    public float calculateManaGain(float org_gain) {
+        return org_gain;
+    }
+
+    @Override
     public void kill(){
         Player player = getPlayer();
         player.setHealth(0);
     }
 
-    public void giveHealth(float amount){
-        this.cur_health = this.cur_health + amount < this.max_health ? this.cur_health + amount : this.max_health;
-        this.cur_health = this.cur_health >= 0 ? this.cur_health : 0.0f;
-
-        if(this.cur_health == 0)  kill();
-    }
 
     public void refreshScoreboard(){
         DefaultScroreboard.refresh(this);
@@ -186,7 +207,7 @@ public class User {
         if(this.status_bar_scheduler == 0){
             this.status_bar_scheduler = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, () -> {
                 this.giveMana(1.0f);
-                this.giveHealth(2.5f);
+                this.heal(2.5f);
                 Healthbar.refresh(this);
             }, 0L, 4L);
         }

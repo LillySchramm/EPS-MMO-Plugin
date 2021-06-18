@@ -31,6 +31,7 @@ public class e_PlayerLeave implements Listener {
         }
         user.session.unload();
         user.disableSchedulers();
+        user.removeFromList();
         DataManager.onlineUsers.remove(player.getUniqueId().toString());
     }
 }

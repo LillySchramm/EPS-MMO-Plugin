@@ -40,8 +40,6 @@ public class Character {
     private List<Integer> a_slotsOnCooldown = new ArrayList<>();
     private List<Integer> s_slotsOnCooldown = new ArrayList<>();
 
-    private AttackCollection attackCollection;
-
     public Vec3f pos;
 
     public Character(String name, int exp, int level, int id, Vec3f pos, String OwnerUUID){
@@ -51,9 +49,6 @@ public class Character {
         this.id = id;
         this.OwnerUUID = OwnerUUID;
         this.pos = pos;
-
-        this.attackCollection = new AttackCollection(new Attack[]{new Test_Melee_Attack(),new Test_Self_Attack(),new Test_Melee_Attack(),new Test_Self_Attack()}
-                ,new Attack[]{new Test_Self_Attack(), new Test_Melee_Attack()});
     }
 
     public void save() {
@@ -131,10 +126,10 @@ public class Character {
         for (int i = 0; i < 9; i++){
             ItemStack stack = null;
 
-            if(i < 4 && this.attackCollection.attacks.length >= i+1){
-                stack = this.attackCollection.attacks[i].getItem();
-            }else if(i > 4 && this.attackCollection.support.length >= i-4){
-                stack = this.attackCollection.support[i-5].getItem();
+            if(i < 4 && user.attackCollection.attacks.length >= i+1){
+                stack = user.attackCollection.attacks[i].getItem();
+            }else if(i > 4 && user.attackCollection.support.length >= i-4){
+                stack = user.attackCollection.support[i-5].getItem();
             }else if(i != 4){
                 stack = new ItemStack(Material.BARRIER);
             }
@@ -174,19 +169,19 @@ public class Character {
 
         if(slot <= 4){
 
-            if(slot - 1 >= this.attackCollection.attacks.length) return;
+            if(slot - 1 >= u.attackCollection.attacks.length) return;
 
-            this.attackCollection.attacks[slot - 1].executeAttack(u);
-            u.setSlot(this.attackCollection.attacks[slot - 1].genCooldownItem(), slot - 1);
+            u.attackCollection.attacks[slot - 1].executeAttack(u);
+            u.setSlot(u.attackCollection.attacks[slot - 1].genCooldownItem(), slot - 1);
             a_slotsOnCooldown.add(slot - 1);
 
         }else {
             slot -= 4;
 
-            if(slot - 1 >= this.attackCollection.support.length) return;
+            if(slot - 1 >= u.attackCollection.support.length) return;
 
-            this.attackCollection.support[slot - 1].executeAttack(u);
-            u.setSlot(this.attackCollection.support[slot - 1].genCooldownItem(), slot + 4);
+            u.attackCollection.support[slot - 1].executeAttack(u);
+            u.setSlot(u.attackCollection.support[slot - 1].genCooldownItem(), slot + 4);
             s_slotsOnCooldown.add(slot - 1);
 
         }
@@ -196,10 +191,10 @@ public class Character {
         User u = DataManager.onlineUsers.get(this.OwnerUUID);
         List<Integer> toBeRemoved = new ArrayList<>();
         for (int i : this.a_slotsOnCooldown){
-            if(this.attackCollection.attacks[i].onCooldown){
-                u.setSlot(this.attackCollection.attacks[i].genCooldownItem(), i);
+            if(u.attackCollection.attacks[i].onCooldown){
+                u.setSlot(u.attackCollection.attacks[i].genCooldownItem(), i);
             }else {
-                u.setSlot(this.attackCollection.attacks[i].getItem(), i);
+                u.setSlot(u.attackCollection.attacks[i].getItem(), i);
                 toBeRemoved.add(i);
             }
         }
@@ -211,10 +206,10 @@ public class Character {
         toBeRemoved = new ArrayList<>();
 
         for (int i : this.s_slotsOnCooldown){
-            if(this.attackCollection.support[i].onCooldown){
-                u.setSlot(this.attackCollection.support[i].genCooldownItem(), i + 5);
+            if(u.attackCollection.support[i].onCooldown){
+                u.setSlot(u.attackCollection.support[i].genCooldownItem(), i + 5);
             }else {
-                u.setSlot(this.attackCollection.support[i].getItem(), i + 5);
+                u.setSlot(u.attackCollection.support[i].getItem(), i + 5);
                 toBeRemoved.add(i);
             }
         }

@@ -51,8 +51,8 @@ public abstract class Attack {
 
         if(!onCooldown){
 
-            if(user.cur_mana >= ManaCastCost){
-                if(user.cur_health >= LiveCastCost){
+            if(user.getCur_mana() >= ManaCastCost){
+                if(user.getCur_health() >= LiveCastCost){
                     List<Base_Mob> targets = getTargets(u.getPlayer());
                     if(targets != null) {
                         for (Base_Mob base_mob : targets) {
@@ -64,8 +64,8 @@ public abstract class Attack {
 
                     playAnimation(user.getPlayer());
 
-                    user.giveHealth(-this.LiveCastCost);
-                    user.giveMana(-this.ManaCastCost);
+                    user.dealDamage(this.LiveCastCost);
+                    user.reduceMana(this.ManaCastCost);
 
                     cooldown();
                 }else {

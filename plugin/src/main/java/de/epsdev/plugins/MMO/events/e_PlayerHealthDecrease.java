@@ -18,9 +18,9 @@ public class e_PlayerHealthDecrease implements Listener {
                 Player player = (Player) e.getEntity();
                 User user = DataManager.onlineUsers.get(player.getUniqueId().toString());
 
-                double amount = - user.max_health * (e.getDamage() / 20);
+                double amount = user.max_health * (e.getDamage() / 20);
 
-                user.giveHealth((float) amount);
+                user.dealDamage((float) amount);
             }
             e.setCancelled(true);
         }

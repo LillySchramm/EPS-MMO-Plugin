@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.scoreboards;
 
+import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.tools.Math;
 import net.md_5.bungee.api.ChatMessageType;
@@ -30,20 +31,20 @@ public class Healthbar {
         Player player = user.getPlayer();
 
         if(user.currentCharacter != null && player.getGameMode() == GameMode.SURVIVAL) {
-            String msg = ChatColor.DARK_RED + "❤ " + (int) user.cur_health + "/" + (int) user.max_health + "  " + ChatColor.RESET;
-            msg += genBar(user.max_health, user.cur_health, COLOR_HEALTH_EMPTY, COLOR_HEALTH_FULL) + ChatColor.RESET;
+            String msg = ChatColor.DARK_RED + "❤ " + (int) user.getCur_health() + "/" + (int) user.max_health + "  " + ChatColor.RESET;
+            msg += genBar(user.max_health, user.getCur_health(), COLOR_HEALTH_EMPTY, COLOR_HEALTH_FULL) + ChatColor.RESET;
 
-            msg += "    " + ChatColor.DARK_AQUA + "⁂" + (int) user.cur_mana + "/" + (int) user.max_mana + "  " + ChatColor.RESET;
-            msg += genBar(user.max_mana, user.cur_mana, COLOR_MANA_EMPTY, COLOR_MANA_FULL) + ChatColor.RESET;
+            msg += "    " + ChatColor.DARK_AQUA + "⁂" + (int) user.getCur_mana() + "/" + (int) user.max_mana + "  " + ChatColor.RESET;
+            msg += genBar(user.max_mana, user.getCur_mana(), COLOR_MANA_EMPTY, COLOR_MANA_FULL) + ChatColor.RESET;
 
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(msg));
 
             //Set Heart bar
 
-            int amount_hearts = (int) (20 * (user.cur_health / user.max_health));
+            int amount_hearts = (int) (20 * (user.getCur_health() / user.max_health));
             amount_hearts = Math.min(1, amount_hearts);
 
-            int amount_bubbles = (int) (20 * (user.cur_mana / user.max_mana));
+            int amount_bubbles = (int) (20 * (user.getCur_mana() / user.max_mana));
             amount_bubbles = Math.min(0, amount_bubbles);
 
             player.setFoodLevel(amount_bubbles);
