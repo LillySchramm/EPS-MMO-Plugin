@@ -1,5 +1,5 @@
 name: EPS-MMO
-version: 0.1 (Build ${buildNumber})
+version: 0.3 (Build ${buildNumber})
 main: de.epsdev.plugins.MMO.MAIN.main
 authors: [EliasSchramm]
 description: A plugin
