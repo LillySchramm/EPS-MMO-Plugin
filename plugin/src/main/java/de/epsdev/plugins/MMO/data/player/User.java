@@ -84,7 +84,7 @@ public class User extends Attackable {
 
     public User(String uuid) throws SQLException {
 
-        super(100.0f,200.0f, new AttackCollection(new Attack[]{new Test_Melee_Attack(),new Test_Melee_Attack()}
+        super(100.0f,200.0f, 2f, 10f,new AttackCollection(new Attack[]{new Test_Melee_Attack(),new Test_Melee_Attack()}
                 ,new Attack[]{new Test_Self_Attack()}),SIDE.PLAYER);
 
         ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`players` WHERE UUID = '" + uuid + "'");
@@ -108,7 +108,7 @@ public class User extends Attackable {
     }
 
     public User(Player player, boolean online) throws SQLException {
-        super(100.0f,200.0f, new AttackCollection(new Attack[]{new Test_Melee_Attack()}
+        super(100.0f,200.0f, 2f, 10f,new AttackCollection(new Attack[]{new Test_Melee_Attack()}
                 ,new Attack[]{new Test_Self_Attack()}),SIDE.PLAYER);
 
         displayName = player.getDisplayName();
@@ -216,11 +216,7 @@ public class User extends Attackable {
         DefaultScroreboard.refresh(this);
 
         if(this.status_bar_scheduler == 0){
-            this.status_bar_scheduler = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, () -> {
-                this.giveMana(1.0f);
-                this.heal(2.5f);
-                Healthbar.refresh(this);
-            }, 0L, 4L);
+            this.status_bar_scheduler = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, () -> Healthbar.refresh(this), 0L, 4L);
         }
 
         Healthbar.refresh(this);

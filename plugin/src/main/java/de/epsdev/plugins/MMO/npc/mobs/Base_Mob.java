@@ -42,11 +42,12 @@ public abstract class Base_Mob extends Attackable {
 
     private MobTargetAI targetAI;
 
-    private int[] schedulers = new int[3];
+    private int[] schedulers = new int[4];
 
-    public Base_Mob(String name ,Mob_Types type, Vec3f pos, float speed, float max_live, float max_mana, MobTargetAI ai){
-        super(max_live, max_live, new AttackCollection(new Attack[]{new Test_Melee_Attack()}
-                ,new Attack[]{}), SIDE.MOB);
+    public Base_Mob(String name ,Mob_Types type, Vec3f pos, float speed, float max_live, float max_mana, float health_regen,
+                    float mana_regen, MobTargetAI ai){
+        super(max_live, max_mana, health_regen, mana_regen,
+                new AttackCollection(new Attack[]{new Test_Melee_Attack()},new Attack[]{}), SIDE.MOB);
         this.mobType = type;
         this.name = name;
         this.curPos = pos;
@@ -75,6 +76,7 @@ public abstract class Base_Mob extends Attackable {
         this.schedulers[0] = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::updateTarget, 0L, 20L);
         this.schedulers[1] = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::updatePos, 0L, 1L);
         this.schedulers[2] = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::syncPosition, 0L, 40L);
+        this.schedulers[3] = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, () -> MobCombatAI.chooseAttack(this), 0L, 5L);
 
         return e;
     }
@@ -264,5 +266,6 @@ public abstract class Base_Mob extends Attackable {
         Bukkit.getScheduler().cancelTask(this.schedulers[0]);
         Bukkit.getScheduler().cancelTask(this.schedulers[1]);
         Bukkit.getScheduler().cancelTask(this.schedulers[2]);
+        Bukkit.getScheduler().cancelTask(this.schedulers[3]);
     }
 }

@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public abstract class Base_Melee extends Attack {
+    public final float RANGE = 3;
+
     public Base_Melee(String name, long reloadTime, float baseDmg, float baseHeal, float manaCastCost, float liveCastCost, String description) {
         super(name, reloadTime, baseDmg, baseHeal, manaCastCost, liveCastCost, description);
     }
@@ -40,6 +42,6 @@ public abstract class Base_Melee extends Attack {
 
     @Override
     public List<Attackable> getTargets(Attackable p) {
-        return Mob_Manager.getAllEnemiesInRange(new Vec3f(p.getPosition()), 3);
+        return Mob_Manager.getAllEnemiesInRange(new Vec3f(p.getPosition()), RANGE);
     }
 }
