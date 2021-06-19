@@ -13,7 +13,7 @@ public class TestMob extends Base_Mob {
     private Path path;
 
     public TestMob(Vec3f pos, Mob_Types type) {
-        super("Test Mob" , type, pos, 10f, 100.0f, new MobTargetAI(
+        super("Test Mob" , type, pos, 10f, 123.0f, 321.0f ,new MobTargetAI(
                 20f,
                 10f,
                 30f

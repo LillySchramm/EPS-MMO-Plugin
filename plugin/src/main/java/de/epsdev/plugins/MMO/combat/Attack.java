@@ -46,43 +46,42 @@ public abstract class Attack {
         this.baseHeal = baseHeal;
     }
 
-    public void executeAttack(User u){
-        User user = DataManager.onlineUsers.get(u.UUID);
-
+    public void executeAttack(Attackable attackable){
         if(!onCooldown){
-
-            if(user.getCur_mana() >= ManaCastCost){
-                if(user.getCur_health() >= LiveCastCost){
-                    List<Base_Mob> targets = getTargets(u.getPlayer());
+            if(attackable.getCur_mana() >= ManaCastCost){
+                if(attackable.getCur_health() >= LiveCastCost){
+                    List<Attackable> targets = getTargets(attackable);
                     if(targets != null) {
-                        for (Base_Mob base_mob : targets) {
-                            float damage = calculateDamage(user, base_mob);
-                            base_mob.doDamage(damage);
-                            playHitAnimation(base_mob.getEntity().getBukkitEntity());
+                        for (Attackable _attackable : targets) {
+                            if(attackable.side != _attackable.side && _attackable.uuid != attackable.uuid){
+                                float damage = calculateDamage(attackable, _attackable);
+                                _attackable.dealDamage(damage);
+                                playHitAnimation(attackable.getEntity().getBukkitEntity());
+                            }
                         }
                     }
 
-                    playAnimation(user.getPlayer());
+                    playAnimation(attackable.getEntity().getBukkitEntity());
 
-                    user.dealDamage(this.LiveCastCost);
-                    user.reduceMana(this.ManaCastCost);
+                    attackable.dealDamage(this.LiveCastCost);
+                    attackable.reduceMana(this.ManaCastCost);
 
                     cooldown();
                 }else {
-                    Out.printToPlayer(user.getPlayer(), ChatColor.RED + "Your liveforce is insufficient.");
+                    if(attackable instanceof User) Out.printToPlayer(((User) attackable).getPlayer() , ChatColor.RED + "Your liveforce is insufficient.");
                 }
             }else {
-                Out.printToPlayer(user.getPlayer(), ChatColor.RED + "Your mana is insufficient.");
+                if(attackable instanceof User) Out.printToPlayer(((User) attackable).getPlayer(), ChatColor.RED + "Your mana is insufficient.");
             }
         }else {
             float cooldown = (float) (reloadTime - currentCooldown) / 20;
-            Out.printToPlayer(user.getPlayer(), ChatColor.RED + "This attack is on cooldown. Remaining: " + cooldown + "s");
+            if(attackable instanceof User) Out.printToPlayer(((User) attackable).getPlayer(), ChatColor.RED + "This attack is on cooldown. Remaining: " + cooldown + "s");
         }
 
     }
 
-    public void executeHeal(User user){
-        List<User> targets = getHealTargets(user.getPlayer());
+    public void executeHeal(Attackable a){
+        List<Attackable> targets = getHealTargets(a);
 
         if(targets == null) return;
     }
@@ -133,8 +132,8 @@ public abstract class Attack {
         return stack;
     }
 
-    public abstract List<Base_Mob> getTargets(Player p);
-    public abstract List<User> getHealTargets(Player p);
+    public abstract List<Attackable> getTargets(Attackable a);
+    public abstract List<Attackable> getHealTargets(Attackable a);
 
     /**
      * @apiNote Only for animations related to the user of the attack. Recommended to use an scheduler
@@ -147,5 +146,5 @@ public abstract class Attack {
      */
     public abstract void playHitAnimation(Entity e);
 
-    public abstract float calculateDamage(User user, Base_Mob mob);
+    public abstract float calculateDamage(Attackable user, Attackable target);
 }

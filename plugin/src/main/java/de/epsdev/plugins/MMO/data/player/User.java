@@ -31,8 +31,9 @@ import de.epsdev.plugins.MMO.tools.D_RGB;
 import de.epsdev.plugins.MMO.tools.Vec2i;
 import de.epsdev.plugins.MMO.tools.Vec3f;
 import de.epsdev.plugins.MMO.tools.Vec3i;
+import net.minecraft.server.v1_12_R1.Entity;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -83,8 +84,8 @@ public class User extends Attackable {
 
     public User(String uuid) throws SQLException {
 
-        super(100.0f,200.0f, new AttackCollection(new Attack[]{new Test_Melee_Attack(),new Test_Self_Attack(),new Test_Melee_Attack(),new Test_Self_Attack()}
-                ,new Attack[]{new Test_Self_Attack(), new Test_Melee_Attack()}),SIDE.PLAYER);
+        super(100.0f,200.0f, new AttackCollection(new Attack[]{new Test_Melee_Attack(),new Test_Melee_Attack()}
+                ,new Attack[]{new Test_Self_Attack()}),SIDE.PLAYER);
 
         ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`players` WHERE UUID = '" + uuid + "'");
 
@@ -107,8 +108,8 @@ public class User extends Attackable {
     }
 
     public User(Player player, boolean online) throws SQLException {
-        super(100.0f,200.0f, new AttackCollection(new Attack[]{new Test_Melee_Attack(),new Test_Self_Attack(),new Test_Melee_Attack(),new Test_Self_Attack()}
-                ,new Attack[]{new Test_Self_Attack(), new Test_Melee_Attack()}),SIDE.PLAYER);
+        super(100.0f,200.0f, new AttackCollection(new Attack[]{new Test_Melee_Attack()}
+                ,new Attack[]{new Test_Self_Attack()}),SIDE.PLAYER);
 
         displayName = player.getDisplayName();
         UUID = player.getUniqueId().toString();
@@ -192,6 +193,16 @@ public class User extends Attackable {
     @Override
     public float calculateManaGain(float org_gain) {
         return org_gain;
+    }
+
+    @Override
+    public void onChange() {
+
+    }
+
+    @Override
+    public Entity getEntity() {
+        return  ((CraftPlayer) this.getPlayer()).getHandle();
     }
 
     @Override

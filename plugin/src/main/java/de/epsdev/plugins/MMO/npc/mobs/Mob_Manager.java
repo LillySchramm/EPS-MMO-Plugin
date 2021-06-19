@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.npc.mobs;
 
 import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.combat.Attackable;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
@@ -20,13 +21,13 @@ public class Mob_Manager {
 
     public static final float MAX_DISPLAY_DISTANCE = 50f;
 
-    public static List<Base_Mob> getAllEnemiesInRange(Vec3f center, float range, int max){
-        List<Base_Mob> mobs = new ArrayList<>();
+    public static List<Attackable> getAllEnemiesInRange(Vec3f center, float range, int max){
+        List<Attackable> mobs = new ArrayList<>();
 
-        for (Base_Mob m : enemies.values()){
+        for (Attackable m : Attackable.attackables){
             if(mobs.size() == max) break;
 
-            if(m.getPos().distance2d(center) <= range){
+            if(m.getPosition().distance2d(center) <= range){
                 mobs.add(m);
             }
         }
@@ -64,7 +65,7 @@ public class Mob_Manager {
         return getPlayersInRange(radius, center, new ArrayList<>(Bukkit.getOnlinePlayers()));
     }
 
-    public static List<Base_Mob> getAllEnemiesInRange(Vec3f center, float range){
+    public static List<Attackable> getAllEnemiesInRange(Vec3f center, float range){
         return getAllEnemiesInRange(center, range,9999999);
     }
 

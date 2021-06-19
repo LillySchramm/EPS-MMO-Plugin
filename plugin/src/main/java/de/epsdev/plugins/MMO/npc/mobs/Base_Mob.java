@@ -2,6 +2,11 @@ package de.epsdev.plugins.MMO.npc.mobs;
 
 import com.mojang.authlib.GameProfile;
 import de.epsdev.plugins.MMO.MAIN.main;
+import de.epsdev.plugins.MMO.combat.Attack;
+import de.epsdev.plugins.MMO.combat.AttackCollection;
+import de.epsdev.plugins.MMO.combat.Attackable;
+import de.epsdev.plugins.MMO.combat.basetypes.attacks.Test_Melee_Attack;
+import de.epsdev.plugins.MMO.combat.basetypes.attacks.Test_Self_Attack;
 import de.epsdev.plugins.MMO.data.DataManager;
 import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.npc.Path;
@@ -22,16 +27,13 @@ import org.bukkit.entity.SkeletonHorse;
 
 import java.util.UUID;
 
-public abstract class Base_Mob {
+public abstract class Base_Mob extends Attackable {
 
     private Entity e;
     private Mob_Types mobType;
     private Vec3f curPos;
     private double angle;
     private float speed;
-    
-    private float max_live;
-    private float cur_live;
 
     private Path path;
     private final String name;
@@ -42,17 +44,16 @@ public abstract class Base_Mob {
 
     private int[] schedulers = new int[3];
 
-    public Base_Mob(String name ,Mob_Types type, Vec3f pos, float speed, float max_live, MobTargetAI ai){
+    public Base_Mob(String name ,Mob_Types type, Vec3f pos, float speed, float max_live, float max_mana, MobTargetAI ai){
+        super(max_live, max_live, new AttackCollection(new Attack[]{new Test_Melee_Attack()}
+                ,new Attack[]{}), SIDE.MOB);
         this.mobType = type;
         this.name = name;
         this.curPos = pos;
         this.speed = speed;
         //Random angle
         this.angle = Math.randomDoubleBetween(0,360);
-        
-        this.max_live = max_live;
-        this.cur_live = max_live;
-        
+
         this.e = createEntity(mobType, curPos);
 
         this.targetAI = ai;
@@ -66,7 +67,7 @@ public abstract class Base_Mob {
         Entity e = Mob_Types.get(type, world);
 
         e.setPosition(pos.x,pos.y,pos.z);
-        e.setCustomName(ChatColor.DARK_AQUA + name + ChatColor.RED + " " + this.cur_live + "/" + this.max_live);
+        e.setCustomName(ChatColor.DARK_AQUA + name + ChatColor.RED + " " + this.getCur_health() + "/" + this.max_health);
         e.setCustomNameVisible(true);
         e.setPositionRotation(e.getChunkCoordinates(),0,0);
         e.setNoGravity(true);
@@ -115,7 +116,7 @@ public abstract class Base_Mob {
     }
 
     private void updateName(){
-        String n = ChatColor.DARK_AQUA + name + ChatColor.RED + " " + this.cur_live + "/" + this.max_live;
+        String n = ChatColor.DARK_AQUA + name + ChatColor.RED + " " + this.getCur_health() + "/" + this.max_health;
         e.setCustomName(n);
 
         updateMetadata();
@@ -209,8 +210,44 @@ public abstract class Base_Mob {
         return this.e;
     }
 
-    public void kill(){
+    private Vec3f getNextTarget(){
+        targetAI.update(curPos);
+        return targetAI.getTarget();
+    }
 
+    @Override
+    public Vec3f getPosition() {
+        return this.curPos;
+    }
+
+    @Override
+    public float calculateDamage(float org_damage) {
+        playHit();
+        return org_damage;
+    }
+
+    @Override
+    public float calculateHeal(float org_heal) {
+        return org_heal;
+    }
+
+    @Override
+    public float calculateManaLoss(float org_loss) {
+        return org_loss;
+    }
+
+    @Override
+    public float calculateManaGain(float org_gain) {
+        return org_gain;
+    }
+
+    @Override
+    public void onChange() {
+        updateName();
+    }
+
+    @Override
+    public void kill(){
         Bukkit.getScheduler().scheduleSyncDelayedTask(main.plugin, () -> {
             sendPacketToAllPlayers(
                     new PacketPlayOutEntityDestroy(this.e.getId())
@@ -218,31 +255,14 @@ public abstract class Base_Mob {
         }, 20L);
 
         sendPacketToAllPlayers(
-            new PacketPlayOutAnimation(e,3)
+                new PacketPlayOutAnimation(e,3)
         );
 
         Mob_Manager.enemies.remove(this.e.getId());
+        this.removeFromList();
 
         Bukkit.getScheduler().cancelTask(this.schedulers[0]);
         Bukkit.getScheduler().cancelTask(this.schedulers[1]);
         Bukkit.getScheduler().cancelTask(this.schedulers[2]);
-    }
-
-    public void doDamage(float amount){
-        this.cur_live -= calculateDamage(amount);;
-
-        if(this.cur_live > 0){
-            updateName();
-        }else kill();
-
-        playHit();
-
-    }
-
-    public abstract float calculateDamage(float init_dmg);
-
-    private Vec3f getNextTarget(){
-        targetAI.update(curPos);
-        return targetAI.getTarget();
     }
 }

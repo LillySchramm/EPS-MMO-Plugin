@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.combat.basetypes;
 
 import de.epsdev.plugins.MMO.combat.Attack;
+import de.epsdev.plugins.MMO.combat.Attackable;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
 import org.bukkit.entity.Entity;
@@ -14,12 +15,12 @@ public abstract class Base_Range extends Attack {
     }
 
     @Override
-    public List<Base_Mob> getTargets(Player p) {
+    public List<Attackable> getTargets(Attackable p) {
         return null;
     }
 
     @Override
-    public List<User> getHealTargets(Player p) {
+    public List<Attackable> getHealTargets(Attackable p) {
         return null;
     }
 
@@ -36,7 +37,7 @@ public abstract class Base_Range extends Attack {
     public abstract void pHitAnimation(Entity e);
 
     @Override
-    public float calculateDamage(User user, Base_Mob mob) {
+    public float calculateDamage(Attackable a1, Attackable a2) {
         return 0;
     }
 }

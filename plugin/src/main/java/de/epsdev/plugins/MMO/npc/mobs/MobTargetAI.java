@@ -25,7 +25,7 @@ public class MobTargetAI {
 
     public Vec3f getTarget(){
         if(this.currentTarget.equals("")) return spawn;
-        Out.printToConsole(1);
+
         return new Vec3f(Bukkit.getPlayer(UUID.fromString(currentTarget)).getLocation());
     }
 

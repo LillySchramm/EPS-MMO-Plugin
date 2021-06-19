@@ -1,5 +1,6 @@
 package de.epsdev.plugins.MMO.combat.basetypes.attacks;
 
+import de.epsdev.plugins.MMO.combat.Attackable;
 import de.epsdev.plugins.MMO.combat.basetypes.Base_Self_Attack;
 import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
 import org.bukkit.Bukkit;
@@ -37,7 +38,7 @@ public class Test_Self_Attack extends Base_Self_Attack {
     }
 
     @Override
-    public List<Base_Mob> getTargets(Player p) {
+    public List<Attackable> getTargets(Attackable p) {
         return null;
     }
 }

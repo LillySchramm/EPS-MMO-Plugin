@@ -8,7 +8,7 @@ import de.epsdev.plugins.MMO.tools.Vec3f;
 public class DisplayMob extends Base_Mob {
 
     public DisplayMob(Vec3f pos, Mob_Types type) {
-        super(type.name(), type, pos, 1f,10f, new MobTargetAI(0f,0f,0f));
+        super(type.name(), type, pos, 1f,10f, 10.0f, new MobTargetAI(0f,0f,0f));
     }
 
     @Override

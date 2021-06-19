@@ -1,6 +1,7 @@
 package de.epsdev.plugins.MMO.combat.basetypes;
 
 import de.epsdev.plugins.MMO.combat.Attack;
+import de.epsdev.plugins.MMO.combat.Attackable;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.npc.mobs.Base_Mob;
 import de.epsdev.plugins.MMO.npc.mobs.Mob_Manager;
@@ -16,7 +17,7 @@ public abstract class Base_Melee extends Attack {
     }
 
     @Override
-    public List<User> getHealTargets(Player p) {
+    public List<Attackable> getHealTargets(Attackable p) {
         return null;
     }
 
@@ -33,12 +34,12 @@ public abstract class Base_Melee extends Attack {
     public abstract void pHitAnimation(Entity e);
 
     @Override
-    public float calculateDamage(User user, Base_Mob mob) {
+    public float calculateDamage(Attackable a1, Attackable a2) {
         return this.baseDmg;
     }
 
     @Override
-    public List<Base_Mob> getTargets(Player p) {
-        return Mob_Manager.getAllEnemiesInRange(new Vec3f(p.getLocation()), 3);
+    public List<Attackable> getTargets(Attackable p) {
+        return Mob_Manager.getAllEnemiesInRange(new Vec3f(p.getPosition()), 3);
     }
 }
