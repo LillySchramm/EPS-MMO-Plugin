@@ -24,7 +24,7 @@ public class Mob_Manager {
     public static List<Attackable> getAllEnemiesInRange(Vec3f center, float range, int max){
         List<Attackable> mobs = new ArrayList<>();
 
-        for (Attackable m : Attackable.attackables){
+        for (Attackable m : Attackable.attackables.values()){
             if(mobs.size() == max) break;
 
             if(m.getPosition().distance2d(center) <= range){

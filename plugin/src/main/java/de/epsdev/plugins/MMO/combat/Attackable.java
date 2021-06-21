@@ -7,6 +7,7 @@ import net.minecraft.server.v1_12_R1.Entity;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public abstract class Attackable {
     public AttackCollection attackCollection;
     public final UUID uuid;
 
-    public static List<Attackable> attackables = new ArrayList<>();
+    public static HashMap<UUID,Attackable> attackables = new HashMap<>();
 
     private final int regenScheduler;
 
@@ -56,7 +57,7 @@ public abstract class Attackable {
 
         this.regenScheduler = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.plugin, this::regenTick, 0L, 5L);
 
-        Attackable.attackables.add(this);
+        Attackable.attackables.put(this.uuid,this);
     }
 
     private void regenTick(){
@@ -66,7 +67,7 @@ public abstract class Attackable {
 
     public void removeFromList(){
         Bukkit.getScheduler().cancelTask(this.regenScheduler);
-        attackables.removeIf((s) -> s.uuid == this.uuid);
+        attackables.remove(this.uuid);
     }
 
     public void dealDamage(float amount){

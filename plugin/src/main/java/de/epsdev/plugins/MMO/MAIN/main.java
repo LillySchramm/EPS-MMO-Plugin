@@ -9,6 +9,10 @@ import de.epsdev.plugins.MMO.data.mysql.DatabaseManager;
 import de.epsdev.plugins.MMO.events.*;
 
 import de.epsdev.plugins.MMO.npc.mobs.Mob_Manager;
+import de.epsdev.plugins.MMO.npc.mobs.Mob_Types;
+import de.epsdev.plugins.MMO.npc.mobs.spawns.SpawnGroup;
+import de.epsdev.plugins.MMO.npc.mobs.spawns.SpawnPoint;
+import de.epsdev.plugins.MMO.npc.mobs.subtypes.DummyMob;
 import de.epsdev.plugins.MMO.particles.EF_Image;
 import de.epsdev.plugins.MMO.particles.ParticleConfig;
 import de.epsdev.plugins.MMO.schedulers.Delta_Scheduler;
@@ -16,6 +20,7 @@ import de.epsdev.plugins.MMO.schedulers.Inventory_Check_Scheduler;
 import de.epsdev.plugins.MMO.schedulers.MAIN_UPDATE_SCHEDULER;
 
 import de.epsdev.plugins.MMO.schedulers.Static_Effect_Scheduler;
+import de.epsdev.plugins.MMO.tools.Vec3f;
 import net.minecraft.server.v1_12_R1.World;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
@@ -33,6 +38,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public final class main extends JavaPlugin implements Listener {
 
@@ -55,6 +64,21 @@ public final class main extends JavaPlugin implements Listener {
 
         startSchedulers();
 
+        // This is just for testing purposes, please remember to remove it once fully implemented.
+        List<SpawnPoint> points = new ArrayList<>();
+        points.add(new SpawnPoint(new Vec3f(-653.0f,74.0f,730.0f)));
+        points.add(new SpawnPoint(new Vec3f(-645.0f,74.0f,726.0f)));
+        points.add(new SpawnPoint(new Vec3f(-661.0f,74.0f,720.0f)));
+        points.add(new SpawnPoint(new Vec3f(-649.0f,73.0f,739.0f)));
+
+        List<SpawnGroup.I_SPAWN> spawns = new ArrayList<>();
+        spawns.add(loc -> new DummyMob(loc, Mob_Types.EVOKER).uuid);
+        spawns.add(loc -> new DummyMob(loc, Mob_Types.COW).uuid);
+        spawns.add(loc -> new DummyMob(loc, Mob_Types.CHICKEN).uuid);
+        spawns.add(loc -> new DummyMob(loc, Mob_Types.VILLAGER).uuid);
+        spawns.add(loc -> new DummyMob(loc, Mob_Types.VEX).uuid);
+
+        SpawnGroup spawnGroup = new SpawnGroup(points, spawns,2, 20L);
     }
 
     @Override

@@ -47,7 +47,7 @@ public abstract class Base_Mob extends Attackable {
     public Base_Mob(String name ,Mob_Types type, Vec3f pos, float speed, float max_live, float max_mana, float health_regen,
                     float mana_regen, MobTargetAI ai){
         super(max_live, max_mana, health_regen, mana_regen,
-                new AttackCollection(new Attack[]{new Test_Melee_Attack()},new Attack[]{}), SIDE.MOB);
+                new AttackCollection(new Attack[]{},new Attack[]{}), SIDE.MOB);
         this.mobType = type;
         this.name = name;
         this.curPos = pos;
@@ -118,7 +118,7 @@ public abstract class Base_Mob extends Attackable {
     }
 
     private void updateName(){
-        String n = ChatColor.DARK_AQUA + name + ChatColor.RED + " " + this.getCur_health() + "/" + this.max_health;
+        String n = ChatColor.DARK_AQUA + name + ChatColor.RED + " " + (int) this.getCur_health() + "/" + (int) this.max_health;
         e.setCustomName(n);
 
         updateMetadata();
@@ -254,7 +254,7 @@ public abstract class Base_Mob extends Attackable {
             sendPacketToAllPlayers(
                     new PacketPlayOutEntityDestroy(this.e.getId())
             );
-        }, 20L);
+        }, 3L);
 
         sendPacketToAllPlayers(
                 new PacketPlayOutAnimation(e,3)

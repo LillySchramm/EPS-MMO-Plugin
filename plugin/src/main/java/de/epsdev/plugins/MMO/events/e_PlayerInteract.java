@@ -60,8 +60,6 @@ public class e_PlayerInteract implements Listener {
                         House house = DataManager.getHouseByDoor(blockPos);
 
                         if(house != null){
-                            Out.printToConsole(blockFace.toString());
-
                             if(house.currentOwner_UUID.equalsIgnoreCase(user.UUID)){
                                 Location location = null;
                                 Block b = null;

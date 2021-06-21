@@ -84,7 +84,7 @@ public class User extends Attackable {
 
     public User(String uuid) throws SQLException {
 
-        super(100.0f,200.0f, 2f, 10f,new AttackCollection(new Attack[]{new Test_Melee_Attack(),new Test_Melee_Attack()}
+        super(1000.0f,200.0f, 123f, 10f,new AttackCollection(new Attack[]{new Test_Melee_Attack(),new Test_Melee_Attack()}
                 ,new Attack[]{new Test_Self_Attack()}),SIDE.PLAYER);
 
         ResultSet rs = mysql.query("SELECT * FROM `eps_users`.`players` WHERE UUID = '" + uuid + "'");
@@ -108,7 +108,7 @@ public class User extends Attackable {
     }
 
     public User(Player player, boolean online) throws SQLException {
-        super(100.0f,200.0f, 2f, 10f,new AttackCollection(new Attack[]{new Test_Melee_Attack()}
+        super(1000.0f,200.0f, 123f, 10f,new AttackCollection(new Attack[]{new Test_Melee_Attack()}
                 ,new Attack[]{new Test_Self_Attack()}),SIDE.PLAYER);
 
         displayName = player.getDisplayName();

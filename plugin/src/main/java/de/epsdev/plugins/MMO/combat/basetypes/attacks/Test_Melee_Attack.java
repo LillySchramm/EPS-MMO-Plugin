@@ -11,7 +11,7 @@ public class Test_Melee_Attack extends Base_Melee {
     public Test_Melee_Attack() {
         super(  "Cool Attack",
                 50L,
-                30,
+                30f,
                 1,
                 10,
                 0,

@@ -7,6 +7,7 @@ import de.epsdev.plugins.MMO.data.output.Out;
 import de.epsdev.plugins.MMO.data.player.User;
 import de.epsdev.plugins.MMO.npc.mobs.Mob_Types;
 import de.epsdev.plugins.MMO.npc.mobs.subtypes.DisplayMob;
+import de.epsdev.plugins.MMO.npc.mobs.subtypes.DummyMob;
 import de.epsdev.plugins.MMO.npc.mobs.subtypes.TestMob;
 import de.epsdev.plugins.MMO.schedulers.Delta_Scheduler;
 import de.epsdev.plugins.MMO.tools.Vec2f;
@@ -28,7 +29,7 @@ public class c_testmob implements CommandExecutor {
             if(args.length == 0){
 
                 Vec3f playerPosition = new Vec3f(player.getLocation());
-                TestMob t = new TestMob(playerPosition, Mob_Types.ZOMBIE);
+                DummyMob t = new DummyMob(playerPosition, Mob_Types.VILLAGER);
 
             }else {
                 //Displays Every Mob Type

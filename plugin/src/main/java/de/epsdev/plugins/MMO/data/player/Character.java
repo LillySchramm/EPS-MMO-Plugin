@@ -71,7 +71,6 @@ public class Character {
                 try {
                     rs.next();
                     this.id = rs.getInt("ID");
-                    Out.printToConsole(this.id);
                 }catch (Exception e){
                     e.printStackTrace();
                 }

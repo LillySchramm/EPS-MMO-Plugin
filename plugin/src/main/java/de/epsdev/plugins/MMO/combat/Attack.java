@@ -51,6 +51,7 @@ public abstract class Attack {
             if(attackable.getCur_mana() >= ManaCastCost){
                 if(attackable.getCur_health() >= LiveCastCost){
                     List<Attackable> targets = getTargets(attackable);
+
                     if(targets != null) {
                         for (Attackable _attackable : targets) {
                             if(attackable.side != _attackable.side && _attackable.uuid != attackable.uuid){
