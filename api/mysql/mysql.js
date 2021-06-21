@@ -2,8 +2,8 @@ const mysql = require("mysql");
 
 let dbConfig = {
   connectionLimit: 100,
-  host: '0.0.0.0',
-  user: 'admin',
+  host: 'raspberrypi',
+  user: 'user',
   password: '1111'
 }
 
