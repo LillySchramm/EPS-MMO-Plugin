@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class PosHelperComponent implements OnInit {
 
-  @Input() pos : string = "0>>0>>0"; 
+  @Input() pos : string = "0>>0>>0";
 
   x : number = 0
   y : number = 0
