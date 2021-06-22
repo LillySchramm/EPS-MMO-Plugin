@@ -14,8 +14,8 @@ export class SkinHelperComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {    
-    let json : JSON = JSON.parse(atob(this.skin.split("<!>")[0]));    
+  ngOnInit(): void {
+    let json : JSON = JSON.parse(atob(this.skin.split("<!>")[0]));
     let url : string = (<any>json)["textures"]["SKIN"]["url"]
 
     this.id = url.split("/")[4]

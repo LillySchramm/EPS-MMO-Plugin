@@ -11,7 +11,7 @@ export class NpcOverviewComponent implements OnInit {
 
   npcs : NPC[] = [];
 
-  constructor(private api:APIService) { 
+  constructor(private api:APIService) {
   }
 
   ngOnInit(): void {

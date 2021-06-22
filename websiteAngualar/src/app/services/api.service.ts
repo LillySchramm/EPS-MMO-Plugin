@@ -21,7 +21,7 @@ export class APIService {
   }
 
   public getAllNPC() : Observable<getAllNPCResponse>{
-    return this.http.get<getAllNPCResponse>(APIService.apiUrl + "admin/" + AdminSiteComponent.SessionKey + 
+    return this.http.get<getAllNPCResponse>(APIService.apiUrl + "admin/" + AdminSiteComponent.SessionKey +
       "/npc/getall")
   }
 

@@ -20,25 +20,25 @@ export class AdminSiteComponent implements OnInit {
     this.checkKey()
   }
 
-  checkKey() : void{         
+  checkKey() : void{
     if(AdminSiteComponent.SessionKey === ""){
       if(this.cookies.check('session')){
-        AdminSiteComponent.SessionKey = this.cookies.get('session');                
+        AdminSiteComponent.SessionKey = this.cookies.get('session');
       }
       window.setTimeout(() => {this.checkKey()}, 100)
-    }else{      
+    }else{
       this.api.verify(AdminSiteComponent.SessionKey).subscribe((d) => {
         if(d.verified){
-          this.loggedIn = true;          
+          this.loggedIn = true;
           setTimeout(() => {this.checkKey()}, 10000);
         }else{
           AdminSiteComponent.SessionKey = ""
           if(this.cookies.check('session')){
-            this.cookies.delete('session')            
+            this.cookies.delete('session')
           }
           this.loggedIn = false;
           setTimeout(() => {this.checkKey()}, 100);
-        }       
+        }
       })
     }
   }
