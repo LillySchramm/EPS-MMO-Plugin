@@ -1,0 +1,7 @@
+<div>
+    <h1>Admin Panel</h1>
+    <app-admin-login *ngIf="!loggedIn"></app-admin-login>
+    <section>
+        <app-npc-overview *ngIf="currentSite === 'npc'"></app-npc-overview>
+    </section>
+</div>

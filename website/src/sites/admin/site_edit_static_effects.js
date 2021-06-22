@@ -184,7 +184,7 @@ class Effect_edit extends React.Component {
 
     async getEffect_Data(){
         const session = coockie.readCookie('login');
-        let url = "http://0.0.0.0:10100/admin/" + session + "/staticeffects/get/" + this.state.effect_id;
+        let url = "http://localhost:10100/admin/" + session + "/staticeffects/get/" + this.state.effect_id;
         let response = await fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } });
         let data = await response.json();  
 

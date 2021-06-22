@@ -80,7 +80,7 @@ class NPC_edit extends React.Component {
 
     async getNPC_Data(id){
         const session = coockie.readCookie('login');
-        let url = "http://0.0.0.0:10100/admin/" + session + "/npc/get/" + this.state.npc_id;
+        let url = "http://localhost:10100/admin/" + session + "/npc/get/" + this.state.npc_id;
         let response = await fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } });
         let data = await response.json();  
 

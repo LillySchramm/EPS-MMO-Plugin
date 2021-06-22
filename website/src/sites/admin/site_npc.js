@@ -16,13 +16,13 @@ class NPC_row extends React.Component {
         return (            
             <tr>
                 <td>
-                    <a href={'http://0.0.0.0:3000/admin/npc/' + this.props.id}>
+                    <a href={'http://localhost:3000/admin/npc/' + this.props.id}>
                         {this.props.id} 
                     </a>
                 </td>
 
                 <td>
-                    <a href={'http://0.0.0.0:3000/admin/npc/' + this.props.id}>
+                    <a href={'http://localhost:3000/admin/npc/' + this.props.id}>
                         {this.props.name}
                     </a>
                 </td>
@@ -54,12 +54,12 @@ class NPC_table extends React.Component {
 
     async createTable() {
         const session = coockie.readCookie('login');
-        let url = "http://0.0.0.0:10100/admin/" + session;
+        let url = "http://localhost:10100/admin/" + session;
         let response = await fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } });
         let data = await response.json();       
 
         if (data.verified) {
-            url = "http://0.0.0.0:10100/admin/" + session + "/npc/getall";
+            url = "http://localhost:10100/admin/" + session + "/npc/getall";
             response = await fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } });
             data = await response.json();  
 

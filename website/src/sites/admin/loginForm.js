@@ -25,7 +25,7 @@ class LoginForm extends React.Component {
     }    
 
     async onSubmit(){             
-        const url = "http://0.0.0.0:10100/login/" + this.state.username + "/" + this.state.password;
+        const url = "http://localhost:10100/login/" + this.state.username + "/" + this.state.password;
         const response = await fetch(url, {mode: 'cors', headers: {'Access-Control-Allow-Origin':'*' }});
         const data = await response.json();  
 

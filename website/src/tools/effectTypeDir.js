@@ -12,7 +12,7 @@ const effectTypes = {
     "DRIP_LAVA"         :"null", 	 
     "DRIP_WATER" 	    :"null",
     "ENCHANTMENT_TABLE" :"Runes",
-    "END_ROD"           :"null", 	 
+    "END_ROD"           :"null", 	  
     "EXPLOSION_HUGE" 	:"null",
     "EXPLOSION_LARGE" 	:"null",
     "EXPLOSION_NORMAL" 	:"null",

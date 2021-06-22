@@ -14,12 +14,14 @@ class Skin_Obj extends React.Component {
         let base64_encoded = "";
 
         try{
+            console.log(this.props.skin)
             base64_encoded = atob(this.props.skin);
         }catch{}
         
         let id = "Alex";
 
         if(base64_encoded != ""){    
+            console.log(base64_encoded)
             let jsonObj = JSON.parse(base64_encoded);   
             id = jsonObj.textures.SKIN.url;
             let _id = id.split('/')

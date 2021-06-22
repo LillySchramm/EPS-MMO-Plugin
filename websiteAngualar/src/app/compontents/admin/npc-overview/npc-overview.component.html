@@ -1,0 +1,16 @@
+<div>
+    <table>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Position</th>
+          <th> </th>
+        </tr>        
+        <tr *ngFor="let npc of npcs">
+          <td>{{npc.ID}}</td>
+          <td>{{npc.NAME}}</td>
+          <td> <app-pos-helper [pos]="npc.POS"></app-pos-helper> </td>
+          <td> <app-skin-helper type="avatar" [skin]="npc.SKIN"></app-skin-helper> </td>
+        </tr>
+    </table>  
+</div>

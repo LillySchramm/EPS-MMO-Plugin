@@ -1,0 +1,17 @@
+<form role="form" class="well" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label>Name: </label>
+        <input class="form-control" type="text" name="name" value="" [(ngModel)]="name">
+    </div>
+    <div class="form-group">
+        <label>Password: </label>
+        <input class="form-control" type="password" name="password" value="" [(ngModel)]="password">
+    </div>
+
+    <button type="submit" name="abschicken" class="btn btn-success btn-block"><i class="fa fa-envelope"></i>
+        Login</button>
+    <br>
+    <div class="alert alert-danger" role="alert" *ngIf="wrong">
+        Credentials are wrong.
+    </div>
+</form>

@@ -66,7 +66,7 @@ router.get('/:session/npc/getall', (req,res,next) => {
     
     db_manager.verifyWebSession(session).then((ret) => {
         if(ret){      
-            sql.query("SELECT * FROM `eps_regions`.`npc` LIMIT 50;").then((npcs => {
+            sql.query("SELECT * FROM `eps_regions`.`npc`;").then((npcs => {
                 res.status(200).json({
                     npc: npcs,
                     verified: true

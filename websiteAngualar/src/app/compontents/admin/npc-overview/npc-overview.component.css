@@ -1,0 +1,13 @@
+table{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+table th{
+    font-size: 3vh;    
+}
+
+th, td {
+    padding: 1vh;
+}
