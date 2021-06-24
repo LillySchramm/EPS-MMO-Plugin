@@ -1,4 +1,5 @@
 import { NPC } from "./npcType"
+import { StaticEffect } from "./staticEffectType"
 
 export type loginResponse = {
     successfull: boolean,
@@ -11,4 +12,8 @@ export type verifyResponse = {
 
 export type getAllNPCResponse = {
     npc:NPC[]
+}
+
+export type getAllStaticEffectsResponse = {
+    npc:StaticEffect[]
 }

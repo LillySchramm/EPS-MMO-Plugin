@@ -7,3 +7,15 @@ div{
     margin-right: 5vw;
     margin-left: 5vw;
 }
+
+header{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn{
+    margin-left: 1vw;
+    margin-right: 1vw;
+    font-size: 3vh;
+}

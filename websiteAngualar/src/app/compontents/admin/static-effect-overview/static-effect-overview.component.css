@@ -1,0 +1,22 @@
+section{
+    margin-top: 10vh;
+
+    padding-left: 20vw;
+    padding-right: 20vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+td, tr {
+    padding: .5vw;
+}
+
+tr.content:hover{
+    background-color: red;
+}
+
+.btn{
+    margin-bottom: 3vh;
+}

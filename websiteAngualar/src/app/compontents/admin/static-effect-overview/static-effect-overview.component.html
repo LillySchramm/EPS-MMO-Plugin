@@ -1,0 +1,17 @@
+<section *ngIf="cur_edit == -1">
+    <table >
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Position</th>
+          <th> </th>
+        </tr>        
+        <tr class="content" *ngFor="let effect of sites[cur_index]" (click)="changeEditEffect(effect.ID)">
+          <td>{{effect.ID}}</td>
+          <td>{{getTypeName(effect)}}</td>
+          <td> <app-pos-helper [pos]="effect.POS"></app-pos-helper> </td>
+        </tr>
+    </table>      
+    <button class="btn btn-info" (click)="changeSite(+1)" *ngIf="(cur_index + 1) < sites.length">+</button>
+    <button class="btn btn-info" (click)="changeSite(-1)"  *ngIf="(cur_index - 1) >= 0">-</button>
+</section>

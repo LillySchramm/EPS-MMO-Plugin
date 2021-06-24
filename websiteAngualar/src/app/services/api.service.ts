@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { getAllNPCResponse, loginResponse, verifyResponse } from 'src/common/generalTypes';
+import { getAllNPCResponse, getAllStaticEffectsResponse, loginResponse, verifyResponse } from 'src/common/generalTypes';
 import { AdminSiteComponent } from '../compontents/admin/admin-site/admin-site.component';
 
 @Injectable({
@@ -23,6 +23,11 @@ export class APIService {
   public getAllNPC(): Observable<getAllNPCResponse> {
     return this.http.get<getAllNPCResponse>(APIService.apiUrl + "admin/" + AdminSiteComponent.SessionKey +
       "/npc/getall")
+  }
+
+  public getAllStaticEffects(): Observable<getAllStaticEffectsResponse> {
+    return this.http.get<getAllStaticEffectsResponse>(APIService.apiUrl + "admin/" + AdminSiteComponent.SessionKey +
+      "/staticeffects/getall")
   }
 
   public saveNPC(id: number, attr: string, value: string): void {

@@ -13,6 +13,7 @@ import { NpcOverviewComponent } from './compontents/admin/npc-overview/npc-overv
 import { PosHelperComponent } from './compontents/helpers/pos-helper/pos-helper.component';
 import { SkinHelperComponent } from './compontents/helpers/skin-helper/skin-helper.component';
 import { NpcEditComponent } from './compontents/admin/npc-edit/npc-edit.component';
+import { StaticEffectOverviewComponent } from './compontents/admin/static-effect-overview/static-effect-overview.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { NpcEditComponent } from './compontents/admin/npc-edit/npc-edit.componen
     NpcOverviewComponent,
     PosHelperComponent,
     SkinHelperComponent,
-    NpcEditComponent
+    NpcEditComponent,
+    StaticEffectOverviewComponent
   ],
   imports: [
     BrowserModule,

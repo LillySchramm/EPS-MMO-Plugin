@@ -1,7 +1,13 @@
 <div>
     <h1>Admin Panel</h1>
     <app-admin-login *ngIf="!loggedIn"></app-admin-login>
-    <section  *ngIf="loggedIn">
+    <section *ngIf="loggedIn">
+        <header>
+            <button class="btn btn-info" (click)="changeSite('npc')">NPC</button>
+            <button class="btn btn-info" (click)="changeSite('static-effects')">Static Effects</button>
+        </header>
+
         <app-npc-overview *ngIf="currentSite === 'npc'"></app-npc-overview>
+        <app-static-effect-overview *ngIf="currentSite === 'static-effects'"></app-static-effect-overview>
     </section>
 </div>

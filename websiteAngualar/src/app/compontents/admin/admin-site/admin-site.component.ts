@@ -12,7 +12,7 @@ export class AdminSiteComponent implements OnInit {
   public static SessionKey = ""
 
   loggedIn : boolean = false;
-  currentSite : string = "npc";
+  currentSite : string = "static-effects";
 
   constructor(private cookies:CookieService, private api:APIService) { }
 
@@ -41,6 +41,10 @@ export class AdminSiteComponent implements OnInit {
         }
       })
     }
+  }
+
+  changeSite(name : string){
+    this.currentSite = name;
   }
 
 }
