@@ -1,16 +1,26 @@
 <div>
-    <table>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Position</th>
-          <th> </th>
-        </tr>        
-        <tr *ngFor="let npc of npcs">
-          <td>{{npc.ID}}</td>
-          <td>{{npc.NAME}}</td>
-          <td> <app-pos-helper [pos]="npc.POS"></app-pos-helper> </td>
-          <td> <app-skin-helper type="avatar" [skin]="npc.SKIN"></app-skin-helper> </td>
-        </tr>
-    </table>  
+  <section>
+    <table *ngIf="cur_edit == -1">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Position</th>
+        <th> </th>
+      </tr>        
+      <tr class="content" *ngFor="let npc of npcs" (click)="changeEditNPC(npc.ID)">
+        <td>{{npc.ID}}</td>
+        <td>{{npc.NAME}}</td>
+        <td> <app-pos-helper [pos]="npc.POS"></app-pos-helper> </td>
+        <td> <app-skin-helper type="avatar" [skin]="npc.SKIN"></app-skin-helper> </td>
+      </tr>
+  </table>  
+
+  <section *ngIf="cur_edit != -1">
+    <app-npc-edit [npc]="getNPC(cur_edit)"></app-npc-edit>    
+    <button type="submit" name="save" class="btn btn-success btn-block" (click)="changeEditNPC(-1)"><i class="fa fa-envelope"></i>
+      Back</button>
+    <br>
+  </section>
+
+  </section>
 </div>

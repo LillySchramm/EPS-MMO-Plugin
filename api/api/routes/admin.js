@@ -120,7 +120,7 @@ router.get('/:session/server/instances/reload/all', (req,res,next) => {
     })    
 });
 
-
+// TODO: I need to make this POST someday
 router.get('/:session/npc/set/:npc_id/:attr/:value', (req,res,next) => {
     let session = req.params.session;
     let npc_id = req.params.npc_id;

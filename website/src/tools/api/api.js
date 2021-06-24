@@ -4,7 +4,7 @@ const coockie = require('../coockies');
 const request = (req) => {
     return new Promise((resolve, reject) => {    
         const session = coockie.readCookie('login');
-        let url = "http://localhost:10100/admin/" + session + "/" + req;
+        let url = "http://mine:10100/admin/" + session + "/" + req;
         fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } }).then((response) => {
             response.json().then((data) => {
                 if (data.verified) {
@@ -20,7 +20,7 @@ const request = (req) => {
 
 const request_wo_admin = (req) => {
     return new Promise((resolve, reject) => {    
-        let url = "http://localhost:10100/" + req;
+        let url = "http://mine:10100/" + req;
         fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } }).then((response) => {
             response.json().then((data) => {
                 resolve(data)
@@ -32,7 +32,7 @@ const request_wo_admin = (req) => {
 const post_request = (req, data) => {
     return new Promise((resolve, reject) => {    
         const session = coockie.readCookie('login');
-        let url = "http://localhost:10100/admin/" + session + "/" + req;
+        let url = "http://mine:10100/admin/" + session + "/" + req;
         
         axios.post(url, data).then(r => {
             console.log(r)

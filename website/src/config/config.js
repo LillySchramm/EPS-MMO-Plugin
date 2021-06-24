@@ -1,1 +1,1 @@
-const api = 'localhost:10100/' 
+const api = 'mine:10100/' 

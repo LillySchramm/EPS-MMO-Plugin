@@ -1,0 +1,26 @@
+<section>
+    <form role="form" class="well" (ngSubmit)="onSubmit()">
+        <h2>Name</h2>
+        <div class="form-group">
+            <input class="form-control" type="text" name="1" value="" [(ngModel)]="npc.NAME">
+        </div>
+
+        <h2>Skin</h2>
+        <h3>Texture Data</h3>
+        <div class="form-group">            
+            <input class="form-control" type="text" name="2" value="" [(ngModel)]="texture_data">
+        </div>
+        <h3>Texture Signature</h3>
+        <div class="form-group">
+            <input class="form-control" type="text" name="3" value="" [(ngModel)]="texture_signature">
+        </div>
+
+        <div class="body">
+            <app-skin-helper [skin]="npc.SKIN" type="body"></app-skin-helper>
+        </div>
+        <p>Attention: In the case that the character ingame doesn't look like the one in the preview, check the Texture_Signature</p>
+        <button type="submit" name="save" class="btn btn-success btn-block"><i class="fa fa-envelope"></i>
+            Save</button>
+        <br>
+    </form>
+</section>

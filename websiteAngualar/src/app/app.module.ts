@@ -12,6 +12,7 @@ import { AdminLoginComponent } from './compontents/admin/admin-login/admin-login
 import { NpcOverviewComponent } from './compontents/admin/npc-overview/npc-overview.component';
 import { PosHelperComponent } from './compontents/helpers/pos-helper/pos-helper.component';
 import { SkinHelperComponent } from './compontents/helpers/skin-helper/skin-helper.component';
+import { NpcEditComponent } from './compontents/admin/npc-edit/npc-edit.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SkinHelperComponent } from './compontents/helpers/skin-helper/skin-help
     AdminLoginComponent,
     NpcOverviewComponent,
     PosHelperComponent,
-    SkinHelperComponent
+    SkinHelperComponent,
+    NpcEditComponent
   ],
   imports: [
     BrowserModule,

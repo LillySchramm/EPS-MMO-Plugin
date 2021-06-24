@@ -1,0 +1,17 @@
+section{
+    margin-left: 20vw;
+    margin-right: 20vw;
+}
+
+h2{
+    text-align: center;
+    font-size: 5vh;
+    margin-top: 5vh;
+}
+
+.body{
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    margin-right: 20vw;
+    margin-left: 20vw;
+}

@@ -72,7 +72,7 @@ class Item_edit extends React.Component {
 
     async getEffect_Data(){
         const session = coockie.readCookie('login');
-        let url = "http://localhost:10100/admin/" + session + "/item/get/" + this.state.item_id;
+        let url = "http://mine:10100/admin/" + session + "/item/get/" + this.state.item_id;
         let response = await fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } });
         let data = await response.json();  
 

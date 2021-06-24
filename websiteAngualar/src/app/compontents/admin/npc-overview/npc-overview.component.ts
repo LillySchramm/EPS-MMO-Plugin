@@ -10,6 +10,7 @@ import { NPC } from 'src/common/npcType';
 export class NpcOverviewComponent implements OnInit {
 
   npcs : NPC[] = [];
+  cur_edit : number = -1;
 
   constructor(private api:APIService) {
   }
@@ -18,6 +19,14 @@ export class NpcOverviewComponent implements OnInit {
     this.api.getAllNPC().subscribe((res) => {
       this.npcs = res.npc
     })
+  }
+
+  changeEditNPC(n : number) : void {
+    this.cur_edit = n;
+  }
+
+  getNPC(id : number) : NPC{
+    return this.npcs.find(npc => npc.ID == id)!
   }
 
 }

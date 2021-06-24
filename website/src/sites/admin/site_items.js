@@ -139,13 +139,13 @@ class Item_table extends React.Component {
 
     async createTable() {
         const session = coockie.readCookie('login');
-        let url = "http://localhost:10100/admin/" + session;
+        let url = "http://mine:10100/admin/" + session;
         let response = await fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } });
         let data = await response.json();       
 
 
         if (data.verified) {
-            url = "http://localhost:10100/admin/" + session + "/item/getall/" + this.state.type;
+            url = "http://mine:10100/admin/" + session + "/item/getall/" + this.state.type;
             response = await fetch(url, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': '*' } });
             data = await response.json();  
 

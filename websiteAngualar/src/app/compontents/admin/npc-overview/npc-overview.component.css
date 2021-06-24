@@ -11,3 +11,13 @@ table th{
 th, td {
     padding: 1vh;
 }
+
+tr.content:hover{
+    background-color: red;
+    cursor: pointer;
+}
+
+button{
+    margin-top: 10vh;
+    width: 20vw;
+} 
