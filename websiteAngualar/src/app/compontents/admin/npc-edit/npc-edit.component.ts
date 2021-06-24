@@ -43,7 +43,7 @@ export class NpcEditComponent implements OnInit {
 
   onSubmit(): void {   
     if(this.npc.NAME != this._npc.NAME && this.npc.NAME.length >= 1){
-      this.api.saveNPC(this.npc.ID, "SKIN", this.npc.SKIN);      
+      this.api.saveNPC(this.npc.ID, "NAME", this.npc.NAME);      
     }
     if(this.npc.NAME != this._npc.SKIN && this.npc.SKIN.length >= 1){
       this.api.saveNPC(this.npc.ID, "SKIN", this.npc.SKIN);      
