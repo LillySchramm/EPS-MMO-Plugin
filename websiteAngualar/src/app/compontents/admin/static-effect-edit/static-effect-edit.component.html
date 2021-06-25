@@ -1,0 +1,52 @@
+<section>
+    <form role="form" class="well" (ngSubmit)="onSubmit()">
+        <h1>[ID: {{effect.ID}}] Edit</h1>
+        <h2>General</h2>
+        <app-pos-helper [pos]="effect.POS"></app-pos-helper>
+
+        <h3>Effect Type</h3>
+        <div class="form-group">            
+            <select id="effectTypes" name="effectTypes" [(ngModel)]="effectType" (change)="onTypeChange()">
+                <option *ngFor="let item of getEffectTypes()" 
+                    [value]="String(item).split(',')[0]" [attr.selected]="String(item).split(',')[0] === effectType ? true : null"
+                    name="type">
+                    {{String(item).split(',')[1]}}
+                </option>
+            </select>
+        </div>
+
+        
+        <h3>Particle Type</h3>
+        <div class="form-group">            
+            <select id="particleTypes" name="particleTypes" [(ngModel)]="particleType">
+                <ng-container *ngFor="let item of getParticleTypes()">
+                    <option *ngIf="String(item).split(',')[1] != 'null'" [value]="String(item).split(',')[0]" [attr.selected]="String(item).split(',')[0] === particleType ? true : null"
+                        name="s2">
+                        {{String(item).split(',')[1]}}
+                    </option>
+                </ng-container>
+            </select>
+        </div>
+
+        <ng-container *ngIf="particleType=='REDSTONE'">
+            <h3>Color</h3>
+            <div class="form-group">
+                <input name="color" type="color" [value]="_hex" [(ngModel)]="_hex">
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="effectTypesExtraFields.get(effectType)!.length != 0">
+            <h2>Extra Stuff</h2>
+                
+            <ng-container *ngFor="let field of effectTypesExtraFields.get(effectType); index as index">
+                <div class="form-group">  
+                    <h3>{{field}}</h3>
+                    <input type="number" [name]="'i' + index" [(ngModel)]="more_val[index]">
+                </div>
+            </ng-container>
+        </ng-container>
+
+        <button type="submit" name="save" class="btn btn-success btn-block"><i class="fa fa-envelope"></i>
+            Save</button>
+    </form>
+</section>

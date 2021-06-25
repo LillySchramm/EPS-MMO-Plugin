@@ -15,3 +15,9 @@
     <button class="btn btn-info" (click)="changeSite(+1)" *ngIf="(cur_index + 1) < sites.length">+</button>
     <button class="btn btn-info" (click)="changeSite(-1)"  *ngIf="(cur_index - 1) >= 0">-</button>
 </section>
+
+<section *ngIf="cur_edit != -1">
+  <app-static-effect-edit [effect]="getEffect(cur_edit)"></app-static-effect-edit>
+  <button type="submit" name="save" class="btn btn-success btn-block" (click)="changeEditEffect(-1)"><i class="fa fa-envelope"></i>
+    Back</button>
+</section>

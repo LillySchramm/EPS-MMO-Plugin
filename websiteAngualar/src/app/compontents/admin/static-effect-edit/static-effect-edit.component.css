@@ -1,0 +1,23 @@
+section{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+h1 {
+    font-size: 4vh;
+}
+
+h2{
+    font-size: 3vh;
+    margin-top: 5vh;
+}
+
+app-pos-helper{
+    font-size: 2.5vh;
+}
+
+button{
+    margin-bottom: 5vh;
+}

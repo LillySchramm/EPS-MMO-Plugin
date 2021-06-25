@@ -61,4 +61,8 @@ export class StaticEffectOverviewComponent implements OnInit {
     this.cur_edit = n
   }
 
+  getEffect(i : number) : StaticEffect{
+    return this.effects.find((e) => e.ID == i)!
+  }
+
 }

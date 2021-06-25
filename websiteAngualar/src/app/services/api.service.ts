@@ -35,6 +35,11 @@ export class APIService {
       "/npc/set/" + id + "/" + attr + "/" + this.hexEncode(value)).subscribe(() => {})
   }
 
+  public saveStaticEffect(id: number, data: string): void {
+    this.http.get(APIService.apiUrl + "admin/" + AdminSiteComponent.SessionKey +
+      "/staticeffects/set/" + id + "/DATA/" + this.hexEncode(data)).subscribe(() => {})
+  }
+
   hexEncode(str: string) {
     var hex, i;
 
