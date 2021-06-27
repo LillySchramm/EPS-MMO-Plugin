@@ -10,7 +10,7 @@ import { StaticEffect } from 'src/common/staticEffectType';
 export class StaticEffectOverviewComponent implements OnInit {
 
   cur_index : number = 0;
-  cur_edit : number = -1; 
+  cur_edit : number = -1;
   
   sites : Array<StaticEffect[]> = [];
   effects : StaticEffect[] = [];
@@ -26,7 +26,7 @@ export class StaticEffectOverviewComponent implements OnInit {
   }
 
   gererateSites() : void{
-    let cur : StaticEffect[] = [] 
+    let cur : StaticEffect[] = []
     this.effects.forEach(e => {
       cur.push(e)
       if(cur.length == 10){
@@ -50,7 +50,7 @@ export class StaticEffectOverviewComponent implements OnInit {
         return "Pillar"
     }
 
-    return "UNKNOWN TYPE"; 
+    return "UNKNOWN TYPE";
   }
 
   changeSite(offset : number) : void{

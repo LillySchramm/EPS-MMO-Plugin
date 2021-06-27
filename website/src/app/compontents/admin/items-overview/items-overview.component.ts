@@ -20,7 +20,7 @@ export class ItemsOverviewComponent implements OnInit {
   _temp_name : string = ""
 
   resourcepack_version : number = 0
-  resourcepack_last_regen : string = "nice string" 
+  resourcepack_last_regen : string = "nice string"
 
   private items : Item[] = []
   sites : Map<string, Array<Item[]>> = new Map()
@@ -48,7 +48,7 @@ export class ItemsOverviewComponent implements OnInit {
       this.api.getAllItems(k).subscribe((resp) => {
 
         let temp_site : Item[] = []
-        let temp_sites : Array<Item[]> = []        
+        let temp_sites : Array<Item[]> = []
 
         resp.items.forEach((item) => {
           temp_site.push(item)
@@ -76,11 +76,11 @@ export class ItemsOverviewComponent implements OnInit {
   }
 
   changeSite(offset : number) : void {
-    this.cur_index += offset;    
+    this.cur_index += offset;
   }
 
   onCategoryChange() : void{
-    this.cur_index = 0    
+    this.cur_index = 0
   }
 
   regenTexturePack() : void{

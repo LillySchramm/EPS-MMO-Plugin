@@ -16,13 +16,13 @@ export class SkinHelperComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateID();
-  } 
+  }
 
   updateID(){
     let json : JSON = JSON.parse(atob(this.skin.split("<!>")[0]));
     let url : string = (<any>json)["textures"]["SKIN"]["url"]
 
-    this.id = url.split("/")[4]    
+    this.id = url.split("/")[4]
   }
 
   ngOnChanges(changes: SimpleChanges) {
