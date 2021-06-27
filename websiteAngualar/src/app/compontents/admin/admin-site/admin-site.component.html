@@ -5,9 +5,11 @@
         <header>
             <button class="btn btn-info" (click)="changeSite('npc')">NPC</button>
             <button class="btn btn-info" (click)="changeSite('static-effects')">Static Effects</button>
+            <button class="btn btn-info" (click)="changeSite('items')">Items</button>
         </header>
 
         <app-npc-overview *ngIf="currentSite === 'npc'"></app-npc-overview>
         <app-static-effect-overview *ngIf="currentSite === 'static-effects'"></app-static-effect-overview>
+        <app-items-overview *ngIf="currentSite === 'items'"></app-items-overview>
     </section>
 </div>

@@ -15,6 +15,8 @@ import { SkinHelperComponent } from './compontents/helpers/skin-helper/skin-help
 import { NpcEditComponent } from './compontents/admin/npc-edit/npc-edit.component';
 import { StaticEffectOverviewComponent } from './compontents/admin/static-effect-overview/static-effect-overview.component';
 import { StaticEffectEditComponent } from './compontents/admin/static-effect-edit/static-effect-edit.component';
+import { ItemsOverviewComponent } from './compontents/admin/items-overview/items-overview.component';
+import { ItemsEditComponent } from './compontents/admin/items-edit/items-edit.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { StaticEffectEditComponent } from './compontents/admin/static-effect-edi
     SkinHelperComponent,
     NpcEditComponent,
     StaticEffectOverviewComponent,
-    StaticEffectEditComponent
+    StaticEffectEditComponent,
+    ItemsOverviewComponent,
+    ItemsEditComponent
   ],
   imports: [
     BrowserModule,

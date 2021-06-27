@@ -12,7 +12,7 @@ export class AdminSiteComponent implements OnInit {
   public static SessionKey = ""
 
   loggedIn : boolean = false;
-  currentSite : string = "static-effects";
+  currentSite : string = "items";
 
   constructor(private cookies:CookieService, private api:APIService) { }
 

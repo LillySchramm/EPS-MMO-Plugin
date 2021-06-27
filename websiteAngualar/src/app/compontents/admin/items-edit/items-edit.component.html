@@ -1,0 +1,39 @@
+<section>
+    <form role="form" class="well" (ngSubmit)="onSubmit()">
+        <h1>[ID: {{item.ID}}] Edit '{{item.NAME}}'</h1>
+        <h2>General</h2>
+
+        <h3>Name</h3>
+        <input type="text" [(ngModel)]="item.NAME" name="name">
+
+        <h3>Item Category</h3>
+        <div class="form-group">            
+            <select id="itemTypes" name="itemTypes" [(ngModel)]="itemType" (change)="onTypeChange()">
+                <option *ngFor="let type of ItemOverviewComponent.types | keyvalue" [value]="type.key"
+                    [attr.selected]="type.key == itemType ? true : null"
+                    name="type">
+                    {{type.value}}
+                </option>
+            </select>
+        </div>       
+
+        <h3>Icon</h3>
+        <img [src]="'data:image/png;base64,' + item.ICON"><br>
+        <input type="file" (change)="onIconChange($event)">
+        
+        <!-- 
+        <ng-container *ngIf="effectTypesExtraFields.get(effectType)!.length != 0">
+            <h2>Extra Stuff</h2>
+                
+            <ng-container *ngFor="let field of effectTypesExtraFields.get(effectType); index as index">
+                <div class="form-group">  
+                    <h3>{{field}}</h3>
+                    <input type="number" [name]="'i' + index" [(ngModel)]="more_val[index]">
+                </div>
+            </ng-container>
+        </ng-container>
+        -->
+        <button type="submit" name="save" class="btn btn-success btn-block"><i class="fa fa-envelope"></i>
+            Save</button>
+    </form>
+</section>

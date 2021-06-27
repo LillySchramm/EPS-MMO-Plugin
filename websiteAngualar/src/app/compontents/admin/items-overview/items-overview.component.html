@@ -1,0 +1,39 @@
+<section *ngIf="cur_edit == -1">
+
+    <h2>Resourcepack</h2>
+    <h3>[{{resourcepack_version}}] {{resourcepack_last_regen}} <button class="btn btn-info" (click)="regenTexturePack()">Regenerate</button> </h3>
+
+    <h3>Category</h3>
+    <select name="select" [(ngModel)]="cur_category" (ngModelChange)="onCategoryChange()">
+        <option *ngFor="let type of ItemsOverviewComponent.types | keyvalue" [value]="type.key">{{type.value}}</option>
+    </select>
+    <table>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Icon</th>
+          <th> </th>
+        </tr>        
+        <tr class="content" *ngFor="let item of sites.get(cur_category)![cur_index]!">
+          <td class="norm" (click)="changeEditItem(item.ID)">{{item.ID}}</td>
+          <td class="norm" (click)="changeEditItem(item.ID)">{{item.NAME}}</td>
+          <td class="norm" (click)="changeEditItem(item.ID)"><img [src]="'data:image/png;base64,' + item.ICON"></td>
+          <td><button class="btn btn-danger" (click)="deleteItem(item)">DELETE</button></td>
+        </tr>
+    </table>      
+    <button class="btn btn-info" (click)="changeSite(+1)" *ngIf="(cur_index + 1) < sites.get(cur_category)!.length">+</button>
+    <button class="btn btn-info" (click)="changeSite(-1)"  *ngIf="(cur_index - 1) >= 0">-</button>
+
+    <h2>Create new item</h2>
+    <form class="well" (ngSubmit)="createItem()">
+      <input type="text" name="name" [(ngModel)]="_temp_name">
+      <br>
+      <button class="btn btn-success">Create</button>
+    </form>
+</section>
+
+<section *ngIf="cur_edit != -1">
+    <app-items-edit [item]="getItemByID(cur_edit)"></app-items-edit>
+  <button type="submit" name="save" class="btn btn-success btn-block" (click)="changeEditItem(-1)"><i class="fa fa-envelope"></i>
+    Back</button>
+</section>

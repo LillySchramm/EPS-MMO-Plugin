@@ -283,7 +283,7 @@ router.get('/:session/genResourcePack', (req,res,next) => {
     })    
 });
 
-router.post('/:session/item/icon/:id', (req,res,next) => {
+router.post('/:session/item/icon/:id', (req,res,next) => { // This is an realy undescriptive path. Need to change it once I work on the API again。
     let session = req.params.session;
     let id = req.params.id;
     let icon = req.body.base

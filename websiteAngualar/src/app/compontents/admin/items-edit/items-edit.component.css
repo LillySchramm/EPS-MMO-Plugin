@@ -1,0 +1,35 @@
+section{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+h1 {
+    font-size: 4vh;
+    margin-top: 5vh;
+}
+
+h2{
+    font-size: 4vh;
+    margin-top: 5vh;
+}
+
+h3{
+    margin-top: 2vh;
+}
+
+
+app-pos-helper{
+    font-size: 2.5vh;
+}
+
+button{
+    margin-bottom: 5vh;
+    margin-top: 5vh;
+}
+
+img{
+    width: 20vh;
+    image-rendering: optimizeSpeed;
+}
