@@ -33,7 +33,7 @@ export class ItemsEditComponent implements OnInit {
   //Placeholder
   reconstructData() : void {
     this.item.DATA = this.itemType
-  } 
+  }
 
   //Placeholder
   onTypeChange() : void {
@@ -52,7 +52,7 @@ export class ItemsEditComponent implements OnInit {
   onIconChange(event : any) : void{
     
     if(event.target.files){
-      const file = event.target.files[0]; 
+      const file = event.target.files[0];
       
       const reader = new FileReader();
       reader.readAsDataURL(file)

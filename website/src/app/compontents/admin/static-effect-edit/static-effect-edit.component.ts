@@ -142,7 +142,7 @@ export class StaticEffectEditComponent implements OnInit {
     data += this.B
     data += ">>"
 
-    this.effect.DATA = data;    
+    this.effect.DATA = data;
   }
 
   ngOnInit(): void {
@@ -191,7 +191,7 @@ export class StaticEffectEditComponent implements OnInit {
 
     this.effect.DATA = data
 
-    this.deconstructData()     
+    this.deconstructData()
   }
 
   onSubmit() : void{

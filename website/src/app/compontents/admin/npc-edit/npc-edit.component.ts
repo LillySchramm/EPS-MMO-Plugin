@@ -36,17 +36,17 @@ export class NpcEditComponent implements OnInit {
     setTimeout(() => {this.updateSkin()}, 100);
   }
 
-  updateSkin() : void {   
-    this.npc.SKIN = this.texture_data + "<!>" + this.texture_signature;    
+  updateSkin() : void {
+    this.npc.SKIN = this.texture_data + "<!>" + this.texture_signature;
     setTimeout(() => {this.updateSkin()}, 100);
   }
 
-  onSubmit(): void {   
+  onSubmit(): void {
     if(this.npc.NAME != this._npc.NAME && this.npc.NAME.length >= 1){
-      this.api.saveNPC(this.npc.ID, "NAME", this.npc.NAME);      
+      this.api.saveNPC(this.npc.ID, "NAME", this.npc.NAME);
     }
     if(this.npc.NAME != this._npc.SKIN && this.npc.SKIN.length >= 1){
-      this.api.saveNPC(this.npc.ID, "SKIN", this.npc.SKIN);      
+      this.api.saveNPC(this.npc.ID, "SKIN", this.npc.SKIN);
     }
   }
 }
